@@ -44,6 +44,9 @@ td input{border:0;border-bottom:1px solid #00A99D;width:130px;padding:4px;text-a
 #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#6A1B9A;color:#fff;padding:12px 18px;border-radius:12px;display:none;z-index:30;font-weight:700}
 #toast.show{display:block}
 .mut{color:#555;padding:4px 14px}
+.sh.ar{direction:rtl}.sh.ar .n{left:auto;right:0;text-align:right}.sh.ar tr.band td,.sh.ar td input{text-align:right}
+.card,.wk,.sec h3{text-align:center}.ban{justify-content:center;gap:12px}.top b{flex:1;text-align:center}
+.vr .cb,.tk .cb{margin:0;flex:none}.tk>div:last-child{flex:1}
 #m textarea{width:100%;height:150px;border:2px solid #000;border-radius:10px;padding:11px;margin:6px 0}
 .vc{margin:12px;border:2px solid #000;border-radius:12px;overflow:hidden}.vh{padding:10px 14px;color:#fff;font-weight:700;display:flex;justify-content:space-between;align-items:center}.vr{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;border-top:1px solid #ddd}.btn.sm{padding:5px 10px;font-size:13px}
 </style></head><body>
@@ -91,25 +94,25 @@ const weeks=()=>[...new Set([curWk(),...Object.keys(S.att),...Object.keys(S.vis)
 function groups(list,key='name'){const g={};list.forEach(k=>{const c=k.cls||'بدون فصل';(g[c]=g[c]||[]).push(k)});
  return Object.keys(g).sort((a,b)=>a.localeCompare(b,'ar')).map(c=>[c,g[c].sort(ordk)])}
 const cb=(p,f,v,l,m)=>`<div class="cb ${v?'on':''}" data-a=tg data-p="${p}" data-f="${esc(f)}" data-v="${v?1:''}" data-m="${m||'b'}" ${l?'data-l=1':''}>${v?'✓':''}</div>`;
-const sheet=(h,r)=>`<div class=sh><table><thead><tr>${h}</tr></thead><tbody>${r}</tbody></table></div>`;
+const sheet=(h,r,ar)=>`<div class="sh${ar?' ar':''}"><table><thead><tr>${h}</tr></thead><tbody>${r}</tbody></table></div>`;
 const bar=(add,extra)=>`<div class=tools><input id=q class=q placeholder="🔍 دوّر على اسم..." value="${esc(V.q||'')}">${add?'<button class=btn data-a=addkid>+ ولد</button>':''}${extra||''}</div>`;
 const band=(c,n,span)=>`<tr class=band><td colspan=${span} style="background:${colr(c)}">${esc(c)} (${n})</td></tr>`;
-const nameTd=(k,c)=>`<td class=n style="border-left:6px solid ${colr(c)}">${esc(k.name)}</td>`;
+const nameTd=(k,c)=>`<td class=n style="border-inline-start:6px solid ${colr(c)}">${esc(k.name)}</td>`;
 
 function hdr(){const t={home:'Georgios',att:'الحضور',vis:'الافتقاد',sv:'Your account',hist:'History',acc:'Accounts',acc1:'الحساب'}[V.t];
- const ban=V.wk&&V.wk!=curWk()?`<div class=ban><span>بتعدّل في: ${lbl(V.wk)}</span><button data-a=cur>الأسبوع الحالي</button></div>`:'';
+ const ban=V.wk&&V.wk!=curWk()?`<div class=ban><span>بتعدّل في: ${lbl(V.wk)}</span><button data-a=cur>This week</button></div>`:'';
  return `<div class=top>${V.t!='home'?'<button data-a=back>‹</button>':'<span style="width:44px"></span>'}<b>${t}</b><button data-a=menu>☰</button></div>
- <div id=menu class="${V.menu?'on':''}"><div data-a=go data-t=home>Home</div><div data-a=go data-t=hist>History</div><div data-a=go data-t=acc>Accounts</div><div data-a=exp>Export</div>${ME.role!='s'?'<div data-a=paste>Paste list</div>':''}${ME.role=='h'?'<div data-a=setpw>Set password</div>':''}<div data-a=switch>Log out</div></div>${ban}`}
+ <div id=menu class="${V.menu?'on':''}"><div data-a=go data-t=home>Home</div><div data-a=go data-t=hist>History</div><div data-a=go data-t=acc>Accounts</div>${ME.role!='s'?'<div data-a=paste>Paste list</div>':''}${ME.role=='h'?'<div data-a=setpw>Set password</div>':''}<div data-a=switch>Log out</div></div>${ban}`}
 
 function vHome(){const wk=wkOf(),a=S.att[wk]||{},n=S.kids.filter(k=>a[k.id]).length;
- return `<div class=wk>${lbl(wk)}${wk==curWk()?' • الأسبوع الحالي':''}</div>
+ return `<div class=wk>${lbl(wk)}${wk==curWk()?' • This week':''}</div>
  <div class="card c1" data-a=go data-t=att>الحضور<small>${n} من ${S.kids.length}</small></div>
  <div class="card c2" data-a=go data-t=vis>الافتقاد<small>تليفون • منزلي • بيانات الأولاد</small></div>
  <div class="card c3" data-a=go data-t=sv>Your account<small>${ME.role=='s'?'كشفك الأسبوع ده':'كشف الخدام'}</small></div>`}
 
 function vAtt(){const wk=wkOf(),a=S.att[wk]||{},lock=wk==curWk()&&!isFri();let r='';
  groups(S.kids).forEach(([c,l])=>{r+=band(c,l.length,2);l.forEach(k=>r+=`<tr data-n="${norm(k.name)}">${nameTd(k,c)}<td>${cb('att/'+wk,k.id,a[k.id],lock)}</td></tr>`)});
- return bar(1)+sheet(`<th class=n>الاسم</th><th>${lbl(wk)}</th>`,r||'<tr><td colspan=2>ضيف أول ولد بزرار + ولد</td></tr>')}
+ return bar(1)+sheet(`<th class=n>الاسم</th><th>${lbl(wk)}</th>`,r||'<tr><td colspan=2>ضيف أول ولد بزرار + ولد</td></tr>',1)}
 
 const STAT=[['addr','العنوان'],['conf','أب الاعتراف'],['love','لغة الحب'],['notes','ملحوظات']];
 function vVis(){const wk=wkOf(),v=S.vis[wk]||{};let r='';const span=7+S.cols.length;
@@ -117,7 +120,7 @@ function vVis(){const wk=wkOf(),v=S.vis[wk]||{};let r='';const span=7+S.cols.len
  groups(S.kids).forEach(([c,l])=>{r+=band(c,l.length,span);l.forEach(k=>{
   r+=`<tr data-n="${norm(k.name)}">${nameTd(k,c)}<td>${cb('vis/'+wk,k.id+'_p',v[k.id+'_p'],0,'d')}</td><td>${cb('vis/'+wk,k.id+'_h',v[k.id+'_h'],0,'d')}</td>`+
   STAT.map(s=>txt(k.id,s[0],k[s[0]])).join('')+S.cols.map(x=>txt(k.id,'x_'+x,k['x_'+x])).join('')+'</tr>'})});
- return bar(1,'<button class="btn pu" data-a=addcol>+ خانة</button>')+sheet(`<th class=n>الاسم</th><th>افتقده تليفون</th><th>افتقده منزلي</th>`+STAT.map(s=>`<th>${s[1]}</th>`).join('')+S.cols.map(x=>`<th>${esc(x)}</th>`).join(''),r)}
+ return bar(1,'<button class="btn pu" data-a=addcol>+ خانة</button>')+sheet(`<th class=n>الاسم</th><th>افتقده تليفون</th><th>افتقده منزلي</th>`+STAT.map(s=>`<th>${s[1]}</th>`).join('')+S.cols.map(x=>`<th>${esc(x)}</th>`).join(''),r,1)}
 
 const SF=[['come','جيت'],['att','حضرت'],['ph','افتقدت تليفون'],['hm','افتقدت منزلي'],['conf','اعتراف'],['mass','قداس'],['bib','الإنجيل الورقي']];
 const AUTO=[['prep','تحضير'],['vis','افتقاد']];
@@ -128,13 +131,14 @@ function card(s,c,m,wk,lock,rm){return `<div class=vc style="border-color:${colr
 function vSv(){const wk=wkOf(),m=S.svw[wk]||{},mgr=ME.role!='s',lock=wk==curWk()&&!isFri(),me=S.sv.find(s=>s.id==ME.id)||ME;
  const row=t=>`<div class=tk>${cb('tasks/'+t.id,'done',t.done)}<div>${esc(t.text)}${t.from=='auto'?'':`<div class=mut style="padding:0">من ${esc(t.from)}</div>`}</div></div>`;
  let h=card(me,me.cls||'',m,wk,lock,0)+`<div class=sec><h3>ورايا إيه؟</h3>${tasksOf(me,wk).map(row).join('')}</div>`;
- if(mgr){const list=(ME.role=='l'?S.sv.filter(s=>s.cls==ME.cls):S.sv).filter(s=>s.id!=ME.id);
-  h+=`<div class=tools><button class=btn data-a=addtask>+ Add task</button></div>`;
-  groups(list).forEach(([c,l])=>{h+=`<div class=sec><h3>${esc(c)}</h3></div>`;l.forEach(s=>{h+=card(s,c,m,wk,lock,1)+`<div class=sec>`+tasksOf(s,wk).map(row).join('')+`</div>`})})}
+ if(mgr){const list=(ME.role=='l'?S.sv.filter(s=>s.cls==ME.cls):S.sv).filter(s=>s.id!=ME.id),hd=ME.role=='h';let r='';
+  groups(list).forEach(([c,l])=>{r+=band(c,l.length,SF.length+2);l.forEach(s=>{r+=`<tr>${nameTd(s,c)}`+SF.map(f=>`<td>${cb('svw/'+wk,s.id+'_'+f[0],m[s.id+'_'+f[0]],lock)}</td>`).join('')+`<td>${hd?`<button class="btn alt sm" data-a=rmsv data-k="${s.id}">✕</button>`:''}</td></tr>`})});
+  h+=`<div class=tools><button class=btn data-a=addtask>+ Add task</button></div>`+sheet(`<th class=n>الاسم</th>`+SF.map(f=>`<th>${f[1]}</th>`).join('')+'<th></th>',r||'<tr><td colspan=9>مفيش خدام</td></tr>');
+  h+=`<div class=sec><h3>Tasks</h3>`+list.map(s=>`<div class=sec style="padding:4px 0"><b>${esc(s.name)}</b>${tasksOf(s,wk).map(row).join('')}</div>`).join('')+`</div>`}
  return h}
 
 function vHist(){const ks=weeks();
- return ks.map(k=>`<div class=li data-a=week data-w="${k}"><b>${lbl(k)}</b><span class=pill>${k==curWk()?'الحالي':'فتح وتعديل'}</span></div>`).join('')}
+ return ks.map(k=>`<div class=li data-a=week data-w="${k}"><b>${lbl(k)}</b><span class=pill>${k==curWk()?'This week':'فتح وتعديل'}</span></div>`).join('')}
 
 function stats(k){const cw=curWk(),all=new Set(Object.keys(S.att));if(isFri())all.add(cw);
  const ws=[...all].filter(w=>w>=(k.created||'')&&(w<cw||(w==cw&&isFri()))).sort().reverse();
@@ -142,7 +146,7 @@ function stats(k){const cw=curWk(),all=new Set(Object.keys(S.att));if(isFri())al
 function vAcc(){return bar(0)+groups(S.kids).map(([c,l])=>l.map(k=>{const s=stats(k);return `<div class=li data-n="${norm(k.name)}" data-a=kid data-k="${k.id}" style="border-color:${colr(c)}"><span><b>${esc(k.name)}</b><div class=mut style="padding:0">${esc(c)}</div></span><span class=pill>${s.p==null?'—':s.p+'%'}</span></div>`}).join('')).join('')}
 function vAcc1(){const k=S.kids.find(x=>x.id==V.kid);if(!k)return '';const s=stats(k);
  const ev=[];Object.keys(S.vis).sort().reverse().forEach(w=>{const v=S.vis[w];if(v[k.id+'_p'])ev.push('📞 افتقاد تليفون — '+v[k.id+'_p']);if(v[k.id+'_h'])ev.push('🏠 افتقاد منزلي — '+v[k.id+'_h'])});
- return `<div class=sec><h2>${esc(k.name)}</h2><div class=mut style="padding:0">${esc(k.cls||'')}</div>${ME.role=='h'||(ME.role=='l'&&k.cls==ME.cls)?`<button class="btn alt sm" data-a=rmkid data-k="${k.id}" style="margin-top:8px">Remove child</button>`:''}
+ return `<div class=sec><h2>${esc(k.name)}</h2><div class=mut style="padding:0">${esc(k.cls||'')}</div>${ME.role!='s'?`<button class="btn alt sm" data-a=rmkid data-k="${k.id}" style="margin-top:8px">Remove child</button>`:''}
  <div class="card c2" style="margin:12px 0">${s.p==null?'—':s.p+'%'}<small>حضر ${s.n} من ${s.ws.length} جمعة</small></div>
  <h3>سجل الافتقاد</h3>${ev.length?ev.map(e=>`<div class=tk>${e}</div>`).join(''):'<div class=mut>لسه مفيش افتقاد متسجل</div>'}
  <h3>الحضور</h3>${s.ws.map(w=>`<div class=tk>${(S.att[w]||{})[k.id]?'✅':'❌'} ${lbl(w)}</div>`).join('')}</div>`}
@@ -169,12 +173,6 @@ async function checkPw(p){if(p.length<4)return toast('4 characters minimum');
  try{const d=await db.doc('meta/auth').get(),h=await sha(p);
   if(!d.exists){put('meta/auth',{h});return finish('')}
   if(d.data().h==h)return finish('');toast('Wrong password')}catch(e){toast('Need internet for this step')}}
-function exp(wk){const a=S.att[wk]||{},v=S.vis[wk]||{},m=S.svw[wk]||{};
- const q=x=>'"'+String(x==null?'':x).replace(/"/g,'""')+'"',rows=[['الاسم','الفصل','حضور '+lbl(wk),'افتقاد تليفون','افتقاد منزلي','العنوان','أب الاعتراف','لغة الحب','ملحوظات',...S.cols]];
- groups(S.kids).forEach(([c,l])=>l.forEach(k=>rows.push([k.name,c,a[k.id]?'✓':'',v[k.id+'_p']||'',v[k.id+'_h']||'',k.addr,k.conf,k.love,k.notes,...S.cols.map(x=>k['x_'+x])])));
- rows.push([],['الخدام',...SF.map(f=>f[1])]);S.sv.forEach(s=>rows.push([s.name,...SF.map(f=>m[s.id+'_'+f[0]]?'✓':'')]));
- const b=new Blob(['\ufeff'+rows.map(r=>r.map(q).join(',')).join('\n')],{type:'text/csv'}),l=document.createElement('a');
- l.href=URL.createObjectURL(b);l.download='افتقاد-'+wk+'.csv';l.click()}
 
 document.addEventListener('click',e=>{const t=e.target.closest('[data-a]');
  if(!e.target.closest('#menu')&&!(t&&t.dataset.a=='menu')&&V.menu){V.menu=0;if(db&&ME)draw(true)}
@@ -187,9 +185,8 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-a]');
  if(d.a=='week'){V.wk=d.w;V.t='home';return draw(true)}
  if(d.a=='cur'){V.wk=null;return draw(true)}
  if(d.a=='kid'){V.kid=d.k;V.t='acc1';return draw(true)}
- if(d.a=='exp'){V.menu=0;draw(true);return modal('Export',`<select id=ew>${weeks().map(k=>`<option value="${k}">${lbl(k)}</option>`).join('')}</select>`,'Export',()=>exp($('#ew').value))}
  if(d.a=='setpw'){V.menu=0;draw(true);return modal('Set password','<input id=np type=password placeholder="New password">','Save',()=>{const p=$('#np').value;if(p.length<4){toast('4 characters minimum');return false}sha(p).then(h=>{put('meta/auth',{h});toast('Saved')})})}
- if(d.a=='rmsv'||d.a=='rmkid'){const col=d.a=='rmsv'?'servants':'kids',k=d.k,back=d.a=='rmkid';return modal('Remove?','<p>This cannot be undone.</p>','Remove',()=>{db.collection(col).doc(k).delete();if(back){V.t='acc';draw(true)}})}
+ if((d.a=='rmsv'&&ME.role=='h')||(d.a=='rmkid'&&ME.role!='s')){const col=d.a=='rmsv'?'servants':'kids',k=d.k,back=d.a=='rmkid';return modal('Remove?','<p>This cannot be undone.</p>','Remove',()=>{db.collection(col).doc(k).delete();if(back){V.t='acc';draw(true)}})}
  if(d.a=='paste'){V.menu=0;draw(true);const o=[['name','Names (new children)'],['addr','العنوان'],['conf','أب الاعتراف'],['love','لغة الحب'],['notes','ملحوظات']].concat(S.cols.map(x=>['x_'+x,x]));
   return modal('Paste list',`<select id=pf>${o.map(x=>`<option value="${esc(x[0])}">${esc(x[1])}</option>`).join('')}</select><input id=pc list=pcl placeholder="Class" value="${esc(ME.cls||'')}"><datalist id=pcl>${classes().map(c=>`<option value="${esc(c)}">`).join('')}</datalist><textarea id=pt placeholder="One item per line, in order"></textarea>`,'Paste',()=>{
    const f=$('#pf').value,c=$('#pc').value.trim(),L=$('#pt').value.split('\n').map(x=>x.trim()).filter(Boolean);
