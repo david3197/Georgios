@@ -50,6 +50,7 @@ td.n[data-lp]{-webkit-user-select:none;user-select:none;-webkit-touch-callout:no
 .card,.wk,.sec h3{text-align:center}.ban{justify-content:center;gap:12px}.top b{flex:1;text-align:center}
 .vr .cb,.tk .cb{margin:0;flex:none}.tk>div:nth-child(2){flex:1}
 .top .hl,.top .hr{width:100px;display:flex;align-items:center}.top .hr{justify-content:flex-end;gap:6px}.top .avb{width:42px;height:42px;border-radius:50%;padding:0;border:2px solid #00C2B3;background:#fff;overflow:hidden}.top .avb svg{width:100%;height:100%;display:block}
+.avl{display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:#fff;font:800 22px/1 'Segoe UI',system-ui,-apple-system,Roboto,sans-serif;text-shadow:0 1px 2px rgba(0,0,0,.25)}
 .avg{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px}.avp{border:3px solid #00C2B3;border-radius:50%;background:#fff;padding:0;aspect-ratio:1;overflow:hidden}.avp svg{width:100%;height:100%;display:block}
 #m textarea{width:100%;height:150px;border:2px solid #000;border-radius:10px;padding:11px;margin:6px 0}
 .vc{margin:12px;border:2px solid #000;border-radius:12px;overflow:hidden}.vh{padding:10px 14px;color:#fff;font-weight:700;display:flex;justify-content:space-between;align-items:center}.vr{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;border-top:1px solid #ddd}.btn.sm{padding:5px 10px;font-size:13px}
@@ -107,21 +108,8 @@ const bar=(add,extra)=>`<div class=tools><input id=q class=q placeholder="🔍 �
 const band=(c,n,span)=>`<tr class=band><td colspan=${span} style="background:${colr(c)}">${esc(c)} (${n})</td></tr>`;
 const nameTd=(k,c,kid)=>`<td class=n ${kid?`data-lp=1 data-k="${k.id}" `:''}style="border-inline-start:6px solid ${colr(c)}">${esc(k.name)}</td>`;
 
-const AVS=[['#B5835A','#8B5E3C','r'],['#F4A259','#E07B2A','t'],['#D9C2A0','#8B5E3C','f'],['#F2F2F2','#F7B6C6','l'],['#FFFFFF','#222222','r'],['#E8742A','#B84E10','t'],['#F2B84B','#B9731F','m'],['#6CC551','#4FA83A','g'],['#F7A8B8','#E87FA0','t']];
-function av(i){const[f,e,t]=AVS[i%9]||AVS[0];let b='';
- if(t=='m')b+=`<circle cx="50" cy="54" r="42" fill="${e}"/>`;
- if(t=='r')b+=`<circle cx="24" cy="26" r="12" fill="${e}"/><circle cx="76" cy="26" r="12" fill="${e}"/>`;
- if(t=='t')b+=`<polygon points="14,40 22,8 44,24" fill="${e}"/><polygon points="86,40 78,8 56,24" fill="${e}"/>`;
- if(t=='f')b+=`<ellipse cx="18" cy="42" rx="11" ry="22" fill="${e}"/><ellipse cx="82" cy="42" rx="11" ry="22" fill="${e}"/>`;
- if(t=='l')b+=`<ellipse cx="34" cy="18" rx="9" ry="24" fill="${f}" stroke="#bbb"/><ellipse cx="66" cy="18" rx="9" ry="24" fill="${f}" stroke="#bbb"/><ellipse cx="34" cy="20" rx="4" ry="16" fill="${e}"/><ellipse cx="66" cy="20" rx="4" ry="16" fill="${e}"/>`;
- if(t=='g')b+=`<circle cx="32" cy="28" r="13" fill="${f}"/><circle cx="68" cy="28" r="13" fill="${f}"/>`;
- b+=`<circle cx="50" cy="56" r="32" fill="${f}"${i==3||i==4?' stroke="#bbb"':''}/>`;
- if(i==4)b+=`<ellipse cx="37" cy="50" rx="8" ry="10" fill="#222"/><ellipse cx="63" cy="50" rx="8" ry="10" fill="#222"/>`;
- if(i==5)b+=`<ellipse cx="32" cy="68" rx="12" ry="9" fill="#fff"/><ellipse cx="68" cy="68" rx="12" ry="9" fill="#fff"/>`;
- b+=`<circle cx="38" cy="50" r="4.5" fill="#fff"/><circle cx="62" cy="50" r="4.5" fill="#fff"/><circle cx="38" cy="50" r="2.6" fill="#222"/><circle cx="62" cy="50" r="2.6" fill="#222"/>`;
- b+=`<ellipse cx="50" cy="65" rx="10" ry="7" fill="${i==8?'#E87FA0':'#fff'}" opacity=".85"/><circle cx="50" cy="62" r="3" fill="#333"/><path d="M44 70q6 5 12 0" stroke="#333" fill="none" stroke-width="2" stroke-linecap="round"/>`;
- if(i==1)b+=`<path d="M12 60h14M12 68h14M74 60h14M74 68h14" stroke="#555" stroke-width="1.5"/>`;
- return `<svg viewBox="0 0 100 100">${b}</svg>`}
+const AVC=[['#00A99D','#2DD4BF'],['#6A1B9A','#A855F7'],['#E5533D','#FB923C'],['#2563EB','#60A5FA'],['#DB2777','#F9A8D4'],['#D97706','#FCD34D'],['#16A34A','#4ADE80'],['#7C3AED','#818CF8']];
+function av(n){n=(n||'?').trim()||'?';let h=0;for(const c of n)h=(h*31+c.codePointAt(0))>>>0;const[a,b]=AVC[h%AVC.length];return `<span class=avl style="background:linear-gradient(135deg,${a},${b})">${esc([...n][0].toUpperCase())}</span>`}
 function go(t){if(V.t!=t){(V.st=V.st||[]).push(V.t);history.pushState({},'')}V.t=t;V.q='';V.menu=0}
 addEventListener('popstate',()=>{if(ME&&V.st&&V.st.length){V.t=V.st.pop();V.q='';V.menu=0;draw(true)}});
 const famScr=()=>`<div class=ob><h2>اسم الأسرة إيه؟</h2><p>لو كتبت اسم جديد هتلاقي الأسرة فاضية 🌱</p><input id=fm placeholder="اسم الأسرة"><button class=btn data-a=fam>تمام</button></div>`;
@@ -140,7 +128,7 @@ document.addEventListener('touchstart',lpS,{passive:true});document.addEventList
 document.addEventListener('contextmenu',e=>{if(e.target.closest('[data-lp]'))e.preventDefault()});
 function hdr(){const t={home:'Georgios',att:'الحضور',vis:'الافتقاد',sv:'Your account',hist:'History',acc:'Accounts',acc1:'الحساب'}[V.t];
  const ban=V.wk&&V.wk!=curWk()?`<div class=ban><span>بتعدّل في: ${lbl(V.wk)}</span><button data-a=cur>This week</button></div>`:'';
- return `<div class=top><span class=hl>${V.t!='home'?'<button data-a=back>‹</button>':''}</span><b>${t}</b><span class=hr><button class=avb data-a=go data-t=sv>${av(ME.av||0)}</button><button data-a=menu>☰</button></span></div>
+ return `<div class=top><span class=hl>${V.t!='home'?'<button data-a=back>‹</button>':''}</span><b>${t}</b><span class=hr><button class=avb data-a=go data-t=sv>${av(ME.name)}</button><button data-a=menu>☰</button></span></div>
  <div id=menu class="${V.menu?'on':''}"><div data-a=go data-t=home>Home</div><div data-a=go data-t=hist>History</div><div data-a=go data-t=acc>Accounts</div><div data-a=paste>Paste list</div>${ME.cls||ME.role=='h'?'<div data-a=rencls>Rename class</div>':''}${ME.role=='h'?'<div data-a=setpw>Set password</div>':''}<div data-a=switch>Log out</div></div>${ban}`}
 
 function vHome(){const wk=wkOf(),a=S.att[wk]||{},n=S.kids.filter(k=>a[k.id]).length;
@@ -192,8 +180,7 @@ function vAcc1(){const k=S.kids.find(x=>x.id==V.kid);if(!k)return '';const s=sta
  <h3>سجل الافتقاد</h3>${ev.length?ev.map(e=>`<div class=tk>${e}</div>`).join(''):'<div class=mut>لسه مفيش افتقاد متسجل</div>'}
  <h3>الحضور</h3>${s.ws.map(w=>`<div class=tk>${(S.att[w]||{})[k.id]?'✅':'❌'} ${lbl(w)}</div>`).join('')}</div>`}
 
-function ob(){const o=V.ob=V.ob||{s:0};
- if(o.s==0)return `<div class=ob><h2>Choose your character</h2><div class=avg>${AVS.map((_,i)=>`<button class=avp data-a=av data-i=${i}>${av(i)}</button>`).join('')}</div></div>`;
+function ob(){const o=V.ob=V.ob||{s:1};
  if(o.s==1)return `<div class=ob><h2>إسمك إيه؟</h2><input id=nm placeholder="اكتب اسمك"><button class=btn data-a=g data-g=m>مستر</button><button class="btn pu" data-a=g data-g=f>ميس</button></div>`;
  const hi=`أهلاً ${o.g=='m'?'مستر':'ميس'} ${esc(o.n)} 👋`;
  if(o.s==2)return `<div class=ob><h2>${hi}</h2><p>${o.g=='m'?'إنت':'إنتي'} إيه؟</p><button class=btn data-a=r data-r=s>خادم</button><button class="btn pu" data-a=r data-r=l>أمين فصل</button><button class="btn alt" data-a=r data-r=h>أمين الخدمة</button></div>`;
