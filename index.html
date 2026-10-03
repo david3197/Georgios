@@ -167,7 +167,7 @@ function vSv(){const wk=wkOf(),m=S.svw[wk]||{},mgr=ME.role!='s',lock=wk==curWk()
  return h}
 
 function vHist(){const ks=weeks();
- return ks.map(k=>`<div class=li data-a=week data-w="${k}"><b>${lbl(k)}</b><span class=pill>${k==curWk()?'This week':'فتح وتعديل'}</span></div>`).join('')}
+ return ks.map(k=>`<div class=li data-a=week data-w="${k}"><b>${lbl(k)}</b><span class=pill>${k==curWk()?'This week':'فتح وتعديل'}</span>${ME.role!='s'?`<button class="btn alt sm" data-a=delwk data-w="${k}">مسح</button>`:''}</div>`).join('')}
 
 function stats(k){const cw=curWk(),all=new Set(Object.keys(S.att));if(isFri())all.add(cw);
  const ws=[...all].filter(w=>w>=(k.created||'')&&(w<cw||(w==cw&&isFri()))).sort().reverse();
@@ -213,6 +213,15 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-a]');
  if(d.a=='go'){go(d.t);if(d.t=='home'&&e.target.closest('#menu'))V.wk=null;return draw(true)}
  if(d.a=='back'){if(V.st&&V.st.length)return history.back();V.t='home';V.q='';return draw(true)}
  if(d.a=='menu'){V.menu=!V.menu;return draw(true)}
+ if(d.a=='delwk'&&ME.role!='s'){const w=d.w,hd=ME.role=='h';
+  return modal('مسح '+lbl(w)+'؟',hd?'<p>هيتمسح حضور وافتقاد وكشف الخدام والتاسكات للأسبوع ده لكل الفصول.</p>':'<p>هيتمسح بيانات فصلك بس للأسبوع ده.</p>','مسح',()=>{
+   const D=firebase.firestore.FieldValue.delete(),b=db.batch(),ss=S.sv.filter(x=>hd||x.cls==ME.cls);
+   if(hd){['att','vis','svw'].forEach(c=>b.delete(dref(c+'/'+w)))}
+   else{const A={},Vv={},W={};S.kids.filter(k=>k.cls==ME.cls).forEach(k=>{A[k.id]=D;Vv[k.id+'_p']=D;Vv[k.id+'_h']=D});ss.forEach(x=>SF.forEach(f=>W[x.id+'_'+f[0]]=D));
+    b.set(dref('att/'+w),A,{merge:true});b.set(dref('vis/'+w),Vv,{merge:true});b.set(dref('svw/'+w),W,{merge:true})}
+   const mine=t=>hd||ss.some(x=>t.to==x.id||String(t.id).includes('_'+x.id+'_'));
+   S.tasks.filter(t=>(t.wk==w||String(t.id).startsWith('auto_'+w+'_'))&&mine(t)).forEach(t=>b.delete(dref('tasks/'+t.id)));
+   b.commit()})}
  if(d.a=='week'){V.wk=d.w;V.t='home';return draw(true)}
  if(d.a=='cur'){V.wk=null;return draw(true)}
  if(d.a=='kid'){V.kid=d.k;go('acc1');return draw(true)}
