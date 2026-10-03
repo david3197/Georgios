@@ -31,6 +31,8 @@ tr.band td{color:#fff;font-weight:700;text-align:left}
 td input{border:0;border-bottom:1px solid #00A99D;width:130px;padding:4px;text-align:left;background:#fff}
 .cb{width:36px;height:36px;margin:auto;border:2px solid #9a9a9a;border-radius:9px;background:#fff;color:#fff;font-size:24px;line-height:32px;font-weight:900}
 .cb.on{background:#22C55E;border-color:#16a34a}
+.cb{text-align:center;cursor:pointer;-webkit-user-select:none;user-select:none}
+.tk .cb{width:36px;height:36px;flex:none}
 .li{display:flex;justify-content:space-between;align-items:center;padding:14px;margin:8px 12px;border:2px solid #000;border-radius:12px}
 .pill{background:#6A1B9A;color:#fff;border-radius:20px;padding:3px 12px;font-weight:700}
 .ob{padding:36px 22px;text-align:center}.ob input{width:100%;border:2px solid #000;border-radius:12px;padding:14px;font-size:18px;margin:14px 0}
@@ -78,7 +80,7 @@ let ME=null;try{ME=JSON.parse(localStorage.me||'null')}catch(e){}
 if(!localStorage.fam)ME=null;
 const put=(p,o)=>dref(p).set(o,{merge:true});
 function toast(t){const e=$('#toast');e.textContent=t;e.className='show';clearTimeout(toast.i);toast.i=setTimeout(()=>e.className='',2400)}
-function modal(title,body,ok,fn){const m=$('#m');m.innerHTML=`<div class=box><h3>${title}</h3>${body}<div class=row><button class=btn id=mok>${ok}</button><button class="btn alt" id=mno>إلغاء</button></div></div>`;m.className='on';$('#mno').onclick=()=>m.className='';$('#mok').onclick=()=>{if(fn()!==false)m.className=''}}
+function modal(title,body,ok,fn){const m=$('#m');m.innerHTML=`<div class=box><h3>${title}</h3>${body}<div class=row><button class=btn id=mok>${ok}</button><button class="btn alt" id=mno>Cancel</button></div></div>`;m.className='on';$('#mno').onclick=()=>m.className='';$('#mok').onclick=()=>{if(fn()!==false)m.className=''}}
 
 if(!CFG.projectId){document.body.innerHTML='<div style="padding:30px;font-size:18px">لازم تلصق إعدادات Firebase في أول سكريبت (CFG) جوه index.html</div>'}
 else{firebase.initializeApp(CFG);db=firebase.firestore();
@@ -111,7 +113,11 @@ const nameTd=(k,c,kid)=>`<td class=n ${kid?`data-lp=1 data-k="${k.id}" `:''}styl
 const AVC=[['#00A99D','#2DD4BF'],['#6A1B9A','#A855F7'],['#E5533D','#FB923C'],['#2563EB','#60A5FA'],['#DB2777','#F9A8D4'],['#D97706','#FCD34D'],['#16A34A','#4ADE80'],['#7C3AED','#818CF8']];
 function av(n){n=(n||'?').trim()||'?';let h=0;for(const c of n)h=(h*31+c.codePointAt(0))>>>0;const[a,b]=AVC[h%AVC.length];return `<span class=avl style="background:linear-gradient(135deg,${a},${b})">${esc([...n][0].toUpperCase())}</span>`}
 function go(t){if(V.t!=t){(V.st=V.st||[]).push(V.t);history.pushState({},'')}V.t=t;V.q='';V.menu=0}
-addEventListener('popstate',()=>{if(ME&&V.st&&V.st.length){V.t=V.st.pop();V.q='';V.menu=0;draw(true)}});
+addEventListener('popstate',()=>{if(!ME)return;const m=$('#m');
+ if(m&&m.className=='on'){m.className='';history.pushState({},'');return}
+ if(V.menu){V.menu=0;history.pushState({},'');return draw(true)}
+ if(V.st&&V.st.length){V.t=V.st.pop();V.q='';V.menu=0;draw(true)}
+ else if(V.t!='home'){V.t='home';V.q='';draw(true)}});
 const famScr=()=>`<div class=ob><h2>اسم الأسرة إيه؟</h2><p>لو كتبت اسم جديد هتلاقي الأسرة فاضية 🌱</p><input id=fm placeholder="اسم الأسرة"><button class=btn data-a=fam>تمام</button></div>`;
 function syncMe(){const m=ME&&S.sv.find(x=>x.id==ME.id);if(m&&m.cls!=ME.cls){ME.cls=m.cls;localStorage.me=JSON.stringify(ME)}}
 function notify(){if(!ME)return;const last=+localStorage.nt||0,nw=S.tasks.filter(t=>t.text&&t.at>last&&t.to==ME.id&&t.by!=ME.id);if(!nw.length)return;
@@ -167,7 +173,7 @@ function vSv(){const wk=wkOf(),m=S.svw[wk]||{},mgr=ME.role!='s',lock=wk==curWk()
  return h}
 
 function vHist(){const ks=weeks();
- return ks.map(k=>`<div class=li data-a=week data-w="${k}"><b>${lbl(k)}</b><span class=pill>${k==curWk()?'This week':'فتح وتعديل'}</span>${ME.role!='s'?`<button class="btn alt sm" data-a=delwk data-w="${k}">مسح</button>`:''}</div>`).join('')}
+ return ks.map(k=>`<div class=li data-a=week data-w="${k}"><b>${lbl(k)}</b><span class=pill>${k==curWk()?'This week':'Edit'}</span>${ME.role!='s'?`<button class="btn alt sm" data-a=delwk data-w="${k}">Delete</button>`:''}</div>`).join('')}
 
 function stats(k){const cw=curWk(),all=new Set(Object.keys(S.att));if(isFri())all.add(cw);
  const ws=[...all].filter(w=>w>=(k.created||'')&&(w<cw||(w==cw&&isFri()))).sort().reverse();
@@ -180,7 +186,8 @@ function vAcc1(){const k=S.kids.find(x=>x.id==V.kid);if(!k)return '';const s=sta
  <h3>سجل الافتقاد</h3>${ev.length?ev.map(e=>`<div class=tk>${e}</div>`).join(''):'<div class=mut>لسه مفيش افتقاد متسجل</div>'}
  <h3>الحضور</h3>${s.ws.map(w=>`<div class=tk>${(S.att[w]||{})[k.id]?'✅':'❌'} ${lbl(w)}</div>`).join('')}</div>`}
 
-function ob(){const o=V.ob=V.ob||{s:1};
+function ob(){return ob0().replace(/<\/div>\s*$/,'<button class="btn alt" data-a=obback style="margin-top:10px">‹ Back</button></div>')}
+function ob0(){const o=V.ob=V.ob||{s:1};
  if(o.s==1)return `<div class=ob><h2>إسمك إيه؟</h2><input id=nm placeholder="اكتب اسمك"><button class=btn data-a=g data-g=m>مستر</button><button class="btn pu" data-a=g data-g=f>ميس</button></div>`;
  const hi=`أهلاً ${o.g=='m'?'مستر':'ميس'} ${esc(o.n)} 👋`;
  if(o.s==2)return `<div class=ob><h2>${hi}</h2><p>${o.g=='m'?'إنت':'إنتي'} إيه؟</p><button class=btn data-a=r data-r=s>خادم</button><button class="btn pu" data-a=r data-r=l>أمين فصل</button><button class="btn alt" data-a=r data-r=h>أمين الخدمة</button></div>`;
@@ -214,15 +221,15 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-a]');
  if(d.a=='back'){if(V.st&&V.st.length)return history.back();V.t='home';V.q='';return draw(true)}
  if(d.a=='menu'){V.menu=!V.menu;return draw(true)}
  if(d.a=='delwk'&&ME.role!='s'){const w=d.w,hd=ME.role=='h';
-  return modal('مسح '+lbl(w)+'؟',hd?'<p>هيتمسح حضور وافتقاد وكشف الخدام والتاسكات للأسبوع ده لكل الفصول.</p>':'<p>هيتمسح بيانات فصلك بس للأسبوع ده.</p>','مسح',()=>{
+  return modal('Delete '+lbl(w)+'?',hd?'<p>هيتمسح حضور وافتقاد وكشف الخدام والتاسكات للأسبوع ده لكل الفصول.</p>':'<p>هيتمسح بيانات فصلك بس للأسبوع ده.</p>','Delete',()=>{
    const D=firebase.firestore.FieldValue.delete(),b=db.batch(),ss=S.sv.filter(x=>hd||x.cls==ME.cls);
    if(hd){['att','vis','svw'].forEach(c=>b.delete(dref(c+'/'+w)))}
    else{const A={},Vv={},W={};S.kids.filter(k=>k.cls==ME.cls).forEach(k=>{A[k.id]=D;Vv[k.id+'_p']=D;Vv[k.id+'_h']=D});ss.forEach(x=>SF.forEach(f=>W[x.id+'_'+f[0]]=D));
     b.set(dref('att/'+w),A,{merge:true});b.set(dref('vis/'+w),Vv,{merge:true});b.set(dref('svw/'+w),W,{merge:true})}
    const mine=t=>hd||ss.some(x=>t.to==x.id||String(t.id).includes('_'+x.id+'_'));
    S.tasks.filter(t=>(t.wk==w||String(t.id).startsWith('auto_'+w+'_'))&&mine(t)).forEach(t=>b.delete(dref('tasks/'+t.id)));
-   b.commit()})}
- if(d.a=='week'){V.wk=d.w;V.t='home';return draw(true)}
+   b.commit().then(()=>toast('Deleted ✅')).catch(e=>toast('Error: '+e.message))})}
+ if(d.a=='week'){V.wk=d.w;go('home');return draw(true)}
  if(d.a=='cur'){V.wk=null;return draw(true)}
  if(d.a=='kid'){V.kid=d.k;go('acc1');return draw(true)}
  if(d.a=='setpw'){V.menu=0;draw(true);return modal('Set password','<input id=np type=password placeholder="New password">','Save',()=>{const p=$('#np').value;if(p.length<4){toast('4 characters minimum');return false}sha(p).then(h=>{const ver=Date.now();ME.pv=ver;localStorage.me=JSON.stringify(ME);put('meta/auth',{h,ver});toast('Saved')})})}
@@ -245,6 +252,7 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-a]');
  if(d.a=='lpcls'){const k=S.kids.find(x=>x.id==d.k);if(!k)return;return modal('Change class',`<input id=nc list=pcl value="${esc(k.cls||'')}"><datalist id=pcl>${classes().map(c=>`<option value="${esc(c)}">`).join('')}</datalist>`,'حفظ',()=>{const c=$('#nc').value.trim();if(!c)return false;put('kids/'+k.id,{cls:c})})}
  if(d.a=='lpdel'&&ME.role!='s'){const k=d.k;return modal('Remove?','<p>This cannot be undone.</p>','Remove',()=>{cref('kids').doc(k).delete()})}
  if(d.a=='rencls'){V.menu=0;draw(true);const hd=ME.role=='h';return modal('Rename class',(hd?`<select id=oc>${classes().map(c=>`<option>${esc(c)}</option>`).join('')}</select>`:'')+`<input id=nc placeholder="الاسم الجديد" value="${hd?'':esc(ME.cls)}">`,'حفظ',()=>{const o=hd?$('#oc').value:ME.cls,n=$('#nc').value.trim();if(!o||!n||n==o)return false;if(classes().includes(n)){toast('الاسم ده موجود');return false}const b=db.batch();S.kids.filter(k=>k.cls==o).forEach(k=>b.update(dref('kids/'+k.id),{cls:n}));S.sv.filter(x=>x.cls==o).forEach(x=>b.update(dref('servants/'+x.id),{cls:n}));b.commit()})}
+ if(d.a=='obback'){const o=V.ob||{s:1};if(o.s<=1){localStorage.removeItem('fam');localStorage.removeItem('famn');return location.reload()}o.s=o.s==4?2:o.s-1;return draw(true)}
  if(d.a=='av'){V.ob={s:1,av:+d.i};return draw(true)}
  if(d.a=='g'){const n=$('#nm').value.trim();if(!n)return toast('اكتب اسمك الأول');V.ob={s:2,n,g:d.g,av:(V.ob||{}).av};return draw(true)}
  if(d.a=='r'){V.ob.role=d.r;if(d.r=='h')V.ob.s=4;else V.ob.s=3;return draw(true)}
