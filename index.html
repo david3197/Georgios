@@ -76,6 +76,7 @@ const lbl=k=>{const[y,m,d]=k.split('-');return 'الجمعة '+(+d)+'/'+(+m)};
 const wkOf=()=>V.wk||curWk();
 let S={kids:[],sv:[],cols:[],att:{},vis:{},svw:{},tasks:[]},V={t:'home'},db,pend=0;
 let FAM=localStorage.fam||'',lpT=0,lpAt=0;const dref=p=>db.doc('fam/'+FAM+'/'+p),cref=p=>db.collection('fam/'+FAM+'/'+p);
+try{const r=JSON.parse(sessionStorage.vs||'null');if(r&&ME&&localStorage.fam)Object.assign(V,r)}catch(e){}
 let ME=null;try{ME=JSON.parse(localStorage.me||'null')}catch(e){}
 if(!localStorage.fam)ME=null;
 const put=(p,o)=>dref(p).set(o,{merge:true});
@@ -93,6 +94,7 @@ window.listen=function(){
  cref('servants').onSnapshot(s=>{S.sv=docs(s);syncMe();draw()});
  cref('tasks').onSnapshot(s=>{S.tasks=docs(s);notify();draw()});
  dref('meta/auth').onSnapshot(d=>{const x=d.data();if(x&&ME&&ME.role=='h'&&x.ver!=ME.pv){localStorage.removeItem('me');ME=null;V={t:'home'};toast('Password changed, log in again');draw(true)}});
+ dref('meta/hidden').onSnapshot(d=>{S.hid=(d.data()||{}).list||[];draw()});
  dref('meta/cols').onSnapshot(d=>{S.cols=(d.data()||{}).list||[];draw()});
  ['att','vis','svw'].forEach(c=>cref(c).onSnapshot(s=>{S[c]={};s.docs.forEach(d=>S[c][d.id]=d.data());draw()}));
  draw(true)}
@@ -101,7 +103,7 @@ const classes=()=>[...new Set(S.kids.map(k=>k.cls).concat(S.sv.map(s=>s.cls)).fi
 const colr=c=>BANDS[Math.max(0,classes().indexOf(c))%BANDS.length];
 const ordk=(a,b)=>(a.ord??1e15)-(b.ord??1e15)||a.name.localeCompare(b.name,'ar');
 const weeks=()=>{const cw=curWk(),[y,m,d]=cw.split('-').map(Number),b=ymd(new Date(y,m-1,d-56)),ks=[...Object.keys(S.att),...Object.keys(S.vis),...Object.keys(S.svw),...S.kids.map(k=>k.created),...S.sv.map(x=>x.created)].filter(Boolean).sort(),st=ks[0]&&ks[0]<b?ks[0]:b,[y1,m1,d1]=st.split('-').map(Number),o=[];
- for(let t=new Date(y1,m1-1,d1);ymd(t)<=cw;t.setDate(t.getDate()+7))o.push(ymd(t));return o.reverse()};
+ for(let t=new Date(y1,m1-1,d1);ymd(t)<=cw;t.setDate(t.getDate()+7))o.push(ymd(t));return o.filter(w=>w==cw||!(S.hid||[]).includes(w)).reverse()};
 function groups(list,key='name'){const g={};list.forEach(k=>{const c=k.cls||'بدون فصل';(g[c]=g[c]||[]).push(k)});
  return Object.keys(g).sort((a,b)=>a.localeCompare(b,'ar')).map(c=>[c,g[c].sort(ordk)])}
 const cb=(p,f,v,l,m)=>`<div class="cb ${v?'on':''}" data-a=tg data-p="${p}" data-f="${esc(f)}" data-v="${v?1:''}" data-m="${m||'b'}" ${l?'data-l=1':''}>${v?'✓':''}</div>`;
@@ -113,11 +115,14 @@ const nameTd=(k,c,kid)=>`<td class=n ${kid?`data-lp=1 data-k="${k.id}" `:''}styl
 const AVC=[['#00A99D','#2DD4BF'],['#6A1B9A','#A855F7'],['#E5533D','#FB923C'],['#2563EB','#60A5FA'],['#DB2777','#F9A8D4'],['#D97706','#FCD34D'],['#16A34A','#4ADE80'],['#7C3AED','#818CF8']];
 function av(n){n=(n||'?').trim()||'?';let h=0;for(const c of n)h=(h*31+c.codePointAt(0))>>>0;const[a,b]=AVC[h%AVC.length];return `<span class=avl style="background:linear-gradient(135deg,${a},${b})">${esc([...n][0].toUpperCase())}</span>`}
 function go(t){if(V.t!=t){(V.st=V.st||[]).push(V.t);history.pushState({},'')}V.t=t;V.q='';V.menu=0}
-addEventListener('popstate',()=>{if(!ME)return;const m=$('#m');
+addEventListener('popstate',()=>{
+ if(!ME){const o=V.ob;if(FAM&&o&&o.s>1){o.s=o.s==4?2:o.s-1;o.ps=o.s;draw(true)}else if(FAM){localStorage.removeItem('fam');localStorage.removeItem('famn');location.reload()}return}
+ const m=$('#m');
  if(m&&m.className=='on'){m.className='';history.pushState({},'');return}
  if(V.menu){V.menu=0;history.pushState({},'');return draw(true)}
  if(V.st&&V.st.length){V.t=V.st.pop();V.q='';V.menu=0;draw(true)}
- else if(V.t!='home'){V.t='home';V.q='';draw(true)}});
+ else if(V.t!='home'){V.t='home';V.q='';draw(true)}
+ else{if(Date.now()-(V.bx||0)<2000)return history.back();V.bx=Date.now();toast('اضغط رجوع تاني للخروج');history.pushState({},'')}});
 const famScr=()=>`<div class=ob><h2>اسم الأسرة إيه؟</h2><p>لو كتبت اسم جديد هتلاقي الأسرة فاضية 🌱</p><input id=fm placeholder="اسم الأسرة"><button class=btn data-a=fam>تمام</button></div>`;
 function syncMe(){const m=ME&&S.sv.find(x=>x.id==ME.id);if(m&&m.cls!=ME.cls){ME.cls=m.cls;localStorage.me=JSON.stringify(ME)}}
 function notify(){if(!ME)return;const last=+localStorage.nt||0,nw=S.tasks.filter(t=>t.text&&t.at>last&&t.to==ME.id&&t.by!=ME.id);if(!nw.length)return;
@@ -186,18 +191,19 @@ function vAcc1(){const k=S.kids.find(x=>x.id==V.kid);if(!k)return '';const s=sta
  <h3>سجل الافتقاد</h3>${ev.length?ev.map(e=>`<div class=tk>${e}</div>`).join(''):'<div class=mut>لسه مفيش افتقاد متسجل</div>'}
  <h3>الحضور</h3>${s.ws.map(w=>`<div class=tk>${(S.att[w]||{})[k.id]?'✅':'❌'} ${lbl(w)}</div>`).join('')}</div>`}
 
-function ob(){return ob0().replace(/<\/div>\s*$/,'<button class="btn alt" data-a=obback style="margin-top:10px">‹ Back</button></div>')}
+function ob(){const o=V.ob=V.ob||{s:1};if(o.s>1&&o.s>(o.ps||1))history.pushState({},'');o.ps=o.s;return ob0().replace(/<\/div>\s*$/,'<button class="btn alt" data-a=obback style="margin-top:10px">‹ Back</button></div>')}
 function ob0(){const o=V.ob=V.ob||{s:1};
- if(o.s==1)return `<div class=ob><h2>إسمك إيه؟</h2><input id=nm placeholder="اكتب اسمك"><button class=btn data-a=g data-g=m>مستر</button><button class="btn pu" data-a=g data-g=f>ميس</button></div>`;
+ if(o.s==1)return `<div class=ob><h2>إسمك إيه؟</h2><input id=nm placeholder="اكتب اسمك"><input id=fa placeholder="اسم الأب (اختياري)"><button class=btn data-a=g data-g=m>مستر</button><button class="btn pu" data-a=g data-g=f>ميس</button></div>`;
  const hi=`أهلاً ${o.g=='m'?'مستر':'ميس'} ${esc(o.n)} 👋`;
  if(o.s==2)return `<div class=ob><h2>${hi}</h2><p>${o.g=='m'?'إنت':'إنتي'} إيه؟</p><button class=btn data-a=r data-r=s>خادم</button><button class="btn pu" data-a=r data-r=l>أمين فصل</button><button class="btn alt" data-a=r data-r=h>أمين الخدمة</button></div>`;
  if(o.s==4)return `<div class=ob><h2>Password</h2><p>أمين الخدمة: اكتب الباسورد (أول مرة بتختاره)</p><input id=pw type=password placeholder="Password"><button class=btn data-a=pw>OK</button></div>`;
  return `<div class=ob><h2>فصلك إيه؟</h2><input id=cl list=cls placeholder="اختار أو اكتب فصل جديد"><datalist id=cls>${classes().map(c=>`<option value="${esc(c)}">`).join('')}</datalist><button class=btn data-a=fin>تمام</button></div>`}
-function finish(cls){const o=V.ob,ex=S.sv.find(x=>norm(x.name)==norm(o.n));const id=ex?ex.id:cref('servants').doc().id;
+function finish(cls){const o=V.ob,ex=S.sv.find(x=>norm(x.name)==norm(o.n)&&x.g==o.g&&(x.cls||'')==(cls||''));const id=ex?ex.id:cref('servants').doc().id;
  put('servants/'+id,{name:o.n,g:o.g,role:o.role,cls:cls||'',av:o.av||0,...(ex?{}:{created:curWk()})});ME={id,name:o.n,g:o.g,role:o.role,cls:cls||'',av:o.av||0,pv:o.pv};localStorage.me=JSON.stringify(ME);localStorage.nt=Date.now();V={t:'home'};draw(true)}
 
 function draw(force){if(!db)return;const a=document.activeElement;
  if(!force&&a&&/INPUT|SELECT/.test(a.tagName)&&a.closest('#app')){pend=1;return}pend=0;
+ if(ME)try{sessionStorage.vs=JSON.stringify({t:V.t,wk:V.wk,kid:V.kid,st:V.st})}catch(e){}
  const app=$('#app');if(!FAM){app.innerHTML=famScr();return}if(!ME){app.innerHTML=ob();return}
  const sc=[...document.querySelectorAll('.sh')].map(e=>e.scrollLeft),y=scrollY;
  app.innerHTML=hdr()+({home:vHome,att:vAtt,vis:vVis,sv:vSv,hist:vHist,acc:vAcc,acc1:vAcc1}[V.t])();applyQ();
@@ -212,6 +218,7 @@ async function checkPw(p){if(p.length<4)return toast('4 characters minimum');
 
 document.addEventListener('click',e=>{const t=e.target.closest('[data-a]');
  if(Date.now()-lpAt<700)return;
+ if(ME&&!window._bf){window._bf=1;history.pushState({},'')}
  try{if(ME&&window.Notification&&Notification.permission=='default')Notification.requestPermission()}catch(x){}
  if(!e.target.closest('#menu')&&!(t&&t.dataset.a=='menu')&&V.menu){V.menu=0;if(db&&ME)draw(true)}
  if(!t)return;const d=t.dataset;
@@ -221,9 +228,9 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-a]');
  if(d.a=='back'){if(V.st&&V.st.length)return history.back();V.t='home';V.q='';return draw(true)}
  if(d.a=='menu'){V.menu=!V.menu;return draw(true)}
  if(d.a=='delwk'&&ME.role!='s'){const w=d.w,hd=ME.role=='h';
-  return modal('Delete '+lbl(w)+'?',hd?'<p>هيتمسح حضور وافتقاد وكشف الخدام والتاسكات للأسبوع ده لكل الفصول.</p>':'<p>هيتمسح بيانات فصلك بس للأسبوع ده.</p>','Delete',()=>{
+  return modal('Delete '+lbl(w)+'?',hd?'<p>هيتمسح الأسبوع ده بكل بياناته (حضور وافتقاد وكشف الخدام والتاسكات) لكل الفصول.</p>':'<p>هيتمسح بيانات فصلك بس للأسبوع ده.</p>','Delete',()=>{
    const D=firebase.firestore.FieldValue.delete(),b=db.batch(),ss=S.sv.filter(x=>hd||x.cls==ME.cls);
-   if(hd){['att','vis','svw'].forEach(c=>b.delete(dref(c+'/'+w)))}
+   if(hd){['att','vis','svw'].forEach(c=>b.delete(dref(c+'/'+w)));if(w!=curWk())b.set(dref('meta/hidden'),{list:firebase.firestore.FieldValue.arrayUnion(w)},{merge:true})}
    else{const A={},Vv={},W={};S.kids.filter(k=>k.cls==ME.cls).forEach(k=>{A[k.id]=D;Vv[k.id+'_p']=D;Vv[k.id+'_h']=D});ss.forEach(x=>SF.forEach(f=>W[x.id+'_'+f[0]]=D));
     b.set(dref('att/'+w),A,{merge:true});b.set(dref('vis/'+w),Vv,{merge:true});b.set(dref('svw/'+w),W,{merge:true})}
    const mine=t=>hd||ss.some(x=>t.to==x.id||String(t.id).includes('_'+x.id+'_'));
@@ -243,18 +250,18 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-a]');
    if(f=='name')L.forEach((n,i)=>b.set(cref('kids').doc(),{name:n,cls:c,created:curWk(),ord:t0+i}));
    else{const ks=S.kids.filter(k=>k.cls==c).sort(ordk);if(L.length>ks.length)toast('Only '+ks.length+' children in this class, extra lines ignored');L.slice(0,ks.length).forEach((v,i)=>b.set(dref('kids/'+ks[i].id),{[f]:v},{merge:true}))}
    b.commit()})}
- if(d.a=='switch'){localStorage.removeItem('me');localStorage.removeItem('fam');return location.reload()}
- if(d.a=='fam'){const n=$('#fm').value.trim().replace(/\s+/g,' ');if(!n)return toast('اكتب اسم الأسرة');FAM=encodeURIComponent(norm(n));localStorage.fam=FAM;localStorage.famn=n;window.listen();return draw(true)}
+ if(d.a=='switch'){sessionStorage.removeItem('vs');localStorage.removeItem('me');localStorage.removeItem('fam');return location.reload()}
+ if(d.a=='fam'){const n=$('#fm').value.trim().replace(/\s+/g,' ');if(!n)return toast('اكتب اسم الأسرة');FAM=encodeURIComponent(norm(n));localStorage.fam=FAM;localStorage.famn=n;window.listen();history.pushState({},'');return draw(true)}
  if(d.a=='ntgo'){const o=$('#ntf');if(o)o.remove();V.wk=null;go('sv');return draw(true)}
  if(d.a=='xatt'){const wk=wkOf(),a=S.att[wk]||{},R=[['Class','Name',lbl(wk)]];groups(S.kids).forEach(([c,l])=>l.forEach(k=>R.push([c,k.name,a[k.id]?'✓':''])));return dl('attendance_'+wk+'.csv',R)}
  if(d.a=='xvis'){const wk=wkOf(),v=S.vis[wk]||{},R=[['Class','Name','Phone visit','Home visit',...STAT.map(x=>x[1]),...S.cols]];groups(S.kids).forEach(([c,l])=>l.forEach(k=>R.push([c,k.name,vv(v[k.id+'_p']),vv(v[k.id+'_h']),...STAT.map(x=>k[x[0]]||''),...S.cols.map(x=>k['x_'+x]||'')])));return dl('visitation_'+wk+'.csv',R)}
  if(d.a=='xsv'){const wk=wkOf(),m=S.svw[wk]||{},list=ME.role=='l'?S.sv.filter(x=>x.cls==ME.cls):S.sv,R=[['Class','Name',...SF.map(f=>f[1]),'Tasks']];groups(list).forEach(([c,l])=>l.forEach(x=>R.push([c,x.name,...SF.map(f=>m[x.id+'_'+f[0]]?'✓':''),tasksOf(x,wk).map(t=>(t.done?'✓ ':'')+t.text).join(' | ')])));return dl('servants_'+wk+'.csv',R)}
- if(d.a=='lpcls'){const k=S.kids.find(x=>x.id==d.k);if(!k)return;return modal('Change class',`<input id=nc list=pcl value="${esc(k.cls||'')}"><datalist id=pcl>${classes().map(c=>`<option value="${esc(c)}">`).join('')}</datalist>`,'حفظ',()=>{const c=$('#nc').value.trim();if(!c)return false;put('kids/'+k.id,{cls:c})})}
+ if(d.a=='lpcls'){const k=S.kids.find(x=>x.id==d.k);if(!k)return;return modal('Change class',`<input id=nc list=pcl value="${esc(k.cls||'')}"><datalist id=pcl>${classes().map(c=>`<option value="${esc(c)}">`).join('')}</datalist>`,'Save',()=>{const c=$('#nc').value.trim();if(!c)return false;put('kids/'+k.id,{cls:c})})}
  if(d.a=='lpdel'&&ME.role!='s'){const k=d.k;return modal('Remove?','<p>This cannot be undone.</p>','Remove',()=>{cref('kids').doc(k).delete()})}
- if(d.a=='rencls'){V.menu=0;draw(true);const hd=ME.role=='h';return modal('Rename class',(hd?`<select id=oc>${classes().map(c=>`<option>${esc(c)}</option>`).join('')}</select>`:'')+`<input id=nc placeholder="الاسم الجديد" value="${hd?'':esc(ME.cls)}">`,'حفظ',()=>{const o=hd?$('#oc').value:ME.cls,n=$('#nc').value.trim();if(!o||!n||n==o)return false;if(classes().includes(n)){toast('الاسم ده موجود');return false}const b=db.batch();S.kids.filter(k=>k.cls==o).forEach(k=>b.update(dref('kids/'+k.id),{cls:n}));S.sv.filter(x=>x.cls==o).forEach(x=>b.update(dref('servants/'+x.id),{cls:n}));b.commit()})}
- if(d.a=='obback'){const o=V.ob||{s:1};if(o.s<=1){localStorage.removeItem('fam');localStorage.removeItem('famn');return location.reload()}o.s=o.s==4?2:o.s-1;return draw(true)}
+ if(d.a=='rencls'){V.menu=0;draw(true);const hd=ME.role=='h';return modal('Rename class',(hd?`<select id=oc>${classes().map(c=>`<option>${esc(c)}</option>`).join('')}</select>`:'')+`<input id=nc placeholder="الاسم الجديد" value="${hd?'':esc(ME.cls)}">`,'Save',()=>{const o=hd?$('#oc').value:ME.cls,n=$('#nc').value.trim();if(!o||!n||n==o)return false;if(classes().includes(n)){toast('الاسم ده موجود');return false}const b=db.batch();S.kids.filter(k=>k.cls==o).forEach(k=>b.update(dref('kids/'+k.id),{cls:n}));S.sv.filter(x=>x.cls==o).forEach(x=>b.update(dref('servants/'+x.id),{cls:n}));b.commit()})}
+ if(d.a=='obback'){const o=V.ob||{s:1};if(o.s<=1){localStorage.removeItem('fam');localStorage.removeItem('famn');return location.reload()}return history.back()}
  if(d.a=='av'){V.ob={s:1,av:+d.i};return draw(true)}
- if(d.a=='g'){const n=$('#nm').value.trim();if(!n)return toast('اكتب اسمك الأول');V.ob={s:2,n,g:d.g,av:(V.ob||{}).av};return draw(true)}
+ if(d.a=='g'){const n=($('#nm').value.trim()+' '+(($('#fa')||{}).value||'').trim()).trim();if(!n)return toast('اكتب اسمك الأول');V.ob={s:2,n,g:d.g,av:(V.ob||{}).av};return draw(true)}
  if(d.a=='r'){V.ob.role=d.r;if(d.r=='h')V.ob.s=4;else V.ob.s=3;return draw(true)}
  if(d.a=='pw')return checkPw($('#pw').value);
  if(d.a=='fin'){const c=$('#cl').value.trim();if(!c)return toast('اكتب الفصل');return finish(c)}
