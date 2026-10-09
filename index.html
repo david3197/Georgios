@@ -46,6 +46,9 @@ td input{border:0;border-bottom:1px solid #00A99D;width:130px;padding:4px;text-a
 #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#6A1B9A;color:#fff;padding:12px 18px;border-radius:12px;display:none;z-index:30;font-weight:700}
 #toast.show{display:block}
 .mut{color:#555;padding:4px 14px}
+#lg{position:fixed;top:calc(9px + env(safe-area-inset-top,0px));right:108px;z-index:6;display:flex;gap:4px}#lg span{font:700 13px sans-serif;color:#fff;border:1px solid #ffffff88;border-radius:6px;padding:3px 8px;opacity:.75}#lg span.on{background:#00A99D;opacity:1}
+#adm{position:fixed;bottom:4px;left:6px;font-size:11px;color:#888;opacity:.45;padding:8px 12px;z-index:5}
+#m input[type=checkbox]{width:auto;margin:6px 8px}#m label{display:block;text-align:left}
 td.n[data-lp]{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 .nt{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));left:12px;right:12px;z-index:60;background:#00A99D;color:#fff;padding:14px;border-radius:14px;font-weight:700;text-align:center;box-shadow:0 4px 14px rgba(0,0,0,.35)}
 .sh.ar{direction:rtl}.sh.ar .n{left:auto;right:0;text-align:right}.sh.ar tr.band td,.sh.ar td input{text-align:right}
@@ -56,7 +59,7 @@ td.n[data-lp]{-webkit-user-select:none;user-select:none;-webkit-touch-callout:no
 .avg{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px}.avp{border:3px solid #00C2B3;border-radius:50%;background:#fff;padding:0;aspect-ratio:1;overflow:hidden}.avp svg{width:100%;height:100%;display:block}
 #m textarea{width:100%;height:150px;border:2px solid #000;border-radius:10px;padding:11px;margin:6px 0}
 .vc{margin:12px;border:2px solid #000;border-radius:12px;overflow:hidden}.vh{padding:10px 14px;color:#fff;font-weight:700;display:flex;justify-content:space-between;align-items:center}.vr{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;border-top:1px solid #ddd}.btn.sm{padding:5px 10px;font-size:13px}
-</style></head><body>
+</style></head><body><div id=adm data-a=adm>D</div><div id=lg><span data-a=lga>a</span><span data-a=lge>e</span></div>
 <div id="app"></div><div id="m"></div><div id="toast"></div>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -74,8 +77,8 @@ const curWk=()=>{const d=new Date();d.setDate(d.getDate()+((5-d.getDay()+7)%7));
 const isFri=()=>new Date().getDay()==5;
 const lbl=k=>{const[y,m,d]=k.split('-');return 'الجمعة '+(+d)+'/'+(+m)};
 const wkOf=()=>V.wk||curWk();
-let S={kids:[],sv:[],cols:[],att:{},vis:{},svw:{},tasks:[]},V={t:'home'},db,pend=0;
-let FAM=localStorage.fam||'',lpT=0,lpAt=0;const dref=p=>db.doc('fam/'+FAM+'/'+p),cref=p=>db.collection('fam/'+FAM+'/'+p);
+let S={kids:[],sv:[],cols:[],att:{},vis:{},svw:{},tasks:[],hide:{}},V={t:'home'},db,pend=0;
+let FAM=localStorage.fam||'',lpT=0,lpAt=0,A={fams:[],d:null,id:'',fn:''};const dref=p=>db.doc('fam/'+FAM+'/'+p),cref=p=>db.collection('fam/'+FAM+'/'+p);
 try{const r=JSON.parse(sessionStorage.vs||'null');if(r&&ME&&localStorage.fam)Object.assign(V,r)}catch(e){}
 let ME=null;try{ME=JSON.parse(localStorage.me||'null')}catch(e){}
 if(!localStorage.fam)ME=null;
@@ -91,9 +94,11 @@ else{firebase.initializeApp(CFG);db=firebase.firestore();
 window.listen=function(){
  const docs=s=>s.docs.map(d=>({id:d.id,...d.data()}));
  cref('kids').onSnapshot(s=>{S.kids=docs(s);draw()});
- cref('servants').onSnapshot(s=>{S.sv=docs(s);syncMe();draw()});
+ cref('servants').onSnapshot(s=>{S.sv=docs(s);syncMe(s.metadata);draw()});
  cref('tasks').onSnapshot(s=>{S.tasks=docs(s);notify();draw()});
  dref('meta/auth').onSnapshot(d=>{const x=d.data();if(x&&ME&&ME.role=='h'&&x.ver!=ME.pv){localStorage.removeItem('me');ME=null;V={t:'home'};toast('Password changed, log in again');draw(true)}});
+ db.doc('fam/'+FAM).set({name:localStorage.famn||FAM,seen:Date.now()},{merge:true}).catch(()=>{});
+ dref('meta/hide').onSnapshot(d=>{S.hide=d.data()||{};draw()});
  dref('meta/hidden').onSnapshot(d=>{S.hid=(d.data()||{}).list||[];draw()});
  dref('meta/cols').onSnapshot(d=>{S.cols=(d.data()||{}).list||[];draw()});
  ['att','vis','svw'].forEach(c=>cref(c).onSnapshot(s=>{S[c]={};s.docs.forEach(d=>S[c][d.id]=d.data());draw()}));
@@ -123,8 +128,10 @@ addEventListener('popstate',()=>{
  if(V.st&&V.st.length){V.t=V.st.pop();V.q='';V.menu=0;draw(true)}
  else if(V.t!='home'){V.t='home';V.q='';draw(true)}
  else{if(Date.now()-(V.bx||0)<2000)return history.back();V.bx=Date.now();toast('اضغط رجوع تاني للخروج');history.pushState({},'')}});
-const famScr=()=>`<div class=ob><h2>اسم الأسرة إيه؟</h2><p>لو كتبت اسم جديد هتلاقي الأسرة فاضية 🌱</p><input id=fm placeholder="اسم الأسرة"><button class=btn data-a=fam>تمام</button></div>`;
-function syncMe(){const m=ME&&S.sv.find(x=>x.id==ME.id);if(m&&m.cls!=ME.cls){ME.cls=m.cls;localStorage.me=JSON.stringify(ME)}}
+const famScr=()=>`<div class=ob><h2>اسم الأسرة إيه؟</h2><p>لو كتبت اسم جديد هتلاقي الأسرة فاضية 🌱</p><input id=fm placeholder="اسم الأسرة"><input id=fp type=password placeholder="باسورد الأسرة"><p>لو أسرة جديدة اختار ليها باسورد</p><button class=btn data-a=fam>تمام</button></div>`;
+function syncMe(md){const m=ME&&S.sv.find(x=>x.id==ME.id);if(m&&m.cls!=ME.cls){ME.cls=m.cls;localStorage.me=JSON.stringify(ME)}
+ if(m&&!window._hb){window._hb=1;put('servants/'+ME.id,{seen:Date.now()})}
+ if(ME&&!m&&md&&!md.fromCache&&!md.hasPendingWrites&&Date.now()-(ME.t||0)>30000){localStorage.removeItem('me');sessionStorage.removeItem('vs');location.reload()}}
 function notify(){if(!ME)return;const last=+localStorage.nt||0,nw=S.tasks.filter(t=>t.text&&t.at>last&&t.to==ME.id&&t.by!=ME.id);if(!nw.length)return;
  localStorage.nt=Math.max(...nw.map(t=>t.at));const t=nw[nw.length-1],m=`يا ${ME.g=='f'?'ميس':'مستر'} ${ME.name}، ${t.from} بعتلك مهمة: ${t.text}${nw.length>1?' (+'+(nw.length-1)+' كمان)':''}`;
  const o=$('#ntf');if(o)o.remove();const el=document.createElement('div');el.id='ntf';el.className='nt';el.dataset.a='ntgo';el.textContent='🔔 '+m;document.body.appendChild(el);setTimeout(()=>el.remove(),12000);
@@ -132,11 +139,154 @@ function notify(){if(!ME)return;const last=+localStorage.nt||0,nw=S.tasks.filter
 const vv=x=>x===true?'✓':(x||'');
 function dl(name,rows){const c='\uFEFF'+rows.map(r=>r.map(x=>'"'+String(x==null?'':x).replace(/"/g,'""')+'"').join(',')).join('\r\n'),a=document.createElement('a');a.href=URL.createObjectURL(new Blob([c],{type:'text/csv;charset=utf-8'}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000)}
 function lpMenu(id){const k=S.kids.find(x=>x.id==id);if(!k)return;lpAt=Date.now();
- modal(esc(k.name),`<button class=btn data-a=lpcls data-k="${id}">Change class</button>${ME.role!='s'?`<button class="btn alt" data-a=lpdel data-k="${id}" style="margin-top:8px">Delete</button>`:''}`,'Close',()=>{})}
+ modal(esc(k.name),`<button class=btn data-a=lpcls data-k="${id}">Change class</button><button class="btn alt" data-a=lppv data-k="${id}" style="margin-top:8px">Privacy</button>${ME.role!='s'?`<button class="btn alt" data-a=lpdel data-k="${id}" style="margin-top:8px">Delete</button>`:''}`,'Close',()=>{})}
 const lpS=e=>{const t=e.target.closest('[data-lp]');if(!t)return;clearTimeout(lpT);lpT=setTimeout(()=>lpMenu(t.dataset.k),600)},lpE=()=>clearTimeout(lpT);
 document.addEventListener('touchstart',lpS,{passive:true});document.addEventListener('mousedown',lpS);
 ['touchend','touchmove','touchcancel','mouseup','mouseleave'].forEach(n=>document.addEventListener(n,lpE));
 document.addEventListener('contextmenu',e=>{if(e.target.closest('[data-lp]'))e.preventDefault()});
+const hid=(kid,f)=>[S.hide[kid+'|'+f],S.hide[kid+'|*']].some(x=>x&&x.by!=ME.id&&(x.all||(x.cls||[]).includes(ME.cls||'')||(x.ppl||[]).includes(ME.id)));
+const ADC=['servants','kids','tasks','att','vis','svw','meta'];
+const ago=t=>{if(!t)return'—';const m=Math.round((Date.now()-t)/6e4);return m<1?'now':m<60?m+' min':m<1440?Math.round(m/60)+' h':Math.round(m/1440)+' d'};
+function admList(){db.collection('fam').get().then(q=>{A.fams=q.docs.map(x=>({id:x.id,...x.data()}));draw(true)}).catch(e=>toast('Error: '+e.message))}
+function admFam(id){A.id=id;Promise.all(ADC.map(c=>db.collection('fam/'+id+'/'+c).get())).then(r=>{A.d={};ADC.forEach((c,i)=>A.d[c]=r[i].docs.map(x=>({id:x.id,...x.data()})));A.fn=(A.fams.find(f=>f.id==id)||{}).name||id;draw(true)}).catch(e=>toast('Error: '+e.message))}
+async function admWipe(id){for(const c of ADC){const q=await db.collection('fam/'+id+'/'+c).get();let b=db.batch(),n=0;for(const x of q.docs){b.delete(x.ref);if(++n%400==0){await b.commit();b=db.batch()}}await b.commit()}await db.doc('fam/'+id).delete();A.d=null;admList()}
+async function admOpen(){let d;try{d=await db.doc('root/admin').get()}catch(e){return toast('Need internet')}
+ if(!d.exists)return modal('Set owner code','<input id=ac type=password placeholder="New code">','Save',()=>{const p=$('#ac').value;if(p.length<4){toast('4 characters minimum');return false}sha(p).then(h=>{db.doc('root/admin').set({h});V.adm=1;admList()})});
+ modal('Owner code','<input id=ac type=password placeholder="Code">','Open',()=>{sha($('#ac').value).then(h=>{if(h==d.data().h){V.adm=1;admList()}else toast('Wrong code')})})}
+function admView(){let h=`<div class=top><span class=hl></span><b>Admin</b><span class=hr><button data-a=admx>✕</button></span></div><div class=sec><h3>Families (${A.fams.length})</h3>`+A.fams.map(f=>`<div class=li data-a=admf data-k="${esc(f.id)}"><b>${esc(f.name||f.id)}</b><span class=pill>${ago(f.seen)}</span></div>`).join('')+'</div>';
+ if(A.d){const D=A.d,nm=i=>(D.servants.find(x=>x.id==i)||{}).name||'?',F={servants:x=>`${x.name} • ${x.role} • ${x.cls||'-'} • ${x.g||''} • ${ago(x.seen)}`,kids:x=>`${x.name} • ${x.cls||'-'}`,tasks:x=>`${x.text||x.id} • to ${nm(x.to)} • from ${x.from||'auto'}`};
+  h+=`<div class=sec><h3>${esc(A.fn)}</h3><button class="btn alt sm" data-a=admdf>Delete whole family</button><button class="btn alt sm" data-a=admrp>Reset family password</button></div>`;
+  ADC.forEach(c=>{h+=`<div class=sec><h3>${c} (${D[c].length})</h3>`+D[c].map(x=>`<div class=li><span>${esc((F[c]||(y=>y.id))(x))}</span><button class="btn alt sm" data-a=admd data-c="${c}" data-k="${esc(x.id)}">✕</button></div>`).join('')+`<details><summary>raw</summary><pre style="white-space:pre-wrap;font-size:11px;text-align:left;direction:ltr;overflow:auto">${esc(JSON.stringify(D[c],null,1))}</pre></details></div>`})}
+ return h}
+const TRP=[['Home','الرئيسية'],
+['History','السجل'],
+['Accounts','الحسابات'],
+['Paste list','لصق قائمة'],
+['Rename class','تغيير اسم الفصل'],
+['Set password','تعيين باسورد'],
+['Log out','تسجيل خروج'],
+['Your account','حسابي'],
+['Admin','الإدارة'],
+['This week','الأسبوع الحالي'],
+['Edit','تعديل'],
+['Delete','مسح'],
+['Cancel','إلغاء'],
+['Save','حفظ'],
+['Close','إغلاق'],
+['Open','فتح'],
+['Remove','إزالة'],
+['Remove child','مسح الولد'],
+['Remove?','مسح؟'],
+['Delete?','مسح؟'],
+['Export','تصدير'],
+['Paste','لصق'],
+['Privacy','الخصوصية'],
+['Unhide','إظهار'],
+['Everyone','الكل'],
+['Choose who','اختار مين'],
+['Change class','تغيير الفصل'],
+['Add task','إضافة مهمة'],
+['+ Add task','+ إضافة مهمة'],
+['+ Column','+ خانة'],
+['Tasks','المهام'],
+['Name','الاسم'],
+['Class','الفصل'],
+['Password','الباسورد'],
+['Wrong password','الباسورد غلط'],
+['Saved','اتحفظ'],
+['Deleted ✅','اتمسح ✅'],
+['‹ Back','‹ رجوع'],
+['Cancel task?','إلغاء المهمة؟'],
+['Add task to','إضافة مهمة ل'],
+['Phone visit','افتقاد تليفون'],
+['Home visit','افتقاد منزلي'],
+['Delete family?','مسح الأسرة؟'],
+['Delete whole family','مسح الأسرة كلها'],
+['Reset family password','تصفير باسورد الأسرة'],
+['Families','الأسر'],
+['All fields','كل الخانات'],
+['This child only','الولد ده بس'],
+['All children in this class','كل ولاد الفصل'],
+['Attendance','الحضور'],
+['Visitation','الافتقاد'],
+['Account','الحساب'],
+['Present','حضور'],
+['Preparation','تحضير'],
+['Phoned','افتقدت تليفون'],
+['Home-visited','افتقدت منزلي'],
+['Confession','اعتراف'],
+['Mass','قداس'],
+['Paper Gospel','الإنجيل الورقي'],
+['Address','العنوان'],
+['Confession father','أب الاعتراف'],
+['Love language','لغة الحب'],
+['Notes','ملحوظات'],
+['My tasks','ورايا إيه؟'],
+['Visitation log','سجل الافتقاد'],
+['No visits recorded yet','لسه مفيش افتقاد متسجل'],
+['+ Child','+ ولد'],
+['New child','ولد جديد'],
+['No class','بدون فصل'],
+['No servants','مفيش خدام'],
+['OK','تمام'],
+['Confirm','تأكيد'],
+['Add','إضافة'],
+['New column','خانة جديدة'],
+['Column name','اسم الخانة'],
+['Your name','اكتب اسمك'],
+['Father\'s name (optional)','اسم الأب (اختياري)'],
+['Family name','اسم الأسرة'],
+['What\'s the family name?','اسم الأسرة إيه؟'],
+['A new name starts an empty family 🌱','لو كتبت اسم جديد هتلاقي الأسرة فاضية 🌱'],
+['What\'s your name?','إسمك إيه؟'],
+['Mr.','مستر'],
+['Ms.','ميس'],
+['Your class?','فصلك إيه؟'],
+['Servant','خادم'],
+['Class leader','أمين فصل'],
+['Head','أمين الخدمة'],
+['Pick or type a new class','اختار أو اكتب فصل جديد'],
+['Phone','تليفون'],
+['At home','منزلي'],
+['Children\'s data','بيانات الأولاد'],
+['This task will be cancelled','هتتلغي المهمة دي'],
+['Press back again to exit','اضغط رجوع تاني للخروج'],
+['Enter a family name','اكتب اسم الأسرة'],
+['Enter your name first','اكتب اسمك الأول'],
+['Name already exists','الاسم ده موجود'],
+['New name','الاسم الجديد'],
+['Add your first child with the + Child button','ضيف أول ولد بزرار + ولد'],
+['Search name','دوّر على اسم'],
+['Task','المهمة'],
+['Family password','باسورد الأسرة'],
+['Wrong family password','باسورد الأسرة غلط'],
+['New family? Pick a password for it','لو أسرة جديدة اختار ليها باسورد'],
+['Sunday','الأحد'],
+['Monday','الإثنين'],
+['Tuesday','التلات'],
+['Wednesday','الأربع'],
+['Thursday','الخميس'],
+['Friday','الجمعة'],
+['Saturday','السبت']];
+const a2e={},e2a={};TRP.forEach(p=>{a2e[p[1]]=p[0];e2a[p[0]]=p[1]});
+const DYA='الأحد|الإثنين|التلات|الأربع|الخميس|الجمعة|السبت',DYE='Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday';
+const RX=[[/^(\d+) من (\d+)$/,(m,a,b)=>a+' of '+b,/^(\d+) of (\d+)$/,(m,a,b)=>a+' من '+b],
+[/^حضر (\d+) من (\d+) جمعة$/,(m,a,b)=>'Attended '+a+' of '+b+' Fridays',/^Attended (\d+) of (\d+) Fridays$/,(m,a,b)=>'حضر '+a+' من '+b+' جمعة'],
+[/^حضورك: (\d+) من (\d+) جمعة$/,(m,a,b)=>'Your attendance: '+a+' of '+b+' Fridays',/^Your attendance: (\d+) of (\d+) Fridays$/,(m,a,b)=>'حضورك: '+a+' من '+b+' جمعة'],
+[/^احنا لسه (.+) يا عم 😄 الحضور يوم الجمعة$/,(m,d)=>"It's still "+(a2e[d]||d)+', friend 😄 Attendance is on Friday',/^It's still (.+), friend 😄 Attendance is on Friday$/,(m,d)=>'احنا لسه '+(e2a[d]||d)+' يا عم 😄 الحضور يوم الجمعة'],
+[/^بتعدّل في: (.+)$/,(m,x)=>'Editing: '+x.replace(new RegExp('^('+DYA+')'),y=>a2e[y]),/^Editing: (.+)$/,(m,x)=>'بتعدّل في: '+x.replace(new RegExp('^('+DYE+')'),y=>e2a[y])],
+[/^من (.+)$/,(m,x)=>'from '+x,/^from (.+)$/,(m,x)=>'من '+x],
+[new RegExp('^('+DYA+') (\\d{1,2}/\\d{1,2})$'),(m,d,x)=>a2e[d]+' '+x,new RegExp('^('+DYE+') (\\d{1,2}/\\d{1,2})$'),(m,d,x)=>e2a[d]+' '+x]];
+function trs(t,l){const k=t.trim();if(!k)return t;const m=l=='en'?a2e:e2a;
+ const one=x=>{if(m[x]!==undefined)return m[x];for(const r of RX){const g=l=='en'?r[0]:r[2];if(g.test(x))return x.replace(g,l=='en'?r[1]:r[3])}return x};
+ let r=one(k);if(r==k&&/ • | — /.test(k))r=k.split(/( • | — )/).map(p=>/^( • | — )$/.test(p)?p:one(p)).join('');
+ return r==k?t:t.replace(k,r)}
+function trAll(root){const l=localStorage.lang;if(!l)return;const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),L=[];let n;while(n=w.nextNode())L.push(n);
+ L.forEach(n=>{const p=n.parentNode;if(!p||/SCRIPT|STYLE|TEXTAREA/.test(p.tagName))return;const v=trs(n.nodeValue,l);if(v!==n.nodeValue)n.nodeValue=v});
+ root.querySelectorAll('[placeholder]').forEach(e=>{const o=e.getAttribute('placeholder'),v=trs(o,l);if(v!=o)e.setAttribute('placeholder',v)})}
+function lgUI(){document.querySelectorAll('#lg span').forEach(x=>x.className=(x.dataset.a=='lga'?'ar':'en')==localStorage.lang?'on':'')}
+let trT=0;new MutationObserver(()=>{if(!localStorage.lang)return;cancelAnimationFrame(trT);trT=requestAnimationFrame(()=>trAll(document.body))}).observe(document.body,{childList:true,subtree:true,characterData:true});
+lgUI();trAll(document.body);
 function hdr(){const t={home:'Georgios',att:'الحضور',vis:'الافتقاد',sv:'Your account',hist:'History',acc:'Accounts',acc1:'الحساب'}[V.t];
  const ban=V.wk&&V.wk!=curWk()?`<div class=ban><span>بتعدّل في: ${lbl(V.wk)}</span><button data-a=cur>This week</button></div>`:'';
  return `<div class=top><span class=hl>${V.t!='home'?'<button data-a=back>‹</button>':''}</span><b>${t}</b><span class=hr><button class=avb data-a=go data-t=sv>${av(ME.name)}</button><button data-a=menu>☰</button></span></div>
@@ -153,9 +303,9 @@ function vAtt(){const wk=wkOf(),a=S.att[wk]||{},lock=wk==curWk()&&!isFri();let r
 
 const STAT=[['addr','العنوان'],['conf','أب الاعتراف'],['love','لغة الحب'],['notes','ملحوظات']];
 function vVis(){const wk=wkOf(),v=S.vis[wk]||{};let r='';const span=7+S.cols.length;
- const txt=(k,f,val)=>`<td><input data-a=txt data-k="${k}" data-f="${esc(f)}" value="${esc(val)}"></td>`;
+ const txt=(k,f,val)=>hid(k,f)?'<td></td>':`<td><input data-a=txt data-k="${k}" data-f="${esc(f)}" value="${esc(val)}"></td>`;
  groups(S.kids).forEach(([c,l])=>{r+=band(c,l.length,span);l.forEach(k=>{
-  r+=`<tr data-n="${norm(k.name)}">${nameTd(k,c,1)}<td>${cb('vis/'+wk,k.id+'_p',v[k.id+'_p'],0,'d')}</td><td>${cb('vis/'+wk,k.id+'_h',v[k.id+'_h'],0,'d')}</td>`+
+  r+=`<tr data-n="${norm(k.name)}">${nameTd(k,c,1)}${hid(k.id,'p')?'<td></td>':`<td>${cb('vis/'+wk,k.id+'_p',v[k.id+'_p'],0,'d')}</td>`}${hid(k.id,'h')?'<td></td>':`<td>${cb('vis/'+wk,k.id+'_h',v[k.id+'_h'],0,'d')}</td>`}`+
   STAT.map(s=>txt(k.id,s[0],k[s[0]])).join('')+S.cols.map(x=>txt(k.id,'x_'+x,k['x_'+x])).join('')+'</tr>'})});
  return bar(1,'<button class="btn pu" data-a=addcol>+ Column</button><button class="btn pu" data-a=xvis>Export</button>')+sheet(`<th class=n>الاسم</th><th>افتقده تليفون</th><th>افتقده منزلي</th>`+STAT.map(s=>`<th>${s[1]}</th>`).join('')+S.cols.map(x=>`<th>${esc(x)}</th>`).join(''),r,1)}
 
@@ -185,7 +335,7 @@ function stats(k){const cw=curWk(),all=new Set(Object.keys(S.att));if(isFri())al
  const n=ws.filter(w=>(S.att[w]||{})[k.id]).length;return{ws,n,p:ws.length?Math.round(n*100/ws.length):null}}
 function vAcc(){return bar(0)+groups(S.kids).map(([c,l])=>l.map(k=>{const s=stats(k);return `<div class=li data-n="${norm(k.name)}" data-a=kid data-k="${k.id}" style="border-color:${colr(c)}"><span><b>${esc(k.name)}</b><div class=mut style="padding:0">${esc(c)}</div></span><span class=pill>${s.p==null?'—':s.p+'%'}</span></div>`}).join('')).join('')}
 function vAcc1(){const k=S.kids.find(x=>x.id==V.kid);if(!k)return '';const s=stats(k);
- const ev=[];Object.keys(S.vis).sort().reverse().forEach(w=>{const v=S.vis[w];if(v[k.id+'_p'])ev.push('📞 افتقاد تليفون — '+v[k.id+'_p']);if(v[k.id+'_h'])ev.push('🏠 افتقاد منزلي — '+v[k.id+'_h'])});
+ const ev=[];Object.keys(S.vis).sort().reverse().forEach(w=>{const v=S.vis[w];if(v[k.id+'_p']&&!hid(k.id,'p'))ev.push('📞 افتقاد تليفون — '+v[k.id+'_p']);if(v[k.id+'_h']&&!hid(k.id,'h'))ev.push('🏠 افتقاد منزلي — '+v[k.id+'_h'])});
  return `<div class=sec><h2>${esc(k.name)}</h2><div class=mut style="padding:0">${esc(k.cls||'')}</div>${ME.role!='s'?`<button class="btn alt sm" data-a=rmkid data-k="${k.id}" style="margin-top:8px">Remove child</button>`:''}
  <div class="card c2" style="margin:12px 0">${s.p==null?'—':s.p+'%'}<small>حضر ${s.n} من ${s.ws.length} جمعة</small></div>
  <h3>سجل الافتقاد</h3>${ev.length?ev.map(e=>`<div class=tk>${e}</div>`).join(''):'<div class=mut>لسه مفيش افتقاد متسجل</div>'}
@@ -199,12 +349,12 @@ function ob0(){const o=V.ob=V.ob||{s:1};
  if(o.s==4)return `<div class=ob><h2>Password</h2><p>أمين الخدمة: اكتب الباسورد (أول مرة بتختاره)</p><input id=pw type=password placeholder="Password"><button class=btn data-a=pw>OK</button></div>`;
  return `<div class=ob><h2>فصلك إيه؟</h2><input id=cl list=cls placeholder="اختار أو اكتب فصل جديد"><datalist id=cls>${classes().map(c=>`<option value="${esc(c)}">`).join('')}</datalist><button class=btn data-a=fin>تمام</button></div>`}
 function finish(cls){const o=V.ob,ex=S.sv.find(x=>norm(x.name)==norm(o.n)&&x.g==o.g&&(x.cls||'')==(cls||''));const id=ex?ex.id:cref('servants').doc().id;
- put('servants/'+id,{name:o.n,g:o.g,role:o.role,cls:cls||'',av:o.av||0,...(ex?{}:{created:curWk()})});ME={id,name:o.n,g:o.g,role:o.role,cls:cls||'',av:o.av||0,pv:o.pv};localStorage.me=JSON.stringify(ME);localStorage.nt=Date.now();V={t:'home'};draw(true)}
+ put('servants/'+id,{name:o.n,g:o.g,role:o.role,cls:cls||'',av:o.av||0,...(ex?{}:{created:curWk()})});ME={id,name:o.n,g:o.g,role:o.role,cls:cls||'',av:o.av||0,pv:o.pv,t:Date.now()};localStorage.me=JSON.stringify(ME);localStorage.nt=Date.now();V={t:'home'};draw(true)}
 
 function draw(force){if(!db)return;const a=document.activeElement;
  if(!force&&a&&/INPUT|SELECT/.test(a.tagName)&&a.closest('#app')){pend=1;return}pend=0;
  if(ME)try{sessionStorage.vs=JSON.stringify({t:V.t,wk:V.wk,kid:V.kid,st:V.st})}catch(e){}
- const app=$('#app');if(!FAM){app.innerHTML=famScr();return}if(!ME){app.innerHTML=ob();return}
+ const app=$('#app');if(V.adm){app.innerHTML=admView();return}if(!FAM){app.innerHTML=famScr();return}if(!ME){app.innerHTML=ob();return}
  const sc=[...document.querySelectorAll('.sh')].map(e=>e.scrollLeft),y=scrollY;
  app.innerHTML=hdr()+({home:vHome,att:vAtt,vis:vVis,sv:vSv,hist:vHist,acc:vAcc,acc1:vAcc1}[V.t])();applyQ();
  if(!force){document.querySelectorAll('.sh').forEach((e,i)=>e.scrollLeft=sc[i]||0);scrollTo(0,y)}}
@@ -251,14 +401,33 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-a]');
    else{const ks=S.kids.filter(k=>k.cls==c).sort(ordk);if(L.length>ks.length)toast('Only '+ks.length+' children in this class, extra lines ignored');L.slice(0,ks.length).forEach((v,i)=>b.set(dref('kids/'+ks[i].id),{[f]:v},{merge:true}))}
    b.commit()})}
  if(d.a=='switch'){sessionStorage.removeItem('vs');localStorage.removeItem('me');localStorage.removeItem('fam');return location.reload()}
- if(d.a=='fam'){const n=$('#fm').value.trim().replace(/\s+/g,' ');if(!n)return toast('اكتب اسم الأسرة');FAM=encodeURIComponent(norm(n));localStorage.fam=FAM;localStorage.famn=n;window.listen();history.pushState({},'');return draw(true)}
+ if(d.a=='fam'){const n=$('#fm').value.trim().replace(/\s+/g,' '),p=$('#fp').value;if(!n)return toast('اكتب اسم الأسرة');if(p.length<4)return toast('Password: 4 characters minimum');const id=encodeURIComponent(norm(n));
+  return(async()=>{try{const r=await db.doc('fam/'+id).get(),h=await sha(p);if(r.exists&&r.data().ph&&r.data().ph!=h)return toast('Wrong family password');
+   FAM=id;localStorage.fam=id;localStorage.famn=n;if(!r.exists||!r.data().ph)db.doc('fam/'+id).set({name:n,ph:h,seen:Date.now()},{merge:true});
+   window.listen();history.pushState({},'');draw(true)}catch(e){toast('Need internet')}})()}
  if(d.a=='ntgo'){const o=$('#ntf');if(o)o.remove();V.wk=null;go('sv');return draw(true)}
  if(d.a=='xatt'){const wk=wkOf(),a=S.att[wk]||{},R=[['Class','Name',lbl(wk)]];groups(S.kids).forEach(([c,l])=>l.forEach(k=>R.push([c,k.name,a[k.id]?'✓':''])));return dl('attendance_'+wk+'.csv',R)}
- if(d.a=='xvis'){const wk=wkOf(),v=S.vis[wk]||{},R=[['Class','Name','Phone visit','Home visit',...STAT.map(x=>x[1]),...S.cols]];groups(S.kids).forEach(([c,l])=>l.forEach(k=>R.push([c,k.name,vv(v[k.id+'_p']),vv(v[k.id+'_h']),...STAT.map(x=>k[x[0]]||''),...S.cols.map(x=>k['x_'+x]||'')])));return dl('visitation_'+wk+'.csv',R)}
+ if(d.a=='xvis'){const wk=wkOf(),v=S.vis[wk]||{},R=[['Class','Name','Phone visit','Home visit',...STAT.map(x=>x[1]),...S.cols]];groups(S.kids).forEach(([c,l])=>l.forEach(k=>R.push([c,k.name,hid(k.id,'p')?'':vv(v[k.id+'_p']),hid(k.id,'h')?'':vv(v[k.id+'_h']),...STAT.map(x=>hid(k.id,x[0])?'':k[x[0]]||''),...S.cols.map(x=>hid(k.id,'x_'+x)?'':k['x_'+x]||'')])));return dl('visitation_'+wk+'.csv',R)}
  if(d.a=='xsv'){const wk=wkOf(),m=S.svw[wk]||{},list=ME.role=='l'?S.sv.filter(x=>x.cls==ME.cls):S.sv,R=[['Class','Name',...SF.map(f=>f[1]),'Tasks']];groups(list).forEach(([c,l])=>l.forEach(x=>R.push([c,x.name,...SF.map(f=>m[x.id+'_'+f[0]]?'✓':''),tasksOf(x,wk).map(t=>(t.done?'✓ ':'')+t.text).join(' | ')])));return dl('servants_'+wk+'.csv',R)}
  if(d.a=='lpcls'){const k=S.kids.find(x=>x.id==d.k);if(!k)return;return modal('Change class',`<input id=nc list=pcl value="${esc(k.cls||'')}"><datalist id=pcl>${classes().map(c=>`<option value="${esc(c)}">`).join('')}</datalist>`,'Save',()=>{const c=$('#nc').value.trim();if(!c)return false;put('kids/'+k.id,{cls:c})})}
  if(d.a=='lpdel'&&ME.role!='s'){const k=d.k;return modal('Remove?','<p>This cannot be undone.</p>','Remove',()=>{cref('kids').doc(k).delete()})}
  if(d.a=='rencls'){V.menu=0;draw(true);const hd=ME.role=='h';return modal('Rename class',(hd?`<select id=oc>${classes().map(c=>`<option>${esc(c)}</option>`).join('')}</select>`:'')+`<input id=nc placeholder="الاسم الجديد" value="${hd?'':esc(ME.cls)}">`,'Save',()=>{const o=hd?$('#oc').value:ME.cls,n=$('#nc').value.trim();if(!o||!n||n==o)return false;if(classes().includes(n)){toast('الاسم ده موجود');return false}const b=db.batch();S.kids.filter(k=>k.cls==o).forEach(k=>b.update(dref('kids/'+k.id),{cls:n}));S.sv.filter(x=>x.cls==o).forEach(x=>b.update(dref('servants/'+x.id),{cls:n}));b.commit()})}
+ if(d.a=='lga'||d.a=='lge'){localStorage.lang=d.a=='lga'?'ar':'en';lgUI();return draw(true)}
+ if(d.a=='admrp'){const id=A.id;return modal('Reset family password','<p>'+esc(A.fn)+'</p>','Delete',()=>{db.doc('fam/'+id).set({ph:firebase.firestore.FieldValue.delete()},{merge:true}).then(()=>toast('Saved'))})}
+ if(d.a=='adm')return admOpen();
+ if(d.a=='admx'){V.adm=0;A.d=null;return draw(true)}
+ if(d.a=='admf')return admFam(d.k);
+ if(d.a=='admd'){const c=d.c,k=d.k,id=A.id;return modal('Delete?','<p>'+esc(c)+' / '+esc(k)+'</p>','Delete',()=>{db.doc('fam/'+id+'/'+c+'/'+k).delete().then(()=>admFam(id))})}
+ if(d.a=='admdf'){const id=A.id;return modal('Delete family?','<p>كل بيانات الأسرة دي هتتمسح نهائيًا.</p>','Delete',()=>{admWipe(id)})}
+ if(d.a=='hdel'){dref('meta/hide').set({[d.x]:firebase.firestore.FieldValue.delete()},{merge:true});const m=$('#m');if(m)m.className='';return toast('Unhidden')}
+ if(d.a=='lppv'){const k=S.kids.find(x=>x.id==d.k);if(!k)return;
+  const F=[['*','All fields'],['p','Phone visit'],['h','Home visit'],...STAT,...S.cols.map(c=>['x_'+c,c])],lab=f=>(F.find(z=>z[0]==f)||[f,f])[1],
+  aud=r=>r.all?'Everyone':[...(r.cls||[]),...(r.ppl||[]).map(i=>(S.sv.find(x=>x.id==i)||{}).name||'?')].join(', '),
+  rules=Object.keys(S.hide).filter(x=>x.startsWith(k.id+'|')&&(S.hide[x].by==ME.id||ME.role=='h'));
+  return modal('Privacy',rules.map(x=>`<div class=li><span>${esc(lab(x.split('|')[1]))}: ${esc(aud(S.hide[x]))}</span><button class="btn alt sm" data-a=hdel data-x="${esc(x)}">Unhide</button></div>`).join('')+`<h3>Hide from…</h3><select id=hf>${F.map(z=>`<option value="${esc(z[0])}">${esc(z[1])}</option>`).join('')}</select><select id=hs><option value=k>This child only</option><option value=c>All children in this class</option></select><label><input type=checkbox id=ha>Everyone</label>${classes().map(c=>`<label><input type=checkbox class=hc value="${esc(c)}">${esc(c)}</label>`).join('')}${S.sv.filter(x=>x.id!=ME.id).map(x=>`<label><input type=checkbox class=hp value="${x.id}">${esc(x.name)}</label>`).join('')}`,'Save',()=>{
+   const f=$('#hf').value,all=$('#ha').checked,cls=[...document.querySelectorAll('.hc:checked')].map(x=>x.value),ppl=[...document.querySelectorAll('.hp:checked')].map(x=>x.value);
+   if(!all&&!cls.length&&!ppl.length){toast('Choose who');return false}
+   const o={};(($('#hs').value=='c')?S.kids.filter(x=>x.cls==k.cls):[k]).forEach(x=>o[x.id+'|'+f]={all,cls,ppl,by:ME.id});put('meta/hide',o);toast('Hidden 🔒')})}
  if(d.a=='obback'){const o=V.ob||{s:1};if(o.s<=1){localStorage.removeItem('fam');localStorage.removeItem('famn');return location.reload()}return history.back()}
  if(d.a=='av'){V.ob={s:1,av:+d.i};return draw(true)}
  if(d.a=='g'){const n=($('#nm').value.trim()+' '+(($('#fa')||{}).value||'').trim()).trim();if(!n)return toast('اكتب اسمك الأول');V.ob={s:2,n,g:d.g,av:(V.ob||{}).av};return draw(true)}
