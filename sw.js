@@ -1,4 +1,4 @@
-const C='georgios-v12',CORE=['./','index.html','manifest.json','icon-192.png','icon-512.png'],
+const C='georgios-v13',CORE=['./','index.html','manifest.json','icon-192.png','icon-512.png'],
 EXT=['https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js','https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(C).then(c=>Promise.all([...CORE.map(u=>c.add(u).catch(()=>{})),...EXT.map(u=>fetch(u,{mode:'no-cors'}).then(r=>c.put(u,r)).catch(()=>{}))])).then(()=>self.skipWaiting())));
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!=C).map(x=>caches.delete(x)))).then(()=>self.clients.claim())));
