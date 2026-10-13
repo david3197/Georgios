@@ -50,7 +50,7 @@ td input{border:0;border-bottom:1px solid #00A99D;width:130px;padding:4px;text-a
 .fcard{display:flex;align-items:center;margin:8px 0;cursor:pointer}.fcard .pic{width:44px;height:44px;margin-inline-end:10px}.fh{display:flex;align-items:center;justify-content:center;margin:10px;cursor:pointer}.fh .pic{width:44px;height:44px}
 .bdb{margin:12px;padding:12px;border:2px solid #D97706;background:#FFF7E6;border-radius:14px;text-align:center;font-weight:700;position:relative}.bdb .x{position:absolute;top:6px;right:10px;padding:4px 8px;cursor:pointer}.bdb button{display:block;margin:8px auto 0}
 #lg{position:fixed;top:calc(9px + env(safe-area-inset-top,0px));right:108px;z-index:6;display:flex;gap:4px}#lg span{font:700 13px sans-serif;color:#fff;border:1px solid #ffffff88;border-radius:6px;padding:3px 8px;opacity:.75}#lg span.on{background:#00A99D;opacity:1}
-#adm{position:fixed;bottom:4px;left:6px;font-size:11px;color:#888;opacity:.45;padding:8px 12px;z-index:5}
+#adm{position:fixed;bottom:4px;left:6px;font:11px sans-serif;color:#888;opacity:.35;padding:8px 12px;z-index:5}
 #m input[type=checkbox]{width:auto;margin:6px 8px}#m label{display:block;text-align:left}
 td.n[data-lp]{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 .nt{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));left:12px;right:12px;z-index:60;background:#00A99D;color:#fff;padding:14px;border-radius:14px;font-weight:700;text-align:center;box-shadow:0 4px 14px rgba(0,0,0,.35)}
@@ -62,6 +62,51 @@ td.n[data-lp]{-webkit-user-select:none;user-select:none;-webkit-touch-callout:no
 .avg{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px}.avp{border:3px solid #00C2B3;border-radius:50%;background:#fff;padding:0;aspect-ratio:1;overflow:hidden}.avp svg{width:100%;height:100%;display:block}
 #m textarea{width:100%;height:150px;border:2px solid #000;border-radius:10px;padding:11px;margin:6px 0}
 .vc{margin:12px;border:2px solid #000;border-radius:12px;overflow:hidden}.vh{padding:10px 14px;color:#fff;font-weight:700;display:flex;justify-content:space-between;align-items:center}.vr{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;border-top:1px solid #ddd}.btn.sm{padding:5px 10px;font-size:13px}
+
+/* ---- polish layer: same colors, softer and more refined ---- */
+body{font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Noto Sans Arabic',Tahoma,sans-serif;background:#F4F5F6;color:#111;-webkit-font-smoothing:antialiased;line-height:1.35}
+.top{background:linear-gradient(180deg,#111,#000);border-bottom:3px solid #00C2B3;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+.top b{font-size:18px;font-weight:700;letter-spacing:.3px}
+#menu{border:1px solid #00C2B3;border-radius:16px;box-shadow:0 12px 30px rgba(0,0,0,.4);overflow:hidden}
+#menu div{padding:14px 18px;border-bottom:1px solid #262626;font-size:15px}#menu div:last-child{border-bottom:0}
+.ban{background:linear-gradient(90deg,#6A1B9A,#8438B4);font-size:14px}
+.wk{font-size:17px;color:#222;padding:16px 14px 6px}
+.card{border-radius:20px;padding:24px 20px;box-shadow:0 8px 20px rgba(0,0,0,.16);font-size:21px;letter-spacing:.2px}
+.c1{background:linear-gradient(135deg,#00A99D,#00C2B3)}.c2{background:linear-gradient(135deg,#6A1B9A,#8A3DBA)}.c3{background:linear-gradient(135deg,#000,#262626)}
+.card small{font-size:13px;margin-top:6px;opacity:.9;letter-spacing:0}
+.tools{background:#F4F5F6;padding:10px 12px}
+.q,.ob input,#m input,#m select,#m textarea{border:1.5px solid #D5D8DC;border-radius:12px;background:#fff}
+.q:focus,.ob input:focus,#m input:focus,#m select:focus,#m textarea:focus,td input:focus{outline:0;border-color:#00A99D;box-shadow:0 0 0 3px rgba(0,169,157,.18)}
+.btn{border-radius:12px;padding:10px 16px;box-shadow:0 2px 6px rgba(0,0,0,.18);letter-spacing:.2px}
+.btn:active{filter:brightness(.9)}
+.btn.sm{padding:6px 12px;border-radius:10px}
+.sh{margin:6px 8px 14px;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,.09);background:#fff;border:1px solid #E6E8EB}
+th,td{border:1px solid #ECEEF0;padding:9px 10px}
+th{font-weight:600;font-size:14px;letter-spacing:.2px;border-color:#1c1c1c}
+tbody tr:nth-child(even) td{background:#FAFBFB}
+.n{font-weight:600}
+td input{border-bottom:1.5px solid #CFEFEC;border-radius:4px;background:transparent}
+.cb{border:2px solid #B9BEC4;border-radius:10px}
+.cb.on{box-shadow:inset 0 -2px 0 rgba(0,0,0,.14)}
+.li{background:#fff;border:1px solid #E3E5E8;border-radius:16px;box-shadow:0 2px 10px rgba(0,0,0,.06);padding:15px 16px}
+.pill{font-size:12.5px;padding:4px 12px;background:linear-gradient(135deg,#6A1B9A,#8A3DBA)}
+.sec h3{font-size:16px;color:#222;letter-spacing:.2px}
+.sec h2{font-size:22px;margin:10px 0}
+.mut{color:#666;font-size:14px}
+.tk{background:#fff;border:1.5px solid #00A99D;border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.vc{border:1.5px solid #111;border-radius:18px;box-shadow:0 4px 14px rgba(0,0,0,.1);background:#fff}
+.vr{border-top:1px solid #EEF0F2;padding:10px 16px}
+.ob{max-width:460px;margin:0 auto;padding:44px 22px}
+.ob h2{font-size:24px;margin:0 0 10px}
+.ob input{font-size:17px}
+#m{background:rgba(0,0,0,.6)}
+#m .box{border:0;border-top:5px solid #00C2B3;border-radius:20px;box-shadow:0 18px 44px rgba(0,0,0,.4);padding:20px}
+#toast{border-radius:14px;box-shadow:0 8px 22px rgba(0,0,0,.35)}
+.bdb{border-radius:18px;box-shadow:0 4px 14px rgba(217,119,6,.18)}
+.nt{border-radius:16px}
+.fh b{font-size:18px}.fcard{border-radius:16px}
+.top .avb{box-shadow:0 0 0 2px #000,0 0 0 4px #00C2B3}
+::-webkit-scrollbar{height:6px;width:6px}::-webkit-scrollbar-thumb{background:#C3C7CC;border-radius:6px}
 </style></head><body><div id=adm data-a=adm>D</div><div id=lg><span data-a=lga>a</span><span data-a=lge>e</span></div>
 <div id="app"></div><div id="m"></div><div id="toast"></div>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -158,11 +203,11 @@ async function admWipe(id){for(const c of ADC){const q=await db.collection('fam/
 async function admOpen(){let d;try{d=await db.doc('root/admin').get()}catch(e){return toast('Need internet')}
  if(!d.exists)return modal('Set owner code','<input id=ac type=password placeholder="New code">','Save',()=>{const p=$('#ac').value;if(p.length<4){toast('4 characters minimum');return false}sha(p).then(h=>{db.doc('root/admin').set({h});V.adm=1;admList()})});
  modal('Owner code','<input id=ac type=password placeholder="Code">','Open',()=>{sha($('#ac').value).then(h=>{if(h==d.data().h){V.adm=1;admList()}else toast('Wrong code')})})}
-function admView(){let h=`<div class=top><span class=hl></span><b>Admin</b><span class=hr><button data-a=admx>✕</button></span></div><div class=sec><h3>Families (${A.fams.length})</h3>`+A.fams.map(f=>`<div class=li data-a=admf data-k="${esc(f.id)}"><b>${esc(f.name||f.id)}</b><span class=pill>${ago(f.seen)}</span></div>`).join('')+'</div>'+`<div class=sec><h3>Birthday message ({name} = person's name)</h3><textarea id=bdm style="width:100%;height:80px">${esc((S.set||{}).bdmsg||'')}</textarea><button class="btn sm" data-a=admmsg>Save</button></div>`;
+function admView(){let h=`<div class=top><span class=hl></span><b>Admin</b><span class=hr><button data-a=admx>✕</button></span></div><div class=sec><button class="btn sm" data-a=admall>Show everything</button></div><div class=sec><h3>Families (${A.fams.length})</h3>`+A.fams.map(f=>`<div class=li data-a=admf data-k="${esc(f.id)}"><b>${esc(f.name||f.id)}</b><span class=pill>${ago(f.seen)}</span></div>`).join('')+'</div>'+`<div class=sec><h3>Birthday message ({name} = person's name)</h3><textarea id=bdm style="width:100%;height:80px">${esc((S.set||{}).bdmsg||'')}</textarea><button class="btn sm" data-a=admmsg>Save</button></div>`;
  if(A.d){const D=A.d,nm=i=>(D.servants.find(x=>x.id==i)||{}).name||'?',F={servants:x=>`${x.name} • ${x.role} • ${x.cls||'-'} • ${x.g||''} • ${ago(x.seen)} • 🎂 ${x.bd||'-'}`,kids:x=>`${x.photo?'📷 ':''}${x.name} • ${x.cls||'-'} • 🎂 ${x.bd||'-'}`,tasks:x=>`${x.text||x.id} • to ${nm(x.to)} • from ${x.from||'auto'}`};
   h+=`<div class=sec><h3>${esc(A.fn)}</h3><button class="btn alt sm" data-a=admdf>Delete whole family</button><button class="btn alt sm" data-a=admrp>Reset family password</button></div>`;
-  ADC.forEach(c=>{h+=`<div class=sec><h3>${c} (${D[c].length})</h3>`+D[c].map(x=>`<div class=li><span>${esc((F[c]||(y=>y.id))(x))}</span><button class="btn alt sm" data-a=admd data-c="${c}" data-k="${esc(x.id)}">✕</button></div>`).join('')+`<details><summary>raw</summary><pre style="white-space:pre-wrap;font-size:11px;text-align:left;direction:ltr;overflow:auto">${esc(JSON.stringify(D[c],(k,v)=>k=='photo'?'[photo]':v,1))}</pre></details></div>`})}
- return h}
+  ADC.forEach(c=>{h+=`<div class=sec><h3>${c} (${D[c].length})</h3>`+D[c].map(x=>`<div class=li><span>${esc((F[c]||(y=>y.id))(x))}</span><button class="btn alt sm" data-a=admd data-f="${esc(A.id)}" data-c="${c}" data-k="${esc(x.id)}">✕</button></div>`).join('')+`<details><summary>raw</summary><pre style="white-space:pre-wrap;font-size:11px;text-align:left;direction:ltr;overflow:auto">${esc(JSON.stringify(D[c],(k,v)=>k=='photo'?'[photo]':v,1))}</pre></details></div>`})}
+ if(A.all)h+=admAllHtml();return h}
 const TRP=[['Home','الرئيسية'],
 ['History','السجل'],
 ['Accounts','الحسابات'],
@@ -298,6 +343,12 @@ async function enterFam(id,n,p){if(p.length<4)return toast('Password: 4 characte
 function bdToday(){const t=ymd(new Date()).slice(5),o=[];S.kids.forEach(k=>{if(k.bd&&k.bd.slice(5)==t)o.push({n:k.name})});S.sv.forEach(x=>{if(x.bd&&x.bd.slice(5)==t)o.push({n:x.name})});return o}
 function bdBanner(){const L=bdToday();if(!L.length||localStorage.bdx==ymd(new Date()))return'';return `<div class=bdb><span class=x data-a=bdx>✕</span>🎂 النهاردة عيد ميلاد ${L.map(x=>esc(x.n)).join(' و ')}${L.map(x=>`<button class="btn sm" data-a=wa data-n="${esc(x.n)}">WhatsApp: ${esc(x.n)}</button>`).join('')}</div>`}
 document.addEventListener('change',e=>{const t=e.target,a=t.dataset&&t.dataset.a;if(a=='sbd'&&ME)put('servants/'+ME.id,{bd:t.value});if(a=='kbd')put('kids/'+t.dataset.k,{bd:t.value})});
+async function admAll(){try{const fs=await db.collection('fam').get();A.all=[];for(const f of fs.docs){const r=await Promise.all(ADC.map(c=>db.collection('fam/'+f.id+'/'+c).get())),d={};ADC.forEach((c,i)=>d[c]=r[i].docs.map(x=>({id:x.id,...x.data()})));A.all.push({id:f.id,name:f.data().name||f.id,d})}
+ const rt=await db.collection('root').get();A.root=rt.docs.map(x=>({id:x.id,...x.data()}));draw(true)}catch(e){toast('Error: '+e.message)}}
+function admAllHtml(){const J=x=>JSON.stringify(x,(k,v)=>k=='photo'?'[photo]':k=='h'||k=='ph'?'[hash]':v).slice(0,150),F=(c,x)=>c=='servants'?`${x.name} • ${x.role} • ${x.cls||'-'} • ${x.g||''} • ${ago(x.seen)} • 🎂 ${x.bd||'-'}`:c=='kids'?`${x.photo?'📷 ':''}${x.name} • ${x.cls||'-'} • 🎂 ${x.bd||'-'}`:c=='tasks'?`${x.text||x.id} • from ${x.from||'auto'}`:J(x);
+ let h=`<div class=sec><h2>Everything (${A.all.length} families)</h2></div>`;
+ A.all.forEach(f=>{h+=`<div class=sec><h3>${esc(f.name)} — ${f.d.servants.length} servants • ${f.d.kids.length} kids</h3></div>`+ADC.map(c=>`<div class=sec><b>${c} (${f.d[c].length})</b>`+f.d[c].map(x=>`<div class=li><span>${esc(F(c,x))}</span><button class="btn alt sm" data-a=admd data-f="${esc(f.id)}" data-c="${c}" data-k="${esc(x.id)}">✕</button></div>`).join('')+'</div>').join('')});
+ return h+`<div class=sec><h3>root (${A.root.length})</h3>`+A.root.map(x=>`<div class=li><span>${esc(x.id+': '+J(x))}</span><button class="btn alt sm" data-a=admdr data-k="${esc(x.id)}">✕</button></div>`).join('')+'</div>'}
 function hdr(){const t={home:'Georgios',att:'الحضور',vis:'الافتقاد',sv:'Your account',hist:'History',acc:'Accounts',acc1:'الحساب'}[V.t];
  const ban=V.wk&&V.wk!=curWk()?`<div class=ban><span>بتعدّل في: ${lbl(V.wk)}</span><button data-a=cur>This week</button></div>`:'';
  return `<div class=top><span class=hl>${V.t!='home'?'<button data-a=back>‹</button>':''}</span><b>${t}</b><span class=hr><button class=avb data-a=go data-t=sv>${av(ME.name)}</button><button data-a=menu>☰</button></span></div>
@@ -428,10 +479,12 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-a]');
  if(d.a=='rencls'){V.menu=0;draw(true);const hd=ME.role=='h';return modal('Rename class',(hd?`<select id=oc>${classes().map(c=>`<option>${esc(c)}</option>`).join('')}</select>`:'')+`<input id=nc placeholder="الاسم الجديد" value="${hd?'':esc(ME.cls)}">`,'Save',()=>{const o=hd?$('#oc').value:ME.cls,n=$('#nc').value.trim();if(!o||!n||n==o)return false;if(classes().includes(n)){toast('الاسم ده موجود');return false}const b=db.batch();S.kids.filter(k=>k.cls==o).forEach(k=>b.update(dref('kids/'+k.id),{cls:n}));S.sv.filter(x=>x.cls==o).forEach(x=>b.update(dref('servants/'+x.id),{cls:n}));b.commit()})}
  if(d.a=='lga'||d.a=='lge'){localStorage.lang=d.a=='lga'?'ar':'en';lgUI();return draw(true)}
  if(d.a=='admrp'){const id=A.id;return modal('Reset family password','<p>'+esc(A.fn)+'</p>','Delete',()=>{db.doc('fam/'+id).set({ph:firebase.firestore.FieldValue.delete()},{merge:true}).then(()=>toast('Saved'))})}
+ if(d.a=='admall')return admAll();
+ if(d.a=='admdr'){const k=d.k;return modal('Delete root/'+k+'?','<p>root/admin = owner code (deleting it lets the next D press set a new code)</p>','Delete',()=>{db.doc('root/'+k).delete().then(admAll)})}
  if(d.a=='adm')return admOpen();
- if(d.a=='admx'){V.adm=0;A.d=null;return draw(true)}
+ if(d.a=='admx'){V.adm=0;A.d=null;A.all=null;return draw(true)}
  if(d.a=='admf')return admFam(d.k);
- if(d.a=='admd'){const c=d.c,k=d.k,id=A.id;return modal('Delete?','<p>'+esc(c)+' / '+esc(k)+'</p>','Delete',()=>{db.doc('fam/'+id+'/'+c+'/'+k).delete().then(()=>admFam(id))})}
+ if(d.a=='admd'){const c=d.c,k=d.k,id=d.f||A.id;return modal('Delete?','<p>'+esc(c)+' / '+esc(k)+'</p>','Delete',()=>{db.doc('fam/'+id+'/'+c+'/'+k).delete().then(()=>A.all?admAll():admFam(id))})}
  if(d.a=='admdf'){const id=A.id;return modal('Delete family?','<p>كل بيانات الأسرة دي هتتمسح نهائيًا.</p>','Delete',()=>{admWipe(id)})}
  if(d.a=='hdel'){dref('meta/hide').set({[d.x]:firebase.firestore.FieldValue.delete()},{merge:true});const m=$('#m');if(m)m.className='';return toast('Unhidden')}
  if(d.a=='lppv'){const k=S.kids.find(x=>x.id==d.k);if(!k)return;
