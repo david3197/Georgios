@@ -50,7 +50,7 @@ td input{border:0;border-bottom:1px solid #00A99D;width:130px;padding:4px;text-a
 .fcard{display:flex;align-items:center;margin:8px 0;cursor:pointer}.fcard .pic{width:44px;height:44px;margin-inline-end:10px}.fh{display:flex;align-items:center;justify-content:center;margin:10px;cursor:pointer}.fh .pic{width:44px;height:44px}
 .bdb{margin:12px;padding:12px;border:2px solid #D97706;background:#FFF7E6;border-radius:14px;text-align:center;font-weight:700;position:relative}.bdb .x{position:absolute;top:6px;right:10px;padding:4px 8px;cursor:pointer}.bdb button{display:block;margin:8px auto 0}
 #lg{position:fixed;top:calc(9px + env(safe-area-inset-top,0px));right:108px;z-index:6;display:flex;gap:4px}#lg span{font:700 13px sans-serif;color:#fff;border:1px solid #ffffff88;border-radius:6px;padding:3px 8px;opacity:.75}#lg span.on{background:#00A99D;opacity:1}
-#adm{position:fixed;bottom:4px;left:6px;font:11px sans-serif;color:#888;opacity:.35;padding:8px 12px;z-index:5}
+#adm{position:fixed;bottom:4px;left:6px;font:11px sans-serif;color:#888;opacity:.3;padding:8px 12px;z-index:5;background:none;border:0;width:auto;height:auto}
 #m input[type=checkbox]{width:auto;margin:6px 8px}#m label{display:block;text-align:left}
 td.n[data-lp]{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 .nt{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));left:12px;right:12px;z-index:60;background:#00A99D;color:#fff;padding:14px;border-radius:14px;font-weight:700;text-align:center;box-shadow:0 4px 14px rgba(0,0,0,.35)}
@@ -107,6 +107,44 @@ td input{border-bottom:1.5px solid #CFEFEC;border-radius:4px;background:transpar
 .fh b{font-size:18px}.fcard{border-radius:16px}
 .top .avb{box-shadow:0 0 0 2px #000,0 0 0 4px #00C2B3}
 ::-webkit-scrollbar{height:6px;width:6px}::-webkit-scrollbar-thumb{background:#C3C7CC;border-radius:6px}
+
+/*chic*/
+body{background:#F4F6F8;font-family:'Segoe UI',Roboto,'Helvetica Neue',Tahoma,system-ui,sans-serif}
+.top{background:linear-gradient(180deg,#000,#101010);border-bottom:3px solid #00C2B3;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+.top b{font-size:18px;font-weight:700;letter-spacing:.4px}
+#menu{border:1px solid #00C2B3;border-radius:16px;box-shadow:0 12px 30px rgba(0,0,0,.4);overflow:hidden}#menu div{padding:14px 18px;font-weight:600}#menu div:last-child{border-bottom:0}
+.card{border-radius:22px;padding:24px;box-shadow:0 8px 20px rgba(0,0,0,.14);transition:transform .15s}.card:active{transform:scale(.98)}
+.c1{background:linear-gradient(135deg,#00A99D,#00C2B3)}.c2{background:linear-gradient(135deg,#6A1B9A,#8E3BC4)}.c3{background:linear-gradient(135deg,#000,#2b2b2b)}
+.btn{border-radius:12px;padding:10px 16px;background:linear-gradient(135deg,#00A99D,#00C2B3);box-shadow:0 3px 8px rgba(0,0,0,.15);transition:transform .12s,filter .12s}.btn:active{transform:scale(.97);filter:brightness(.92)}
+.btn.pu{background:linear-gradient(135deg,#6A1B9A,#8E3BC4)}.btn.alt{background:linear-gradient(135deg,#000,#2b2b2b)}
+.q,.ob input,#m input,#m select,#m textarea{border:1.5px solid #D5DADF;border-radius:12px;background:#fff}
+.q:focus,.ob input:focus,#m input:focus,#m select:focus,#m textarea:focus{outline:0;border-color:#00A99D;box-shadow:0 0 0 3px rgba(0,169,157,.2)}
+.tools{background:#F4F6F8}
+.sh{margin:0 8px;border-radius:14px;box-shadow:0 2px 10px rgba(0,0,0,.08);background:#fff}
+th,td{border-color:#E6E9ED}th{background:#111;font-weight:600}
+tbody tr:nth-child(even) td{background:#FAFBFC}
+.n{font-weight:700}td input{border-bottom:1px solid #00A99D77}
+td.n .pic{width:34px;height:34px}
+.cb{border-radius:10px;border-color:#B7BEC6;box-shadow:inset 0 1px 2px rgba(0,0,0,.06)}.cb.on{background:linear-gradient(135deg,#22C55E,#16A34A)}
+.li{background:#fff;border:1.5px solid #E1E5EA;border-radius:16px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.pill{background:linear-gradient(135deg,#6A1B9A,#8E3BC4);font-size:13px}
+.vc{border-radius:18px;box-shadow:0 4px 14px rgba(0,0,0,.1);background:#fff}
+.tk{background:#fff;border:1.5px solid #CDEFEB;border-radius:14px}
+#m{background:rgba(0,0,0,.62)}#m .box{border:0;border-top:5px solid #00C2B3;border-radius:22px;box-shadow:0 20px 50px rgba(0,0,0,.45)}
+#toast{border-radius:14px;box-shadow:0 8px 22px rgba(0,0,0,.35)}
+.ob{max-width:480px;margin:0 auto}.ob h2{font-size:26px;margin:6px 0 14px}
+.fic,.pic{box-shadow:0 2px 6px rgba(0,0,0,.22)}
+html[data-theme=dark] body{background:#0E1013;color:#E8EAED}
+html[data-theme=dark] .tools{background:#0E1013}
+html[data-theme=dark] .sh,html[data-theme=dark] .li,html[data-theme=dark] .vc,html[data-theme=dark] .tk,html[data-theme=dark] #m .box,html[data-theme=dark] td{background:#171A20;color:#E8EAED}
+html[data-theme=dark] tbody tr:nth-child(even) td{background:#1B1F26}
+html[data-theme=dark] td,html[data-theme=dark] th,html[data-theme=dark] .vr{border-color:#2A2F39}
+html[data-theme=dark] th{background:#000}
+html[data-theme=dark] .q,html[data-theme=dark] .ob input,html[data-theme=dark] #m input,html[data-theme=dark] #m select,html[data-theme=dark] #m textarea,html[data-theme=dark] td input{background:#171A20;color:#E8EAED;border-color:#2A2F39}
+html[data-theme=dark] .cb{background:#171A20;border-color:#4A515C}html[data-theme=dark] .cb.on{background:linear-gradient(135deg,#22C55E,#16A34A);border-color:#16a34a}
+html[data-theme=dark] .mut,html[data-theme=dark] .vr span{color:#9AA0A6}
+html[data-theme=dark] .bdb{background:#2A2112;color:#F7E7C4}
+html[data-theme=dark] .avb{background:#171A20}
 </style></head><body><div id=adm data-a=adm>D</div><div id=lg><span data-a=lga>a</span><span data-a=lge>e</span></div>
 <div id="app"></div><div id="m"></div><div id="toast"></div>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -165,7 +203,7 @@ const cb=(p,f,v,l,m)=>`<div class="cb ${v?'on':''}" data-a=tg data-p="${p}" data
 const sheet=(h,r,ar)=>`<div class="sh${ar?' ar':''}"><table><thead><tr>${h}</tr></thead><tbody>${r}</tbody></table></div>`;
 const bar=(add,extra)=>`<div class=tools><input id=q class=q placeholder="🔍 دوّر على اسم..." value="${esc(V.q||'')}">${add?'<button class=btn data-a=addkid>+ ولد</button>':''}${extra||''}</div>`;
 const band=(c,n,span)=>`<tr class=band><td colspan=${span} style="background:${colr(c)}">${esc(c)} (${n})</td></tr>`;
-const nameTd=(k,c,kid)=>`<td class=n ${kid?`data-lp=1 data-k="${k.id}" `:''}style="border-inline-start:6px solid ${colr(c)}">${k.photo?`<img class=pic src="${k.photo}">`:''}${esc(k.name)}</td>`;
+const nameTd=(k,c,kid)=>`<td class=n ${kid?`data-lp=1 data-k="${k.id}" `:''}style="border-inline-start:6px solid ${colr(c)}">${k.photo?`<img class=pic src="${k.photo}">`:''}${esc(kn(k))}</td>`;
 
 const AVC=[['#00A99D','#2DD4BF'],['#6A1B9A','#A855F7'],['#E5533D','#FB923C'],['#2563EB','#60A5FA'],['#DB2777','#F9A8D4'],['#D97706','#FCD34D'],['#16A34A','#4ADE80'],['#7C3AED','#818CF8']];
 function av(n){n=(n||'?').trim()||'?';let h=0;for(const c of n)h=(h*31+c.codePointAt(0))>>>0;const[a,b]=AVC[h%AVC.length];return `<span class=avl style="background:linear-gradient(135deg,${a},${b})">${esc([...n][0].toUpperCase())}</span>`}
@@ -190,7 +228,7 @@ function notify(){if(!ME)return;const last=+localStorage.nt||0,nw=S.tasks.filter
 const vv=x=>x===true?'✓':(x||'');
 function dl(name,rows){const c='\uFEFF'+rows.map(r=>r.map(x=>'"'+String(x==null?'':x).replace(/"/g,'""')+'"').join(',')).join('\r\n'),a=document.createElement('a');a.href=URL.createObjectURL(new Blob([c],{type:'text/csv;charset=utf-8'}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000)}
 function lpMenu(id){const k=S.kids.find(x=>x.id==id);if(!k)return;lpAt=Date.now();
- modal(esc(k.name),`<button class=btn data-a=lpcls data-k="${id}">Change class</button><button class="btn alt" data-a=lppv data-k="${id}" style="margin-top:8px">Privacy</button>${ME.role!='s'?`<button class="btn alt" data-a=lpdel data-k="${id}" style="margin-top:8px">Delete</button>`:''}`,'Close',()=>{})}
+ modal(esc(kn(k)),`<button class=btn data-a=lpcls data-k="${id}">Change class</button><button class="btn alt" data-a=lppv data-k="${id}" style="margin-top:8px">Privacy</button>${ME.role!='s'?`<button class="btn alt" data-a=lpdel data-k="${id}" style="margin-top:8px">Delete</button>`:''}`,'Close',()=>{})}
 const lpS=e=>{const t=e.target.closest('[data-lp]');if(!t)return;clearTimeout(lpT);lpT=setTimeout(()=>lpMenu(t.dataset.k),600)},lpE=()=>clearTimeout(lpT);
 document.addEventListener('touchstart',lpS,{passive:true});document.addEventListener('mousedown',lpS);
 ['touchend','touchmove','touchcancel','mouseup','mouseleave'].forEach(n=>document.addEventListener(n,lpE));
@@ -204,7 +242,7 @@ async function admWipe(id){for(const c of ADC){const q=await db.collection('fam/
 async function admOpen(){let d;try{d=await db.doc('root/admin').get()}catch(e){return toast('Need internet')}
  if(!d.exists)return modal('Set owner code','<input id=ac type=password placeholder="New code">','Save',()=>{const p=$('#ac').value;if(p.length<4){toast('4 characters minimum');return false}sha(p).then(h=>{db.doc('root/admin').set({h});V.adm=1;admList()})});
  modal('Owner code','<input id=ac type=password placeholder="Code">','Open',()=>{sha($('#ac').value).then(h=>{if(h==d.data().h){V.adm=1;admList()}else toast('Wrong code')})})}
-function admView(){let h=`<div class=top><span class=hl></span><b>Admin</b><span class=hr><button data-a=admx>✕</button></span></div><div class=sec><button class="btn sm" data-a=admall>Show everything</button></div><div class=sec><h3>Families (${A.fams.length})</h3>`+A.fams.map(f=>`<div class=li data-a=admf data-k="${esc(f.id)}"><b>${esc(f.name||f.id)}</b><span class=pill>${ago(f.seen)}</span></div>`).join('')+'</div>'+`<div class=sec><h3>Birthday message ({name} = person's name)</h3><textarea id=bdm style="width:100%;height:80px">${esc((S.set||{}).bdmsg||'')}</textarea><button class="btn sm" data-a=admmsg>Save</button></div>`;
+function admView(){let h=`<div class=top><span class=hl></span><b>Admin</b><span class=hr><button data-a=admx>✕</button></span></div><div class=sec><button class="btn sm" data-a=admall>Show everything</button></div><div class=sec><h3>Families (${A.fams.length})</h3>`+A.fams.map(f=>`<div class=li data-a=admf data-k="${esc(f.id)}"><b>${esc(f.name||f.id)}</b><span class=pill>${ago(f.seen)}</span></div>`).join('')+'</div>'+`<div class=sec><h3>Birthday message ({name} = person's name)</h3><textarea id=bdm style="width:100%;height:80px">${esc((S.set||{}).bdmsg||'')}</textarea><h3>Reminder message ({name} = servant's name)</h3><textarea id=rmm style="width:100%;height:80px">${esc((S.set||{}).remmsg||'')}</textarea><button class="btn sm" data-a=admmsg>Save</button></div>`;
  if(A.d){const D=A.d,nm=i=>(D.servants.find(x=>x.id==i)||{}).name||'?',F={servants:x=>`${x.name} • ${x.role} • ${x.cls||'-'} • ${x.g||''} • ${ago(x.seen)} • 🎂 ${x.bd||'-'}`,kids:x=>`${x.photo?'📷 ':''}${x.name} • ${x.cls||'-'} • 🎂 ${x.bd||'-'}`,tasks:x=>`${x.text||x.id} • to ${nm(x.to)} • from ${x.from||'auto'}`};
   h+=`<div class=sec><h3>${esc(A.fn)}</h3><button class="btn alt sm" data-a=admdf>Delete whole family</button><button class="btn alt sm" data-a=admrp>Reset family password</button></div>`;
   ADC.forEach(c=>{h+=`<div class=sec><h3>${c} (${D[c].length})</h3>`+D[c].map(x=>`<div class=li><span>${esc((F[c]||(y=>y.id))(x))}</span><button class="btn alt sm" data-a=admd data-f="${esc(A.id)}" data-c="${c}" data-k="${esc(x.id)}">✕</button></div>`).join('')+`<details><summary>raw</summary><pre style="white-space:pre-wrap;font-size:11px;text-align:left;direction:ltr;overflow:auto">${esc(JSON.stringify(D[c],(k,v)=>k=='photo'?'[photo]':v,1))}</pre></details></div>`})}
@@ -312,7 +350,7 @@ const TRP=[['Home','الرئيسية'],
 ['Family password','باسورد الأسرة'],
 ['Wrong family password','باسورد الأسرة غلط'],
 ['New family? Pick a password for it','لو أسرة جديدة اختار ليها باسورد'],
-['🔒 Password required','🔒 محتاج باسورد'],['📷 Photo','📷 صورة'],['Sunday','الأحد'],
+['🔒 Password required','🔒 محتاج باسورد'],['📷 Photo','📷 صورة'],['Dark mode','الوضع الداكن'],['Light mode','الوضع الفاتح'],['Leave family','خروج من الأسرة'],['Leave family?','الخروج من الأسرة؟'],['Leave','خروج'],['🔔 Remind','🔔 فكرني'],['Send the reminder on WhatsApp with your photo','ابعت التذكير على واتساب بصورتك'],['Sunday','الأحد'],
 ['Monday','الإثنين'],
 ['Tuesday','التلات'],
 ['Wednesday','الأربع'],
@@ -350,29 +388,35 @@ function admAllHtml(){const J=x=>JSON.stringify(x,(k,v)=>k=='photo'?'[photo]':k=
  let h=`<div class=sec><h2>Everything (${A.all.length} families)</h2></div>`;
  A.all.forEach(f=>{h+=`<div class=sec><h3>${esc(f.name)} — ${f.d.servants.length} servants • ${f.d.kids.length} kids</h3></div>`+ADC.map(c=>`<div class=sec><b>${c} (${f.d[c].length})</b>`+f.d[c].map(x=>`<div class=li><span>${esc(F(c,x))}</span><button class="btn alt sm" data-a=admd data-f="${esc(f.id)}" data-c="${c}" data-k="${esc(x.id)}">✕</button></div>`).join('')+'</div>').join('')});
  return h+`<div class=sec><h3>root (${A.root.length})</h3>`+A.root.map(x=>`<div class=li><span>${esc(x.id+': '+J(x))}</span><button class="btn alt sm" data-a=admdr data-k="${esc(x.id)}">✕</button></div>`).join('')+'</div>'}
+const kn=k=>localStorage.lang=='en'&&k.en?k.en:k.name;
+function dk(){document.documentElement.dataset.theme=localStorage.dark?'dark':''}dk();
+function avp(){const m=S.sv.find(x=>x.id==ME.id);return m&&m.photo?`<img src="${m.photo}" style="width:100%;height:100%;object-fit:cover">`:av(ME.name)}
+async function shareRem(u,m){try{const b=await(await fetch(u)).blob(),f=new File([b],'photo.jpg',{type:'image/jpeg'});if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],text:m});return}}catch(e){if(e&&e.name=='AbortError')return}window.open('https://wa.me/?text='+encodeURIComponent(m),'_blank')}
+document.addEventListener('change',e=>{const t=e.target;if(t.dataset&&t.dataset.a=='ken')put('kids/'+t.dataset.k,{en:t.value.trim()})});
 function hdr(){const t={home:'Georgios',att:'الحضور',vis:'الافتقاد',sv:'Your account',hist:'History',acc:'Accounts',acc1:'الحساب'}[V.t];
  const ban=V.wk&&V.wk!=curWk()?`<div class=ban><span>بتعدّل في: ${lbl(V.wk)}</span><button data-a=cur>This week</button></div>`:'';
- return `<div class=top><span class=hl>${V.t!='home'?'<button data-a=back>‹</button>':''}</span><b>${t}</b><span class=hr><button class=avb data-a=go data-t=sv>${av(ME.name)}</button><button data-a=menu>☰</button></span></div>
- <div id=menu class="${V.menu?'on':''}"><div data-a=go data-t=home>Home</div><div data-a=go data-t=hist>History</div><div data-a=go data-t=acc>Accounts</div><div data-a=paste>Paste list</div>${ME.cls||ME.role=='h'?'<div data-a=rencls>Rename class</div>':''}${ME.role=='h'?'<div data-a=setpw>Set password</div>':''}<div data-a=switch>Log out</div><div style="color:#777;font-size:12px;padding:8px 18px">v16</div></div>${ban}`}
+ return `<div class=top><span class=hl>${V.t!='home'?'<button data-a=back>‹</button>':''}</span><b>${t}</b><span class=hr><button class=avb data-a=go data-t=sv>${avp()}</button><button data-a=menu>☰</button></span></div>
+ <div id=menu class="${V.menu?'on':''}"><div data-a=go data-t=home>Home</div><div data-a=go data-t=hist>History</div><div data-a=go data-t=acc>Accounts</div><div data-a=paste>Paste list</div>${ME.cls||ME.role=='h'?'<div data-a=rencls>Rename class</div>':''}${ME.role=='h'?'<div data-a=setpw>Set password</div>':''}<div data-a=dark>${localStorage.dark?'Light mode':'Dark mode'}</div><div data-a=switch>Log out</div><div style="color:#777;font-size:12px;padding:8px 18px">v16</div></div>${ban}`}
 
 function vHome(){const wk=wkOf(),a=S.att[wk]||{},n=S.kids.filter(k=>a[k.id]).length;
  return `<div class=fh data-a=fphoto>${(S.fam||{}).photo?`<img class=pic src="${S.fam.photo}">`:`<span class=fic>${esc([...(localStorage.famn||'?')][0])}</span>`}<b>${esc(localStorage.famn||'')}</b></div>${bdBanner()}<div class=wk>${lbl(wk)}${wk==curWk()?' • This week':''}</div>
  <div class="card c1" data-a=go data-t=att>الحضور<small>${n} من ${S.kids.length}</small></div>
- <div class="card c2" data-a=go data-t=vis>الافتقاد<small>تليفون • منزلي • بيانات الأولاد</small></div>`}
+ <div class="card c2" data-a=go data-t=vis>الافتقاد<small>تليفون • منزلي • بيانات الأولاد</small></div>
+ <div class="card c3" data-a=remind>🔔 Remind<small>Send the reminder on WhatsApp with your photo</small></div>`}
 
 function vAtt(){const wk=wkOf(),a=S.att[wk]||{},lock=wk==curWk()&&!isFri();let r='';
- groups(S.kids).forEach(([c,l])=>{r+=band(c,l.length,2);l.forEach(k=>r+=`<tr data-n="${norm(k.name)}">${nameTd(k,c,1)}<td>${cb('att/'+wk,k.id,a[k.id],lock)}</td></tr>`)});
+ groups(S.kids).forEach(([c,l])=>{r+=band(c,l.length,2);l.forEach(k=>r+=`<tr data-n="${norm(k.name+' '+(k.en||''))}">${nameTd(k,c,1)}<td>${cb('att/'+wk,k.id,a[k.id],lock)}</td></tr>`)});
  return bar(1,'<button class="btn pu" data-a=xatt>Export</button>')+sheet(`<th class=n>الاسم</th><th>${lbl(wk)}</th>`,r||'<tr><td colspan=2>ضيف أول ولد بزرار + ولد</td></tr>',1)}
 
 const STAT=[['addr','العنوان'],['conf','أب الاعتراف'],['love','لغة الحب'],['notes','ملحوظات']];
 function vVis(){const wk=wkOf(),v=S.vis[wk]||{};let r='';const span=7+S.cols.length;
  const txt=(k,f,val)=>hid(k,f)?'<td></td>':`<td><input data-a=txt data-k="${k}" data-f="${esc(f)}" value="${esc(val)}"></td>`;
  groups(S.kids).forEach(([c,l])=>{r+=band(c,l.length,span);l.forEach(k=>{
-  r+=`<tr data-n="${norm(k.name)}">${nameTd(k,c,1)}${hid(k.id,'p')?'<td></td>':`<td>${cb('vis/'+wk,k.id+'_p',v[k.id+'_p'],0,'d')}</td>`}${hid(k.id,'h')?'<td></td>':`<td>${cb('vis/'+wk,k.id+'_h',v[k.id+'_h'],0,'d')}</td>`}`+
+  r+=`<tr data-n="${norm(k.name+' '+(k.en||''))}">${nameTd(k,c,1)}${hid(k.id,'p')?'<td></td>':`<td>${cb('vis/'+wk,k.id+'_p',v[k.id+'_p'],0,'d')}</td>`}${hid(k.id,'h')?'<td></td>':`<td>${cb('vis/'+wk,k.id+'_h',v[k.id+'_h'],0,'d')}</td>`}`+
   STAT.map(s=>txt(k.id,s[0],k[s[0]])).join('')+S.cols.map(x=>txt(k.id,'x_'+x,k['x_'+x])).join('')+'</tr>'})});
- return bar(1,'<button class="btn pu" data-a=addcol>+ Column</button><button class="btn pu" data-a=xvis>Export</button>')+sheet(`<th class=n>الاسم</th><th>افتقده تليفون</th><th>افتقده منزلي</th>`+STAT.map(s=>`<th>${s[1]}</th>`).join('')+S.cols.map(x=>`<th>${esc(x)}</th>`).join(''),r,1)}
+ return bar(1,'<button class="btn pu" data-a=addcol>+ Column</button><button class="btn pu" data-a=xvis>Export</button>')+sheet(`<th class=n>الاسم</th><th>Phone visit</th><th>Home visit</th>`+STAT.map(s=>`<th>${s[1]}</th>`).join('')+S.cols.map(x=>`<th>${esc(x)}</th>`).join(''),r,1)}
 
-const SF=[['come','حضور'],['att','تحضير'],['ph','افتقدت تليفون'],['hm','افتقدت منزلي'],['conf','اعتراف'],['mass','قداس'],['bib','الإنجيل الورقي']];
+const SF=[['come','Present'],['att','Preparation'],['ph','Phone visit'],['hm','Home visit'],['conf','اعتراف'],['mass','قداس'],['bib','الإنجيل الورقي']];
 const AUTO=[['prep','تحضير'],['vis','افتقاد']];
 function tasksOf(s,wk){const au=AUTO.map(a=>{const id='auto_'+wk+'_'+s.id+'_'+a[0],t=S.tasks.find(t=>t.id==id)||{};return{id,text:a[1],from:'auto',done:t.done,off:t.off}}).filter(a=>!a.off);
  return au.concat(S.tasks.filter(t=>t.text&&t.to==s.id&&t.wk==wk))}
@@ -382,12 +426,13 @@ function vSv(){const wk=wkOf(),m=S.svw[wk]||{},mgr=ME.role!='s',lock=wk==curWk()
  const row=t=>`<div class=tk>${cb('tasks/'+t.id,'done',t.done)}<div>${esc(t.text)}${t.from=='auto'?'':`<div class=mut style="padding:0">من ${esc(t.from)}</div>`}</div><button class="btn alt sm" data-a=rmt data-k="${t.id}" data-u="${t.from=='auto'?1:''}">✕</button></div>`;
  const cw=curWk(),all=new Set(Object.keys(S.svw));if(isFri())all.add(cw);
  const ws=[...all].filter(w=>w>=(me.created||'')&&(w<cw||(w==cw&&isFri()))),n=ws.filter(w=>(S.svw[w]||{})[me.id+'_come']).length,pc=ws.length?Math.round(n*100/ws.length):null;
- let h=`<div class="card c1" style="margin:12px">${pc==null?'—':pc+'%'}<small>حضورك: ${n} من ${ws.length} جمعة</small></div>`+card(me,me.cls||'',m,wk,lock,0)+`<div class=sec><h3>عيد ميلادك 🎂</h3><input type=date data-a=sbd value="${esc(me.bd||'')}"></div><div class=sec><h3>ورايا إيه؟</h3>${tasksOf(me,wk).map(row).join('')}<button class=btn data-a=addme>+ Add task</button></div>`;
+ let h=`<div class="card c1" style="margin:12px">${pc==null?'—':pc+'%'}<small>حضورك: ${n} من ${ws.length} جمعة</small></div>`+card(me,me.cls||'',m,wk,lock,0)+`<div class=sec><div style="text-align:center">${me.photo?`<img class=pic style="width:84px;height:84px" src="${me.photo}">`:''}<div><button class="btn alt sm" data-a=sphoto>📷 Photo</button></div></div><h3>عيد ميلادك 🎂</h3><input type=date data-a=sbd value="${esc(me.bd||'')}"></div><div class=sec><h3>ورايا إيه؟</h3>${tasksOf(me,wk).map(row).join('')}<button class=btn data-a=addme>+ Add task</button></div>`;
  if(mgr){const list=(ME.role=='l'?S.sv.filter(s=>s.cls==ME.cls):S.sv).filter(s=>s.id!=ME.id),hd=ME.role=='h';let r='';
   groups(list).forEach(([c,l])=>{r+=band(c,l.length,SF.length+2);l.forEach(s=>{r+=`<tr>${nameTd(s,c)}`+SF.map(f=>`<td>${cb('svw/'+wk,s.id+'_'+f[0],m[s.id+'_'+f[0]],lock)}</td>`).join('')+`<td>${hd?`<button class="btn alt sm" data-a=rmsv data-k="${s.id}">✕</button>`:''}</td></tr>`})});
   h+=`<div class=tools><button class=btn data-a=addtask>+ Add task</button><button class="btn pu" data-a=xsv>Export</button></div>`+sheet(`<th class=n>الاسم</th>`+SF.map(f=>`<th>${f[1]}</th>`).join('')+'<th></th>',r||'<tr><td colspan=9>مفيش خدام</td></tr>');
   const tr=list.map(s=>`<tr>${nameTd(s,s.cls||'')}<td style="min-width:240px">${tasksOf(s,wk).map(row).join('')}</td></tr>`).join('');
   h+=`<div class=sec><h3>Tasks</h3></div>`+sheet('<th class=n>الاسم</th><th>Tasks</th>',tr||'<tr><td colspan=2>مفيش خدام</td></tr>')}
+ h+='<div class=sec><button class="btn alt" data-a=leave>Leave family</button></div>';
  return h}
 
 function vHist(){const ks=weeks();
@@ -396,23 +441,23 @@ function vHist(){const ks=weeks();
 function stats(k){const cw=curWk(),all=new Set(Object.keys(S.att));if(isFri())all.add(cw);
  const ws=[...all].filter(w=>w>=(k.created||'')&&(w<cw||(w==cw&&isFri()))).sort().reverse();
  const n=ws.filter(w=>(S.att[w]||{})[k.id]).length;return{ws,n,p:ws.length?Math.round(n*100/ws.length):null}}
-function vAcc(){return bar(0)+groups(S.kids).map(([c,l])=>l.map(k=>{const s=stats(k);return `<div class=li data-n="${norm(k.name)}" data-a=kid data-k="${k.id}" style="border-color:${colr(c)}"><span><b>${esc(k.name)}</b><div class=mut style="padding:0">${esc(c)}</div></span><span class=pill>${s.p==null?'—':s.p+'%'}</span></div>`}).join('')).join('')}
+function vAcc(){return bar(0)+groups(S.kids).map(([c,l])=>l.map(k=>{const s=stats(k);return `<div class=li data-n="${norm(k.name+' '+(k.en||''))}" data-a=kid data-k="${k.id}" style="border-color:${colr(c)}"><span>${k.photo?`<img class=pic style="width:36px;height:36px" src="${k.photo}">`:''}<b>${esc(kn(k))}</b><div class=mut style="padding:0">${esc(c)}</div></span><span class=pill>${s.p==null?'—':s.p+'%'}</span></div>`}).join('')).join('')}
 function vAcc1(){const k=S.kids.find(x=>x.id==V.kid);if(!k)return '';const s=stats(k);
  const ev=[];Object.keys(S.vis).sort().reverse().forEach(w=>{const v=S.vis[w];if(v[k.id+'_p']&&!hid(k.id,'p'))ev.push('📞 افتقاد تليفون — '+v[k.id+'_p']);if(v[k.id+'_h']&&!hid(k.id,'h'))ev.push('🏠 افتقاد منزلي — '+v[k.id+'_h'])});
- return `<div class=sec><div style="text-align:center">${k.photo?`<img class=pic style="width:96px;height:96px" src="${k.photo}">`:''}<div><button class="btn alt sm" data-a=kphoto data-k="${k.id}">📷 Photo</button></div></div><h2>${esc(k.name)}</h2><h3>عيد ميلاده 🎂</h3><input type=date data-a=kbd data-k="${k.id}" value="${esc(k.bd||'')}"><div class=mut style="padding:0">${esc(k.cls||'')}</div>${ME.role!='s'?`<button class="btn alt sm" data-a=rmkid data-k="${k.id}" style="margin-top:8px">Remove child</button>`:''}
+ return `<div class=sec><div style="text-align:center">${k.photo?`<img class=pic style="width:96px;height:96px" src="${k.photo}">`:''}<div><button class="btn alt sm" data-a=kphoto data-k="${k.id}">📷 Photo</button></div></div><h2>${esc(kn(k))}</h2><input data-a=ken data-k="${k.id}" placeholder="Name in English" value="${esc(k.en||'')}"><h3>عيد ميلاده 🎂</h3><input type=date data-a=kbd data-k="${k.id}" value="${esc(k.bd||'')}"><div class=mut style="padding:0">${esc(k.cls||'')}</div>${ME.role!='s'?`<button class="btn alt sm" data-a=rmkid data-k="${k.id}" style="margin-top:8px">Remove child</button>`:''}
  <div class="card c2" style="margin:12px 0">${s.p==null?'—':s.p+'%'}<small>حضر ${s.n} من ${s.ws.length} جمعة</small></div>
  <h3>سجل الافتقاد</h3>${ev.length?ev.map(e=>`<div class=tk>${e}</div>`).join(''):'<div class=mut>لسه مفيش افتقاد متسجل</div>'}
  <h3>الحضور</h3>${s.ws.map(w=>`<div class=tk>${(S.att[w]||{})[k.id]?'✅':'❌'} ${lbl(w)}</div>`).join('')}</div>`}
 
 function ob(){const o=V.ob=V.ob||{s:1};if(o.s>1&&o.s>(o.ps||1))history.pushState({},'');o.ps=o.s;return ob0().replace(/<\/div>\s*$/,'<button class="btn alt" data-a=obback style="margin-top:10px">‹ Back</button></div>')}
 function ob0(){const o=V.ob=V.ob||{s:1};
- if(o.s==1)return `<div class=ob><h2>إسمك إيه؟</h2><input id=nm placeholder="اكتب اسمك"><input id=fa placeholder="اسم الأب (اختياري)"><p>عيد ميلادك 🎂</p><input id=bd type=date><button class=btn data-a=g data-g=m>مستر</button><button class="btn pu" data-a=g data-g=f>ميس</button></div>`;
+ if(o.s==1)return `<div class=ob><h2>إسمك إيه؟</h2><input id=nm placeholder="اكتب اسمك"><input id=fa placeholder="اسم الأب (اختياري)"><button class="btn alt" data-a=obphoto>📷 صورتك (مطلوبة)</button><img id=obpp class=pic style="width:84px;height:84px;display:${V.obp?'block':'none'};margin:8px auto" src="${V.obp||''}"><p>عيد ميلادك 🎂</p><input id=bd type=date><button class=btn data-a=g data-g=m>مستر</button><button class="btn pu" data-a=g data-g=f>ميس</button></div>`;
  const hi=`أهلاً ${o.g=='m'?'مستر':'ميس'} ${esc(o.n)} 👋`;
  if(o.s==2)return `<div class=ob><h2>${hi}</h2><p>${o.g=='m'?'إنت':'إنتي'} إيه؟</p><button class=btn data-a=r data-r=s>خادم</button><button class="btn pu" data-a=r data-r=l>أمين فصل</button><button class="btn alt" data-a=r data-r=h>أمين الخدمة</button></div>`;
  if(o.s==4)return `<div class=ob><h2>Password</h2><p>أمين الخدمة: اكتب الباسورد (أول مرة بتختاره)</p><input id=pw type=password placeholder="Password"><button class=btn data-a=pw>OK</button></div>`;
  return `<div class=ob><h2>فصلك إيه؟</h2><input id=cl list=cls placeholder="اختار أو اكتب فصل جديد"><datalist id=cls>${classes().map(c=>`<option value="${esc(c)}">`).join('')}</datalist><button class=btn data-a=fin>تمام</button></div>`}
 function finish(cls){const o=V.ob,ex=S.sv.find(x=>norm(x.name)==norm(o.n)&&x.g==o.g&&(x.cls||'')==(cls||''));const id=ex?ex.id:cref('servants').doc().id;
- put('servants/'+id,{name:o.n,g:o.g,role:o.role,cls:cls||'',av:o.av||0,...(o.bd?{bd:o.bd}:{}),...(ex?{}:{created:curWk()})});ME={id,name:o.n,g:o.g,role:o.role,cls:cls||'',av:o.av||0,pv:o.pv,t:Date.now()};localStorage.me=JSON.stringify(ME);localStorage.nt=Date.now();rememberFam();V={t:'home'};draw(true)}
+ put('servants/'+id,{name:o.n,g:o.g,role:o.role,cls:cls||'',av:o.av||0,...(o.bd?{bd:o.bd}:{}),...(o.photo?{photo:o.photo}:{}),...(ex?{}:{created:curWk()})});ME={id,name:o.n,g:o.g,role:o.role,cls:cls||'',av:o.av||0,pv:o.pv,t:Date.now()};localStorage.me=JSON.stringify(ME);localStorage.nt=Date.now();rememberFam();V={t:'home'};draw(true)}
 
 function draw(force){if(!db)return;const a=document.activeElement;
  if(!force&&a&&/INPUT|SELECT/.test(a.tagName)&&a.closest('#app')){pend=1;return}pend=0;
@@ -454,13 +499,13 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-a]');
  if(d.a=='kid'){V.kid=d.k;go('acc1');return draw(true)}
  if(d.a=='setpw'){V.menu=0;draw(true);return modal('Set password','<input id=np type=password placeholder="New password">','Save',()=>{const p=$('#np').value;if(p.length<4){toast('4 characters minimum');return false}sha(p).then(h=>{const ver=Date.now();ME.pv=ver;localStorage.me=JSON.stringify(ME);put('meta/auth',{h,ver});toast('Saved')})})}
  if((d.a=='rmsv'&&ME.role=='h')||(d.a=='rmkid'&&ME.role!='s')){const col=d.a=='rmsv'?'servants':'kids',k=d.k,back=d.a=='rmkid';return modal('Remove?','<p>This cannot be undone.</p>','Remove',()=>{cref(col).doc(k).delete();if(back){if(V.st&&V.st.length)history.back();else{V.t='acc';draw(true)}}})}
- if(d.a=='paste'){V.menu=0;draw(true);const o=[['name','Names (new children)'],['addr','العنوان'],['conf','أب الاعتراف'],['love','لغة الحب'],['notes','ملحوظات']].concat(S.cols.map(x=>['x_'+x,x]));
+ if(d.a=='paste'){V.menu=0;draw(true);const o=[['name','Names (new children: Arabic | English)'],['en','Name in English'],['addr','العنوان'],['conf','أب الاعتراف'],['love','لغة الحب'],['notes','ملحوظات']].concat(S.cols.map(x=>['x_'+x,x]));
   return modal('Paste list',`<select id=pf>${o.map(x=>`<option value="${esc(x[0])}">${esc(x[1])}</option>`).join('')}</select><input id=pc list=pcl placeholder="Class" value="${esc(ME.cls||'')}"><datalist id=pcl>${classes().map(c=>`<option value="${esc(c)}">`).join('')}</datalist><textarea id=pt placeholder="One item per line, in order"></textarea>`,'Paste',()=>{
    const f=$('#pf').value,c=$('#pc').value.trim(),L=$('#pt').value.split('\n').map(x=>x.trim()).filter(Boolean);
    if(!c||!L.length){toast('Class and list required');return false}
    if(ME.role!='h'&&c!=ME.cls){toast('Your class only');return false}
    const b=db.batch(),t0=Date.now();
-   if(f=='name')L.forEach((n,i)=>b.set(cref('kids').doc(),{name:n,cls:c,created:curWk(),ord:t0+i}));
+   if(f=='name')L.forEach((n,i)=>{const p=n.split('|').map(x=>x.trim());b.set(cref('kids').doc(),{name:p[0],en:p[1]||'',cls:c,created:curWk(),ord:t0+i})});
    else{const ks=S.kids.filter(k=>k.cls==c).sort(ordk);if(L.length>ks.length)toast('Only '+ks.length+' children in this class, extra lines ignored');L.slice(0,ks.length).forEach((v,i)=>b.set(dref('kids/'+ks[i].id),{[f]:v},{merge:true}))}
    b.commit()})}
  if(d.a=='switch'){sessionStorage.removeItem('vs');localStorage.removeItem('me');localStorage.removeItem('fam');return location.reload()}
@@ -470,7 +515,7 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-a]');
  if(d.a=='fphoto')return pickImg(u=>db.doc('fam/'+FAM).set({photo:u},{merge:true}));
  if(d.a=='bdx'){localStorage.bdx=ymd(new Date());return draw(true)}
  if(d.a=='wa'){const m=((S.set||{}).bdmsg||'كل سنة وانت طيب يا {name} 🎂🎉').replace(/\{name\}/g,d.n);return window.open('https://wa.me/?text='+encodeURIComponent(m),'_blank')}
- if(d.a=='admmsg')return db.doc('root/settings').set({bdmsg:$('#bdm').value},{merge:true}).then(()=>toast('Saved'));
+ if(d.a=='admmsg')return db.doc('root/settings').set({bdmsg:$('#bdm').value,remmsg:$('#rmm').value},{merge:true}).then(()=>toast('Saved'));
  if(d.a=='ntgo'){const o=$('#ntf');if(o)o.remove();V.wk=null;go('sv');return draw(true)}
  if(d.a=='xatt'){const wk=wkOf(),a=S.att[wk]||{},R=[['Class','Name',lbl(wk)]];groups(S.kids).forEach(([c,l])=>l.forEach(k=>R.push([c,k.name,a[k.id]?'✓':''])));return dl('attendance_'+wk+'.csv',R)}
  if(d.a=='xvis'){const wk=wkOf(),v=S.vis[wk]||{},R=[['Class','Name','Phone visit','Home visit',...STAT.map(x=>x[1]),...S.cols]];groups(S.kids).forEach(([c,l])=>l.forEach(k=>R.push([c,k.name,hid(k.id,'p')?'':vv(v[k.id+'_p']),hid(k.id,'h')?'':vv(v[k.id+'_h']),...STAT.map(x=>hid(k.id,x[0])?'':k[x[0]]||''),...S.cols.map(x=>hid(k.id,'x_'+x)?'':k['x_'+x]||'')])));return dl('visitation_'+wk+'.csv',R)}
@@ -482,6 +527,11 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-a]');
  if(d.a=='admrp'){const id=A.id;return modal('Reset family password','<p>'+esc(A.fn)+'</p>','Delete',()=>{db.doc('fam/'+id).set({ph:firebase.firestore.FieldValue.delete()},{merge:true}).then(()=>toast('Saved'))})}
  if(d.a=='admall')return admAll();
  if(d.a=='admdr'){const k=d.k;return modal('Delete root/'+k+'?','<p>root/admin = owner code (deleting it lets the next D press set a new code)</p>','Delete',()=>{db.doc('root/'+k).delete().then(admAll)})}
+ if(d.a=='dark'){if(localStorage.dark)localStorage.removeItem('dark');else localStorage.dark='1';dk();V.menu=0;return draw(true)}
+ if(d.a=='obphoto')return pickImg(u=>{V.obp=u;const e=$('#obpp');if(e){e.src=u;e.style.display='block'}});
+ if(d.a=='sphoto')return pickImg(u=>put('servants/'+ME.id,{photo:u}));
+ if(d.a=='remind'){const me=S.sv.find(x=>x.id==ME.id)||{};if(!me.photo)return toast('ضيف صورتك الأول 📷 (من Your account)');return shareRem(me.photo,((S.set||{}).remmsg||'تذكير 🔔').replace(/\{name\}/g,ME.name))}
+ if(d.a=='leave')return modal('Leave family?','<p>'+esc(localStorage.famn||'')+'</p>','Leave',()=>{let L=[];try{L=JSON.parse(localStorage.fams||'[]')}catch(e){}localStorage.fams=JSON.stringify(L.filter(x=>x.id!=FAM));['me','fam','famn','nt'].forEach(k=>localStorage.removeItem(k));sessionStorage.removeItem('vs');location.reload()});
  if(d.a=='adm')return admOpen();
  if(d.a=='admx'){V.adm=0;A.d=null;A.all=null;return draw(true)}
  if(d.a=='admf')return admFam(d.k);
@@ -498,12 +548,12 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-a]');
    const o={};(($('#hs').value=='c')?S.kids.filter(x=>x.cls==k.cls):[k]).forEach(x=>o[x.id+'|'+f]={all,cls,ppl,by:ME.id});put('meta/hide',o);toast('Hidden 🔒')})}
  if(d.a=='obback'){const o=V.ob||{s:1};if(o.s<=1){localStorage.removeItem('fam');localStorage.removeItem('famn');return location.reload()}return history.back()}
  if(d.a=='av'){V.ob={s:1,av:+d.i};return draw(true)}
- if(d.a=='g'){const n=($('#nm').value.trim()+' '+(($('#fa')||{}).value||'').trim()).trim();if(!n)return toast('اكتب اسمك الأول');const bd=$('#bd').value;if(!bd)return toast('اكتب عيد ميلادك');V.ob={s:2,n,g:d.g,bd,av:(V.ob||{}).av};return draw(true)}
+ if(d.a=='g'){const n=($('#nm').value.trim()+' '+(($('#fa')||{}).value||'').trim()).trim();if(!n)return toast('اكتب اسمك الأول');const bd=$('#bd').value;if(!bd)return toast('اكتب عيد ميلادك');if(!V.obp)return toast('ضيف صورتك الأول 📷');V.ob={s:2,n,g:d.g,bd,photo:V.obp,av:(V.ob||{}).av};return draw(true)}
  if(d.a=='r'){V.ob.role=d.r;if(d.r=='h')V.ob.s=4;else V.ob.s=3;return draw(true)}
  if(d.a=='pw')return checkPw($('#pw').value);
  if(d.a=='fin'){const c=$('#cl').value.trim();if(!c)return toast('اكتب الفصل');return finish(c)}
- if(d.a=='addkid')return modal('ولد جديد',`<input id=kn placeholder="الاسم"><input id=kc list=kcl placeholder="الفصل" value="${esc(ME.cls||'')}"><datalist id=kcl>${classes().map(c=>`<option value="${esc(c)}">`).join('')}</datalist>`,'إضافة',()=>{
-  const n=$('#kn').value.trim(),c=$('#kc').value.trim();if(!n||!c){toast('الاسم والفصل مطلوبين');return false}cref('kids').add({name:n,cls:c,created:curWk()})});
+ if(d.a=='addkid')return modal('ولد جديد',`<input id=kn placeholder="الاسم بالعربي"><input id=ke placeholder="Name in English"><input id=kc list=kcl placeholder="الفصل" value="${esc(ME.cls||'')}"><datalist id=kcl>${classes().map(c=>`<option value="${esc(c)}">`).join('')}</datalist>`,'إضافة',()=>{
+  const n=$('#kn').value.trim(),c=$('#kc').value.trim();if(!n||!c){toast('الاسم والفصل مطلوبين');return false}cref('kids').add({name:n,en:$('#ke').value.trim(),cls:c,created:curWk()})});
  if(d.a=='addcol')return modal('خانة جديدة',`<input id=cn placeholder="اسم الخانة">`,'إضافة',()=>{const n=$('#cn').value.trim();if(!n)return false;put('meta/cols',{list:firebase.firestore.FieldValue.arrayUnion(n)})});
  if(d.a=='addme')return modal('Add task','<input id=tx placeholder="المهمة">','إضافة',()=>{const x=$('#tx').value.trim();if(!x)return false;cref('tasks').add({wk:wkOf(),to:ME.id,text:x,from:ME.name,done:false,at:Date.now(),by:ME.id})});
  if(d.a=='rmt'){const id=d.k,au=!!d.u;return modal('Cancel task?','<p>هتتلغي المهمة دي.</p>','تأكيد',()=>{au?put('tasks/'+id,{off:true}):cref('tasks').doc(id).delete()})}
