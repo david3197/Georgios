@@ -145,7 +145,40 @@ html[data-theme=dark] .cb{background:#171A20;border-color:#4A515C}html[data-them
 html[data-theme=dark] .mut,html[data-theme=dark] .vr span{color:#9AA0A6}
 html[data-theme=dark] .bdb{background:#2A2112;color:#F7E7C4}
 html[data-theme=dark] .avb{background:#171A20}
-</style></head><body><div id=adm data-a=adm>D</div><div id=lg><span data-a=lga>a</span><span data-a=lge>e</span></div>
+
+/*luxe*/
+html{background:#F4F6F8}html[data-theme=dark]{background:#0E1013}
+body{min-height:100vh;background-attachment:fixed;padding-bottom:calc(84px + env(safe-area-inset-bottom));background:radial-gradient(90% 40% at 100% 0%,rgba(106,27,154,.10),transparent 60%),radial-gradient(80% 40% at 0% 8%,rgba(0,194,179,.12),transparent 60%),#F4F6F8}
+.top{backdrop-filter:blur(10px);border-bottom:0;box-shadow:0 1px 0 rgba(0,194,179,.55),0 10px 28px rgba(0,0,0,.28)}
+.top .avb{border-color:#00C2B3;box-shadow:0 0 0 3px rgba(0,194,179,.25)}
+#lg{right:auto;left:52px;top:calc(13px + env(safe-area-inset-top,0px))}#lg span{font-size:12px;padding:2px 8px;border-radius:20px;background:rgba(255,255,255,.08)}
+.hero{margin:14px 14px 10px;padding:20px 18px 18px;border-radius:28px;color:#fff;position:relative;overflow:hidden;background:radial-gradient(120% 140% at 0% 0%,#7B22B0 0%,#2a0f3c 42%,#050505 100%);box-shadow:0 14px 34px rgba(60,10,90,.35)}
+.hero:after{content:'';position:absolute;right:-50px;top:-50px;width:190px;height:190px;border-radius:50%;background:radial-gradient(closest-side,rgba(0,194,179,.55),transparent)}
+.hero .fh{justify-content:flex-start;margin:0 0 14px;position:relative;z-index:1}.hero .fh b{font-size:17px}.hero .fh .pic,.hero .fh .fic{width:42px;height:42px;border:2px solid rgba(255,255,255,.7)}
+.hero .hi{font-size:27px;font-weight:800;position:relative;z-index:1;line-height:1.25}
+.hero .wkchip{display:inline-block;margin-top:12px;padding:6px 14px;border-radius:30px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);font-weight:600;font-size:14px;position:relative;z-index:1}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 14px 12px}
+.stat{background:#fff;border-radius:22px;padding:14px;display:flex;align-items:center;gap:12px;box-shadow:0 6px 18px rgba(20,20,40,.07);border:1px solid #EDF0F3}
+.stat b{display:block;font-size:20px}.stat small{color:#6b7280;font-size:13px}
+.ring{--p:0;width:56px;height:56px;border-radius:50%;background:conic-gradient(#00A99D calc(var(--p)*1%),#E8ECEF 0);display:grid;place-items:center;flex:none}.ring span{width:44px;height:44px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:12px;font-weight:800}
+.stat .ic2{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#6A1B9A,#8E3BC4);color:#fff;flex:none}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 14px}
+.tile{border-radius:24px;padding:16px;min-height:132px;color:#fff;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;box-shadow:0 10px 24px rgba(0,0,0,.16);transition:transform .15s}.tile:active{transform:scale(.97)}
+.tile:after{content:'';position:absolute;right:-26px;bottom:-26px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,.12)}
+.tile b{font-size:19px;font-weight:800;position:relative;z-index:1}.tile small{display:block;opacity:.9;font-size:13px;font-weight:500;margin-top:2px;position:relative;z-index:1}
+.tile .ic{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:rgba(255,255,255,.2);position:relative;z-index:1}
+.t1{background:linear-gradient(135deg,#00A99D,#00D1C1)}.t2{background:linear-gradient(135deg,#6A1B9A,#9B3FD1)}.t3{background:linear-gradient(135deg,#000,#2d2d2d)}.t4{background:#fff;color:#111;border:1.5px solid #00C2B3}.t4 .ic{background:rgba(0,169,157,.12);color:#00A99D}
+.ic svg,.bi svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+#bn{display:none;position:fixed;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:8;background:rgba(10,10,10,.92);backdrop-filter:blur(14px);border-radius:26px;padding:8px;justify-content:space-around;box-shadow:0 12px 32px rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.08)}
+.bi{display:flex;flex-direction:column;align-items:center;gap:3px;color:#9aa3ab;font-size:11px;font-weight:600;padding:7px 14px;border-radius:18px;min-width:68px}.bi.on{color:#fff;background:linear-gradient(135deg,#00A99D,#00C2B3)}
+#adm{bottom:84px}#toast{bottom:100px}.nt{top:calc(70px + env(safe-area-inset-top,0px))}
+.sec h3{font-size:15px;letter-spacing:.3px;color:#374151}
+.bdb{border-radius:22px;border:0;background:linear-gradient(135deg,#FFF3D6,#FFE2A8);box-shadow:0 8px 20px rgba(217,119,6,.2)}
+html[data-theme=dark] body{background:radial-gradient(90% 40% at 100% 0%,rgba(106,27,154,.22),transparent 60%),radial-gradient(80% 40% at 0% 8%,rgba(0,194,179,.15),transparent 60%),#0E1013}
+html[data-theme=dark] .stat,html[data-theme=dark] .t4{background:#171A20;border-color:#2A2F39;color:#E8EAED}html[data-theme=dark] .ring span{background:#171A20;color:#E8EAED}html[data-theme=dark] .ring{background:conic-gradient(#00A99D calc(var(--p)*1%),#2A2F39 0)}html[data-theme=dark] .stat small,html[data-theme=dark] .sec h3{color:#9AA0A6}
+html[data-theme=dark] .bdb{background:linear-gradient(135deg,#3a2a10,#2a1e0a);color:#F7E7C4}
+.tools{flex-wrap:wrap}.tools .q{flex:1 1 100%;order:-1}
+</style></head><body><div id=adm data-a=adm>D</div><nav id=bn></nav><div id=lg><span data-a=lga>a</span><span data-a=lge>e</span></div>
 <div id="app"></div><div id="m"></div><div id="toast"></div>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -350,7 +383,7 @@ const TRP=[['Home','الرئيسية'],
 ['Family password','باسورد الأسرة'],
 ['Wrong family password','باسورد الأسرة غلط'],
 ['New family? Pick a password for it','لو أسرة جديدة اختار ليها باسورد'],
-['🔒 Password required','🔒 محتاج باسورد'],['📷 Photo','📷 صورة'],['Dark mode','الوضع الداكن'],['Light mode','الوضع الفاتح'],['Leave family','خروج من الأسرة'],['Leave family?','الخروج من الأسرة؟'],['Leave','خروج'],['🔔 Remind','🔔 فكرني'],['Send the reminder on WhatsApp with your photo','ابعت التذكير على واتساب بصورتك'],['Sunday','الأحد'],
+['🔒 Password required','🔒 محتاج باسورد'],['📷 Photo','📷 صورة'],['Dark mode','الوضع الداكن'],['Light mode','الوضع الفاتح'],['Leave family','خروج من الأسرة'],['Leave family?','الخروج من الأسرة؟'],['Leave','خروج'],['🔔 Remind','🔔 فكرني'],['Send the reminder on WhatsApp with your photo','ابعت التذكير على واتساب بصورتك'],['Tasks left','مهام باقية'],['🎂 Birthday today','🎂 النهاردة عيد ميلاد'],['Remind','فكرني'],['Send on WhatsApp','ابعت على واتساب'],['Sunday','الأحد'],
 ['Monday','الإثنين'],
 ['Tuesday','التلات'],
 ['Wednesday','الأربع'],
@@ -359,7 +392,7 @@ const TRP=[['Home','الرئيسية'],
 ['Saturday','السبت']];
 const a2e={},e2a={};TRP.forEach(p=>{a2e[p[1]]=p[0];e2a[p[0]]=p[1]});
 const DYA='الأحد|الإثنين|التلات|الأربع|الخميس|الجمعة|السبت',DYE='Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday';
-const RX=[[/^🎂 النهاردة عيد ميلاد (.+)$/,(m,x)=>'🎂 Birthday today: '+x,/^🎂 Birthday today: (.+)$/,(m,x)=>'🎂 النهاردة عيد ميلاد '+x],[/^(\d+) من (\d+)$/,(m,a,b)=>a+' of '+b,/^(\d+) of (\d+)$/,(m,a,b)=>a+' من '+b],
+const RX=[[/^أهلاً (.+) 👋$/,(m,x)=>'Hello '+x+' 👋',/^Hello (.+) 👋$/,(m,x)=>'أهلاً '+x+' 👋'],[/^🎂 النهاردة عيد ميلاد (.+)$/,(m,x)=>'🎂 Birthday today: '+x,/^🎂 Birthday today: (.+)$/,(m,x)=>'🎂 النهاردة عيد ميلاد '+x],[/^(\d+) من (\d+)$/,(m,a,b)=>a+' of '+b,/^(\d+) of (\d+)$/,(m,a,b)=>a+' من '+b],
 [/^حضر (\d+) من (\d+) جمعة$/,(m,a,b)=>'Attended '+a+' of '+b+' Fridays',/^Attended (\d+) of (\d+) Fridays$/,(m,a,b)=>'حضر '+a+' من '+b+' جمعة'],
 [/^حضورك: (\d+) من (\d+) جمعة$/,(m,a,b)=>'Your attendance: '+a+' of '+b+' Fridays',/^Your attendance: (\d+) of (\d+) Fridays$/,(m,a,b)=>'حضورك: '+a+' من '+b+' جمعة'],
 [/^احنا لسه (.+) يا عم 😄 الحضور يوم الجمعة$/,(m,d)=>"It's still "+(a2e[d]||d)+', friend 😄 Attendance is on Friday',/^It's still (.+), friend 😄 Attendance is on Friday$/,(m,d)=>'احنا لسه '+(e2a[d]||d)+' يا عم 😄 الحضور يوم الجمعة'],
@@ -393,16 +426,23 @@ function dk(){document.documentElement.dataset.theme=localStorage.dark?'dark':''
 function avp(){const m=S.sv.find(x=>x.id==ME.id);return m&&m.photo?`<img src="${m.photo}" style="width:100%;height:100%;object-fit:cover">`:av(ME.name)}
 async function shareRem(u,m){try{const b=await(await fetch(u)).blob(),f=new File([b],'photo.jpg',{type:'image/jpeg'});if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],text:m});return}}catch(e){if(e&&e.name=='AbortError')return}window.open('https://wa.me/?text='+encodeURIComponent(m),'_blank')}
 document.addEventListener('change',e=>{const t=e.target;if(t.dataset&&t.dataset.a=='ken')put('kids/'+t.dataset.k,{en:t.value.trim()})});
+const IC={list:'<svg viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/></svg>',home:'<svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>',att:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.5"/></svg>',vis:'<svg viewBox="0 0 24 24"><path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.6-7 10-7 10z"/></svg>',bell:'<svg viewBox="0 0 24 24"><path d="M6 16v-5a6 6 0 1 1 12 0v5l1.5 2h-15z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>',sv:'<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>'};
+function bnRender(){const e=$('#bn');if(!e)return;const on=ME&&FAM&&!V.adm;e.style.display=on?'flex':'none';if(!on)return;
+ e.innerHTML=[['home','Home'],['att','Attendance'],['vis','Visitation'],['sv','Account']].map(x=>`<div class="bi${V.t==x[0]?' on':''}" data-a=bn data-t="${x[0]}">${IC[x[0]]}<span>${x[1]}</span></div>`).join('')}
+function bdPopup(){const L=bdToday(),t=ymd(new Date());if(!L.length||!ME||V.t!='home'||localStorage.bdp==t||$('#m').className=='on')return;localStorage.bdp=t;
+ modal('🎂 Birthday today',L.map(x=>`<button class=btn data-a=wa data-n="${esc(x.n)}" style="margin:6px 0;width:100%">🎁 ${esc(x.n)}</button>`).join(''),'Close',()=>{})}
 function hdr(){const t={home:'Georgios',att:'الحضور',vis:'الافتقاد',sv:'Your account',hist:'History',acc:'Accounts',acc1:'الحساب'}[V.t];
  const ban=V.wk&&V.wk!=curWk()?`<div class=ban><span>بتعدّل في: ${lbl(V.wk)}</span><button data-a=cur>This week</button></div>`:'';
  return `<div class=top><span class=hl>${V.t!='home'?'<button data-a=back>‹</button>':''}</span><b>${t}</b><span class=hr><button class=avb data-a=go data-t=sv>${avp()}</button><button data-a=menu>☰</button></span></div>
- <div id=menu class="${V.menu?'on':''}"><div data-a=go data-t=home>Home</div><div data-a=go data-t=hist>History</div><div data-a=go data-t=acc>Accounts</div><div data-a=paste>Paste list</div>${ME.cls||ME.role=='h'?'<div data-a=rencls>Rename class</div>':''}${ME.role=='h'?'<div data-a=setpw>Set password</div>':''}<div data-a=dark>${localStorage.dark?'Light mode':'Dark mode'}</div><div data-a=switch>Log out</div><div style="color:#777;font-size:12px;padding:8px 18px">v16</div></div>${ban}`}
+ <div id=menu class="${V.menu?'on':''}"><div data-a=go data-t=home>Home</div><div data-a=go data-t=hist>History</div><div data-a=go data-t=acc>Accounts</div><div data-a=paste>Paste list</div>${ME.cls||ME.role=='h'?'<div data-a=rencls>Rename class</div>':''}${ME.role=='h'?'<div data-a=setpw>Set password</div>':''}<div data-a=dark>${localStorage.dark?'الوضع الفاتح':'الوضع الداكن'}</div><div data-a=switch>Log out</div><div style="color:#777;font-size:12px;padding:8px 18px">v16</div></div>${ban}`}
 
-function vHome(){const wk=wkOf(),a=S.att[wk]||{},n=S.kids.filter(k=>a[k.id]).length;
- return `<div class=fh data-a=fphoto>${(S.fam||{}).photo?`<img class=pic src="${S.fam.photo}">`:`<span class=fic>${esc([...(localStorage.famn||'?')][0])}</span>`}<b>${esc(localStorage.famn||'')}</b></div>${bdBanner()}<div class=wk>${lbl(wk)}${wk==curWk()?' • This week':''}</div>
- <div class="card c1" data-a=go data-t=att>الحضور<small>${n} من ${S.kids.length}</small></div>
- <div class="card c2" data-a=go data-t=vis>الافتقاد<small>تليفون • منزلي • بيانات الأولاد</small></div>
- <div class="card c3" data-a=remind>🔔 Remind<small>Send the reminder on WhatsApp with your photo</small></div>`}
+function vHome(){const wk=wkOf(),a=S.att[wk]||{},n=S.kids.filter(k=>a[k.id]).length,tot=S.kids.length,pct=tot?Math.round(n*100/tot):0,me=S.sv.find(x=>x.id==ME.id)||ME,tk=tasksOf(me,wk).filter(t=>!t.done).length;
+ return `<div class=hero><div class=fh data-a=fphoto>${(S.fam||{}).photo?`<img class=pic src="${S.fam.photo}">`:`<span class=fic>${esc([...(localStorage.famn||'?')][0])}</span>`}<b>${esc(localStorage.famn||'')}</b></div><div class=hi>أهلاً ${esc(ME.name)} 👋</div><div class=wkchip>${lbl(wk)}${wk==curWk()?' • This week':''}</div></div>${bdBanner()}
+ <div class=stats><div class=stat><div class=ring style="--p:${pct}"><span>${pct}%</span></div><div><b>${n}/${tot}</b><small>الحضور</small></div></div><div class=stat><div class=ic2><span class=ic>${IC.list}</span></div><div><b>${tk}</b><small>مهام باقية</small></div></div></div>
+ <div class=grid><div class="tile t1" data-a=go data-t=att><span class=ic>${IC.att}</span><div><b>الحضور</b><small>${n} من ${tot}</small></div></div>
+ <div class="tile t2" data-a=go data-t=vis><span class=ic>${IC.vis}</span><div><b>الافتقاد</b><small>تليفون • منزلي</small></div></div>
+ <div class="tile t3" data-a=remind><span class=ic>${IC.bell}</span><div><b>Remind</b><small>Send on WhatsApp</small></div></div>
+ <div class="tile t4" data-a=go data-t=sv><span class=ic>${IC.sv}</span><div><b>Your account</b><small>${esc(ME.name)}</small></div></div></div>`}
 
 function vAtt(){const wk=wkOf(),a=S.att[wk]||{},lock=wk==curWk()&&!isFri();let r='';
  groups(S.kids).forEach(([c,l])=>{r+=band(c,l.length,2);l.forEach(k=>r+=`<tr data-n="${norm(k.name+' '+(k.en||''))}">${nameTd(k,c,1)}<td>${cb('att/'+wk,k.id,a[k.id],lock)}</td></tr>`)});
@@ -459,12 +499,12 @@ function ob0(){const o=V.ob=V.ob||{s:1};
 function finish(cls){const o=V.ob,ex=S.sv.find(x=>norm(x.name)==norm(o.n)&&x.g==o.g&&(x.cls||'')==(cls||''));const id=ex?ex.id:cref('servants').doc().id;
  put('servants/'+id,{name:o.n,g:o.g,role:o.role,cls:cls||'',av:o.av||0,...(o.bd?{bd:o.bd}:{}),...(o.photo?{photo:o.photo}:{}),...(ex?{}:{created:curWk()})});ME={id,name:o.n,g:o.g,role:o.role,cls:cls||'',av:o.av||0,pv:o.pv,t:Date.now()};localStorage.me=JSON.stringify(ME);localStorage.nt=Date.now();rememberFam();V={t:'home'};draw(true)}
 
-function draw(force){if(!db)return;const a=document.activeElement;
+function draw(force){bnRender();if(!db)return;const a=document.activeElement;
  if(!force&&a&&/INPUT|SELECT/.test(a.tagName)&&a.closest('#app')){pend=1;return}pend=0;
  if(ME)try{sessionStorage.vs=JSON.stringify({t:V.t,wk:V.wk,kid:V.kid,st:V.st})}catch(e){}
  const app=$('#app');if(V.adm){app.innerHTML=admView();return}if(!FAM){app.innerHTML=famScr();return}if(!ME){app.innerHTML=ob();return}
  const sc=[...document.querySelectorAll('.sh')].map(e=>e.scrollLeft),y=scrollY;
- app.innerHTML=hdr()+({home:vHome,att:vAtt,vis:vVis,sv:vSv,hist:vHist,acc:vAcc,acc1:vAcc1}[V.t])();applyQ();
+ app.innerHTML=hdr()+({home:vHome,att:vAtt,vis:vVis,sv:vSv,hist:vHist,acc:vAcc,acc1:vAcc1}[V.t])();applyQ();setTimeout(bdPopup,500);
  if(!force){document.querySelectorAll('.sh').forEach((e,i)=>e.scrollLeft=sc[i]||0);scrollTo(0,y)}}
 function applyQ(){const q=norm(V.q||'');document.querySelectorAll('[data-n]').forEach(r=>r.style.display=r.dataset.n.includes(q)?'':'none')}
 
@@ -514,7 +554,7 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-a]');
  if(d.a=='kphoto'){const id=d.k;return pickImg(u=>put('kids/'+id,{photo:u}))}
  if(d.a=='fphoto')return pickImg(u=>db.doc('fam/'+FAM).set({photo:u},{merge:true}));
  if(d.a=='bdx'){localStorage.bdx=ymd(new Date());return draw(true)}
- if(d.a=='wa'){const m=((S.set||{}).bdmsg||'كل سنة وانت طيب يا {name} 🎂🎉').replace(/\{name\}/g,d.n);return window.open('https://wa.me/?text='+encodeURIComponent(m),'_blank')}
+ if(d.a=='wa'){const m=((S.set||{}).bdmsg||'كل سنة وانت طيب يا {name} 🎂🎉').replace(/\{name\}/g,d.n);const me=S.sv.find(x=>x.id==ME.id)||{};if(me.photo)return shareRem(me.photo,m);return window.open('https://wa.me/?text='+encodeURIComponent(m),'_blank')}
  if(d.a=='admmsg')return db.doc('root/settings').set({bdmsg:$('#bdm').value,remmsg:$('#rmm').value},{merge:true}).then(()=>toast('Saved'));
  if(d.a=='ntgo'){const o=$('#ntf');if(o)o.remove();V.wk=null;go('sv');return draw(true)}
  if(d.a=='xatt'){const wk=wkOf(),a=S.att[wk]||{},R=[['Class','Name',lbl(wk)]];groups(S.kids).forEach(([c,l])=>l.forEach(k=>R.push([c,k.name,a[k.id]?'✓':''])));return dl('attendance_'+wk+'.csv',R)}
@@ -527,6 +567,7 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-a]');
  if(d.a=='admrp'){const id=A.id;return modal('Reset family password','<p>'+esc(A.fn)+'</p>','Delete',()=>{db.doc('fam/'+id).set({ph:firebase.firestore.FieldValue.delete()},{merge:true}).then(()=>toast('Saved'))})}
  if(d.a=='admall')return admAll();
  if(d.a=='admdr'){const k=d.k;return modal('Delete root/'+k+'?','<p>root/admin = owner code (deleting it lets the next D press set a new code)</p>','Delete',()=>{db.doc('root/'+k).delete().then(admAll)})}
+ if(d.a=='bn'){V.st=[];V.q='';V.menu=0;V.t=d.t;return draw(true)}
  if(d.a=='dark'){if(localStorage.dark)localStorage.removeItem('dark');else localStorage.dark='1';dk();V.menu=0;return draw(true)}
  if(d.a=='obphoto')return pickImg(u=>{V.obp=u;const e=$('#obpp');if(e){e.src=u;e.style.display='block'}});
  if(d.a=='sphoto')return pickImg(u=>put('servants/'+ME.id,{photo:u}));
