@@ -137,7 +137,8 @@ function modal(title,body,ok,fn){const m=$('#m');m.innerHTML=`<div class=box><h3
 if(!CFG.projectId){document.body.innerHTML='<div style="padding:30px;font-size:18px">لازم تلصق إعدادات Firebase في أول سكريبت (CFG) جوه index.html</div>'}
 else{firebase.initializeApp(CFG);db=firebase.firestore();
  db.enablePersistence({synchronizeTabs:true}).catch(()=>{}).then(()=>{if(FAM)window.listen();else draw(true)});
- if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js');}
+ if('serviceWorker' in navigator){const had=!!navigator.serviceWorker.controller;navigator.serviceWorker.register('sw.js').then(r=>r.update()).catch(()=>{});navigator.serviceWorker.addEventListener('controllerchange',()=>{if(had&&!window._rl){window._rl=1;location.reload()}})}
+}
 
 window.listen=function(){
  const docs=s=>s.docs.map(d=>({id:d.id,...d.data()}));
@@ -352,7 +353,7 @@ function admAllHtml(){const J=x=>JSON.stringify(x,(k,v)=>k=='photo'?'[photo]':k=
 function hdr(){const t={home:'Georgios',att:'الحضور',vis:'الافتقاد',sv:'Your account',hist:'History',acc:'Accounts',acc1:'الحساب'}[V.t];
  const ban=V.wk&&V.wk!=curWk()?`<div class=ban><span>بتعدّل في: ${lbl(V.wk)}</span><button data-a=cur>This week</button></div>`:'';
  return `<div class=top><span class=hl>${V.t!='home'?'<button data-a=back>‹</button>':''}</span><b>${t}</b><span class=hr><button class=avb data-a=go data-t=sv>${av(ME.name)}</button><button data-a=menu>☰</button></span></div>
- <div id=menu class="${V.menu?'on':''}"><div data-a=go data-t=home>Home</div><div data-a=go data-t=hist>History</div><div data-a=go data-t=acc>Accounts</div><div data-a=paste>Paste list</div>${ME.cls||ME.role=='h'?'<div data-a=rencls>Rename class</div>':''}${ME.role=='h'?'<div data-a=setpw>Set password</div>':''}<div data-a=switch>Log out</div></div>${ban}`}
+ <div id=menu class="${V.menu?'on':''}"><div data-a=go data-t=home>Home</div><div data-a=go data-t=hist>History</div><div data-a=go data-t=acc>Accounts</div><div data-a=paste>Paste list</div>${ME.cls||ME.role=='h'?'<div data-a=rencls>Rename class</div>':''}${ME.role=='h'?'<div data-a=setpw>Set password</div>':''}<div data-a=switch>Log out</div><div style="color:#777;font-size:12px;padding:8px 18px">v16</div></div>${ban}`}
 
 function vHome(){const wk=wkOf(),a=S.att[wk]||{},n=S.kids.filter(k=>a[k.id]).length;
  return `<div class=fh data-a=fphoto>${(S.fam||{}).photo?`<img class=pic src="${S.fam.photo}">`:`<span class=fic>${esc([...(localStorage.famn||'?')][0])}</span>`}<b>${esc(localStorage.famn||'')}</b></div>${bdBanner()}<div class=wk>${lbl(wk)}${wk==curWk()?' • This week':''}</div>
