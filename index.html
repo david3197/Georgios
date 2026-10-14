@@ -178,6 +178,7 @@ html[data-theme=dark] body{background:radial-gradient(90% 40% at 100% 0%,rgba(10
 html[data-theme=dark] .stat,html[data-theme=dark] .t4{background:#171A20;border-color:#2A2F39;color:#E8EAED}html[data-theme=dark] .ring span{background:#171A20;color:#E8EAED}html[data-theme=dark] .ring{background:conic-gradient(#00A99D calc(var(--p)*1%),#2A2F39 0)}html[data-theme=dark] .stat small,html[data-theme=dark] .sec h3{color:#9AA0A6}
 html[data-theme=dark] .bdb{background:linear-gradient(135deg,#3a2a10,#2a1e0a);color:#F7E7C4}
 .tools{flex-wrap:wrap}.tools .q{flex:1 1 100%;order:-1}
+#m .box{max-height:88vh;overflow-y:auto}#m textarea{height:90px}#m label{display:block;margin-top:8px;font-weight:700}
 </style></head><body><div id=adm data-a=adm>D</div><nav id=bn></nav><div id=lg><span data-a=lga>a</span><span data-a=lge>e</span></div>
 <div id="app"></div><div id="m"></div><div id="toast"></div>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -383,7 +384,7 @@ const TRP=[['Home','الرئيسية'],
 ['Family password','باسورد الأسرة'],
 ['Wrong family password','باسورد الأسرة غلط'],
 ['New family? Pick a password for it','لو أسرة جديدة اختار ليها باسورد'],
-['🔒 Password required','🔒 محتاج باسورد'],['📷 Photo','📷 صورة'],['Dark mode','الوضع الداكن'],['Light mode','الوضع الفاتح'],['Leave family','خروج من الأسرة'],['Leave family?','الخروج من الأسرة؟'],['Leave','خروج'],['🔔 Remind','🔔 فكرني'],['Send the reminder on WhatsApp with your photo','ابعت التذكير على واتساب بصورتك'],['Tasks left','مهام باقية'],['🎂 Birthday today','🎂 النهاردة عيد ميلاد'],['Remind','فكرني'],['Send on WhatsApp','ابعت على واتساب'],['Sunday','الأحد'],
+['🔒 Password required','🔒 محتاج باسورد'],['📷 Photo','📷 صورة'],['Dark mode','الوضع الداكن'],['Light mode','الوضع الفاتح'],['Leave family','خروج من الأسرة'],['Leave family?','الخروج من الأسرة؟'],['Leave','خروج'],['🔔 Remind','🔔 فكرني'],['Send the reminder on WhatsApp with your photo','ابعت التذكير على واتساب بصورتك'],['Tasks left','مهام باقية'],['🎂 Birthday today','🎂 النهاردة عيد ميلاد'],['Remind','فكرني'],['Send on WhatsApp','ابعت على واتساب'],['+ New reminder','+ تذكير جديد'],['New reminder','تذكير جديد'],['Edit reminder','تعديل التذكير'],['Send now','ابعت دلوقتي'],['Reminder','تذكير'],['🔔 Reminder','🔔 تذكير'],['Once','مرة واحدة'],['Every week','كل أسبوع'],['Every year','كل سنة'],['Date','التاريخ'],['Send to','ابعت ل'],['Photo','الصورة'],['My photo','صورتي'],['Custom photo','صورة تانية'],['No photo','من غير صورة'],['Choose chat when sending (supports photo)','اختار الشات وقت الإرسال (بيدعم الصورة)'],['Phone number (text only)','رقم تليفون (رسالة بس)'],['Group invite link (opens group)','لينك دعوة الجروب (بيفتح الجروب)'],['No reminders yet. Tap + New reminder.','لسه مفيش تذكيرات. دوس + تذكير جديد'],['Sunday','الأحد'],
 ['Monday','الإثنين'],
 ['Tuesday','التلات'],
 ['Wednesday','الأربع'],
@@ -431,7 +432,23 @@ function bnRender(){const e=$('#bn');if(!e)return;const on=ME&&FAM&&!V.adm;e.sty
  e.innerHTML=[['home','Home'],['att','Attendance'],['vis','Visitation'],['sv','Account']].map(x=>`<div class="bi${V.t==x[0]?' on':''}" data-a=bn data-t="${x[0]}">${IC[x[0]]}<span>${x[1]}</span></div>`).join('')}
 function bdPopup(){const L=bdToday(),t=ymd(new Date());if(!L.length||!ME||V.t!='home'||localStorage.bdp==t||$('#m').className=='on')return;localStorage.bdp=t;
  modal('🎂 Birthday today',L.map(x=>`<button class=btn data-a=wa data-n="${esc(x.n)}" style="margin:6px 0;width:100%">🎁 ${esc(x.n)}</button>`).join(''),'Close',()=>{})}
-function hdr(){const t={home:'Georgios',att:'الحضور',vis:'الافتقاد',sv:'Your account',hist:'History',acc:'Accounts',acc1:'الحساب'}[V.t];
+const getRems=()=>{try{return JSON.parse(localStorage.rems||'[]')}catch(e){return[]}},setRems=L=>{localStorage.rems=JSON.stringify(L)};
+const TGL={pick:'Choose chat when sending (supports photo)',num:'Phone number (text only)',grp:'Group invite link (opens group)'},RPL={none:'Once',week:'Every week',year:'Every year'};
+function vRem(){const L=getRems();return `<div class=tools><button class=btn data-a=remnew>+ New reminder</button></div>`+(L.length?L.map(r=>`<div class=li style="display:block"><b>${esc(r.t||'Reminder')}</b><div class=mut style="padding:2px 0">📅 ${esc(r.date||'-')} • ${RPL[r.rep]||''}</div><div class=mut style="padding:2px 0">${esc(TGL[r.tg]||'')}${r.tv?': '+esc(r.tv):''}</div><div style="padding:6px 0">${esc((r.msg||'').slice(0,90))}</div>${r.pm=='custom'&&r.photo?`<img class=pic style="width:48px;height:48px" src="${r.photo}">`:''}<div style="margin-top:8px"><button class="btn sm" data-a=remsend data-i="${r.id}">Send now</button> <button class="btn pu sm" data-a=remedit data-i="${r.id}">Edit</button> <button class="btn alt sm" data-a=remdel data-i="${r.id}">Delete</button></div></div>`).join(''):'<div class=mut style="padding:24px;text-align:center">No reminders yet. Tap + New reminder.</div>')}
+function remForm(r){r=r||{id:Date.now(),t:'',msg:'',date:'',rep:'none',tg:'pick',tv:'',pm:'my',photo:''};V.rp=r.photo||'';
+ modal(r.t||r.msg?'Edit reminder':'New reminder',`<input id=rt placeholder="Title (optional)" value="${esc(r.t)}"><textarea id=rm placeholder="Message ({name} = your name)">${esc(r.msg)}</textarea><label>Date</label><input id=rd type=date value="${esc(r.date)}"><select id=rr>${Object.keys(RPL).map(k=>`<option value=${k}>${RPL[k]}</option>`).join('')}</select><label>Send to</label><select id=rg>${Object.keys(TGL).map(k=>`<option value=${k}>${TGL[k]}</option>`).join('')}</select><input id=rv placeholder="Number with country code, or group link" value="${esc(r.tv)}"><label>Photo</label><select id=rp><option value=my>My photo</option><option value=custom>Custom photo</option><option value=none>No photo</option></select><button class="btn alt sm" data-a=rempick>📷 Pick custom photo</button>`,'Save',()=>{
+  const g=x=>$(x).value,o={id:r.id,t:g('#rt').trim(),msg:g('#rm').trim(),date:g('#rd'),rep:g('#rr'),tg:g('#rg'),tv:g('#rv').trim(),pm:g('#rp'),photo:V.rp||''};
+  if(!o.msg){toast('Write the message');return false}if(o.tg!='pick'&&!o.tv){toast('Add the number or link');return false}if(o.pm=='custom'&&!o.photo){toast('Pick the custom photo');return false}
+  setRems(getRems().filter(x=>x.id!=o.id).concat(o));draw(true)});
+ $('#rr').value=r.rep;$('#rg').value=r.tg;$('#rp').value=r.pm}
+function sendRem(r){const me=S.sv.find(x=>x.id==ME.id)||{},m=(r.msg||'').replace(/\{name\}/g,ME.name),ph=r.pm=='custom'?r.photo:r.pm=='my'?me.photo:'';
+ if(r.tg=='num'){let n=(r.tv||'').replace(/\D/g,'');if(n[0]=='0')n='20'+n.slice(1);if(ph)toast('A photo can not be attached to a number. Use Choose chat to send it');return window.open('https://wa.me/'+n+'?text='+encodeURIComponent(m),'_blank')}
+ if(r.tg=='grp'){try{navigator.clipboard.writeText(m)}catch(e){}toast('Message copied, paste it in the group');return window.open(r.tv,'_blank')}
+ return ph?shareRem(ph,m):window.open('https://wa.me/?text='+encodeURIComponent(m),'_blank')}
+function remDue(){const t=ymd(new Date()),dw=new Date().getDay();return getRems().filter(r=>r.date&&r.last!=t&&(r.rep=='year'?r.date.slice(5)==t.slice(5):r.rep=='week'?(t>=r.date&&new Date(r.date+'T00:00').getDay()==dw):(r.date<=t&&!r.last)))}
+function remPopup(){const L=remDue();if(!L.length||!ME||V.t!='home'||$('#m').className=='on')return;const t=ymd(new Date()),a=getRems();a.forEach(x=>{if(L.some(r=>r.id==x.id))x.last=t});setRems(a);
+ modal('🔔 Reminder',L.map(r=>`<button class=btn data-a=remsend data-i="${r.id}" style="margin:6px 0;width:100%">${esc(r.t||(r.msg||'').slice(0,30))}</button>`).join(''),'Close',()=>{})}
+function hdr(){const t={home:'Georgios',att:'الحضور',vis:'الافتقاد',sv:'Your account',rem:'Remind',hist:'History',acc:'Accounts',acc1:'الحساب'}[V.t];
  const ban=V.wk&&V.wk!=curWk()?`<div class=ban><span>بتعدّل في: ${lbl(V.wk)}</span><button data-a=cur>This week</button></div>`:'';
  return `<div class=top><span class=hl>${V.t!='home'?'<button data-a=back>‹</button>':''}</span><b>${t}</b><span class=hr><button class=avb data-a=go data-t=sv>${avp()}</button><button data-a=menu>☰</button></span></div>
  <div id=menu class="${V.menu?'on':''}"><div data-a=go data-t=home>Home</div><div data-a=go data-t=hist>History</div><div data-a=go data-t=acc>Accounts</div><div data-a=paste>Paste list</div>${ME.cls||ME.role=='h'?'<div data-a=rencls>Rename class</div>':''}${ME.role=='h'?'<div data-a=setpw>Set password</div>':''}<div data-a=dark>${localStorage.dark?'الوضع الفاتح':'الوضع الداكن'}</div><div data-a=switch>Log out</div><div style="color:#777;font-size:12px;padding:8px 18px">v16</div></div>${ban}`}
@@ -441,7 +458,7 @@ function vHome(){const wk=wkOf(),a=S.att[wk]||{},n=S.kids.filter(k=>a[k.id]).len
  <div class=stats><div class=stat><div class=ring style="--p:${pct}"><span>${pct}%</span></div><div><b>${n}/${tot}</b><small>الحضور</small></div></div><div class=stat><div class=ic2><span class=ic>${IC.list}</span></div><div><b>${tk}</b><small>مهام باقية</small></div></div></div>
  <div class=grid><div class="tile t1" data-a=go data-t=att><span class=ic>${IC.att}</span><div><b>الحضور</b><small>${n} من ${tot}</small></div></div>
  <div class="tile t2" data-a=go data-t=vis><span class=ic>${IC.vis}</span><div><b>الافتقاد</b><small>تليفون • منزلي</small></div></div>
- <div class="tile t3" data-a=remind><span class=ic>${IC.bell}</span><div><b>Remind</b><small>Send on WhatsApp</small></div></div>
+ <div class="tile t3" data-a=go data-t=rem><span class=ic>${IC.bell}</span><div><b>Remind</b><small>Send on WhatsApp</small></div></div>
  <div class="tile t4" data-a=go data-t=sv><span class=ic>${IC.sv}</span><div><b>Your account</b><small>${esc(ME.name)}</small></div></div></div>`}
 
 function vAtt(){const wk=wkOf(),a=S.att[wk]||{},lock=wk==curWk()&&!isFri();let r='';
@@ -504,7 +521,7 @@ function draw(force){bnRender();if(!db)return;const a=document.activeElement;
  if(ME)try{sessionStorage.vs=JSON.stringify({t:V.t,wk:V.wk,kid:V.kid,st:V.st})}catch(e){}
  const app=$('#app');if(V.adm){app.innerHTML=admView();return}if(!FAM){app.innerHTML=famScr();return}if(!ME){app.innerHTML=ob();return}
  const sc=[...document.querySelectorAll('.sh')].map(e=>e.scrollLeft),y=scrollY;
- app.innerHTML=hdr()+({home:vHome,att:vAtt,vis:vVis,sv:vSv,hist:vHist,acc:vAcc,acc1:vAcc1}[V.t])();applyQ();setTimeout(bdPopup,500);
+ app.innerHTML=hdr()+({home:vHome,att:vAtt,vis:vVis,sv:vSv,rem:vRem,hist:vHist,acc:vAcc,acc1:vAcc1}[V.t])();applyQ();setTimeout(()=>{bdPopup();remPopup()},500);
  if(!force){document.querySelectorAll('.sh').forEach((e,i)=>e.scrollLeft=sc[i]||0);scrollTo(0,y)}}
 function applyQ(){const q=norm(V.q||'');document.querySelectorAll('[data-n]').forEach(r=>r.style.display=r.dataset.n.includes(q)?'':'none')}
 
@@ -567,6 +584,11 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-a]');
  if(d.a=='admrp'){const id=A.id;return modal('Reset family password','<p>'+esc(A.fn)+'</p>','Delete',()=>{db.doc('fam/'+id).set({ph:firebase.firestore.FieldValue.delete()},{merge:true}).then(()=>toast('Saved'))})}
  if(d.a=='admall')return admAll();
  if(d.a=='admdr'){const k=d.k;return modal('Delete root/'+k+'?','<p>root/admin = owner code (deleting it lets the next D press set a new code)</p>','Delete',()=>{db.doc('root/'+k).delete().then(admAll)})}
+ if(d.a=='remnew')return remForm();
+ if(d.a=='remedit')return remForm(getRems().find(x=>x.id==+d.i));
+ if(d.a=='remsend'){const r=getRems().find(x=>x.id==+d.i);return r&&sendRem(r)}
+ if(d.a=='remdel'){const id=+d.i;return modal('Delete?','<p>Delete this reminder?</p>','Delete',()=>{setRems(getRems().filter(x=>x.id!=id));draw(true)})}
+ if(d.a=='rempick')return pickImg(u=>{V.rp=u;const e=$('#rp');if(e)e.value='custom';toast('Photo selected ✅')});
  if(d.a=='bn'){V.st=[];V.q='';V.menu=0;V.t=d.t;return draw(true)}
  if(d.a=='dark'){if(localStorage.dark)localStorage.removeItem('dark');else localStorage.dark='1';dk();V.menu=0;return draw(true)}
  if(d.a=='obphoto')return pickImg(u=>{V.obp=u;const e=$('#obpp');if(e){e.src=u;e.style.display='block'}});
