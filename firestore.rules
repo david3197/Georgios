@@ -1,0 +1,45 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() { return request.auth != null; }
+    // Put the UID of your admin account here (Firebase Console > Authentication > Users)
+    function isAdmin() { return signedIn() && request.auth.uid == 'PUT_ADMIN_UID_HERE'; }
+    function member(f) {
+      return signedIn() && exists(/databases/$(database)/documents/fam/$(f)/members/$(request.auth.uid));
+    }
+
+    // owner-only settings (birthday message etc.)
+    match /root/{doc} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+
+    // private family password hashes: nobody can read them, rules can compare against them
+    match /famsec/{f} {
+      allow create: if signedIn() && !exists(/databases/$(database)/documents/fam/$(f));
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /fam/{f} {
+      // public card of the family (name, photo): needed for the family picker
+      allow read: if signedIn();
+      allow create: if signedIn() && exists(/databases/$(database)/documents/famsec/$(f));
+      allow update: if member(f) || isAdmin();
+      allow delete: if isAdmin();
+
+      // joining a family = proving you know its password (the hash must match the private one)
+      match /members/{u} {
+        allow create: if signedIn() && request.auth.uid == u
+          && request.resource.data.h == get(/databases/$(database)/documents/famsec/$(f)).data.ph;
+        allow read: if (signedIn() && request.auth.uid == u) || isAdmin();
+        allow delete: if isAdmin();
+      }
+
+      // everything else inside the family: members and the admin only
+      match /{coll}/{doc=**} {
+        allow read, write: if coll != 'members' && (member(f) || isAdmin());
+      }
+    }
+  }
+}
