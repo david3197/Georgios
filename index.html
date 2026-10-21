@@ -242,7 +242,7 @@ window.listen=function(){
  cref('kids').onSnapshot(s=>{S.kids=docs(s);draw()});
  cref('servants').onSnapshot(s=>{S.sv=docs(s);syncMe(s.metadata);draw()});
  cref('tasks').onSnapshot(s=>{S.tasks=docs(s);notify();draw()});
- dref('meta/auth').onSnapshot(d=>{const x=d.data();if(x&&ME&&ME.role=='h'&&x.ver!=ME.pv){localStorage.removeItem('me');ME=null;V={t:'home'};toast('Password changed, log in again');draw(true)}});
+ dref('meta/auth').onSnapshot(d=>{const x=d.data();if(x&&ME&&!ADMS&&ME.role=='h'&&x.ver!=ME.pv){localStorage.removeItem('me');ME=null;V={t:'home'};toast('Password changed, log in again');draw(true)}});
  db.doc('fam/'+FAM).set({name:localStorage.famn||FAM,seen:Date.now()},{merge:true}).catch(()=>{});
  db.doc('fam/'+FAM).onSnapshot(d=>{S.fam=d.data()||{};rememberFam();draw()});db.doc('root/settings').onSnapshot(d=>{S.set=d.data()||{};draw()});
  dref('meta/hide').onSnapshot(d=>{S.hide=d.data()||{};draw()});
@@ -259,7 +259,7 @@ const colr=c=>BANDS[Math.max(0,classes().indexOf(c))%BANDS.length];
 const ordk=(a,b)=>(a.ord??1e15)-(b.ord??1e15)||a.name.localeCompare(b.name,'ar');
 const weeks=()=>{const cw=curWk(),[y,m,d]=cw.split('-').map(Number),b=ymd(new Date(y,m-1,d-56)),ks=[...Object.keys(S.att),...Object.keys(S.vis),...Object.keys(S.svw),...S.kids.map(k=>k.created),...S.sv.map(x=>x.created)].filter(Boolean).sort(),st=ks[0]&&ks[0]<b?ks[0]:b,[y1,m1,d1]=st.split('-').map(Number),o=[];
  for(let t=new Date(y1,m1-1,d1);ymd(t)<=cw;t.setDate(t.getDate()+7))o.push(ymd(t));return o.filter(w=>w==cw||!(S.hid||[]).includes(w)).reverse()};
-function groups(list,key){const r=groups0(list,key),c=ME&&ME.cls;if(c){const i=r.findIndex(x=>x[0]==c);if(i>0)r.unshift(r.splice(i,1)[0])}return r}
+function groups(list,key){const r=groups0(list,key),me=ME&&(S.sv.find(x=>x.id==ME.id)||ME),nz=x=>norm(x).replace(/\s+/g,''),c=nz(me&&me.cls);if(c){let i=r.findIndex(x=>nz(x[0])==c);if(i<0)i=r.findIndex(x=>{const n=nz(x[0]);return n.includes(c)||c.includes(n)});if(i>0)r.unshift(r.splice(i,1)[0])}return r}
 function groups0(list,key='name'){const g={};list.forEach(k=>{const c=k.cls||'بدون فصل';(g[c]=g[c]||[]).push(k)});
  return Object.keys(g).sort((a,b)=>a.localeCompare(b,'ar')).map(c=>[c,g[c].sort(ordk)])}
 const cb=(p,f,v,l,m)=>`<div class="cb ${v?'on':''}" data-a=tg data-p="${p}" data-f="${esc(f)}" data-v="${v?1:''}" data-m="${m||'b'}" ${l?'data-l=1':''}>${v?'✓':''}</div>`;
