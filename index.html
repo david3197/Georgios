@@ -244,8 +244,8 @@ window.listen=function(){
  cref('servants').onSnapshot(s=>{S.sv=docs(s);syncMe(s.metadata);draw()});
  cref('tasks').onSnapshot(s=>{S.tasks=docs(s);notify();draw()});
  dref('meta/auth').onSnapshot(d=>{const x=d.data();if(x&&ME&&!ADMS&&ME.role=='h'&&x.ver!=ME.pv){localStorage.removeItem('me');ME=null;V={t:'home'};toast('Password changed, log in again');draw(true)}});
- db.doc('fam/'+FAM).set({name:localStorage.famn||FAM,seen:Date.now()},{merge:true}).catch(()=>{});
- db.doc('fam/'+FAM).onSnapshot(d=>{S.fam=d.data()||{};rememberFam();draw()});db.doc('root/settings').onSnapshot(d=>{S.set=d.data()||{};draw()});
+ if(!ADMS)db.doc('fam/'+FAM).get({source:'server'}).then(d=>{if(!d.exists)return famGone(FAM);return d.ref.update({seen:Date.now()})}).catch(()=>{});
+ db.doc('fam/'+FAM).onSnapshot(d=>{if(!d.exists&&!ADMS&&!d.metadata.fromCache&&!d.metadata.hasPendingWrites)return famGone(FAM);S.fam=d.data()||{};if(S.fam.name&&!ADMS)localStorage.famn=S.fam.name;rememberFam();draw()});db.doc('root/settings').onSnapshot(d=>{S.set=d.data()||{};draw()});
  dref('meta/hide').onSnapshot(d=>{S.hide=d.data()||{};draw()});
  dref('meta/sfx').onSnapshot(d=>{S.sfx=(d.data()||{}).list||[];draw()});
  dref('meta/rems').onSnapshot(d=>{S.rems=(d.data()||{}).list||[];if(localStorage.rems&&!window._rm){window._rm=1;try{const L=JSON.parse(localStorage.rems);if(L.length)put('meta/rems',{list:S.rems.concat(L)})}catch(e){}localStorage.removeItem('rems')}draw()});
@@ -301,10 +301,20 @@ document.addEventListener('touchstart',lpS,{passive:true});document.addEventList
 document.addEventListener('contextmenu',e=>{if(e.target.closest('[data-lp]'))e.preventDefault()});
 const hid=(kid,f)=>!ADMS&&[S.hide[kid+'|'+f],S.hide[kid+'|*']].some(x=>x&&x.by!=ME.id&&(x.all||(x.cls||[]).includes(ME.cls||'')||(x.ppl||[]).includes(ME.id)));
 const ADC=['servants','kids','tasks','att','vis','svw','meta'];
+function famForget(id){try{window._fl=(window._fl||[]).filter(f=>f.id!=id)}catch(e){}
+ ['fams','fl'].forEach(k=>{try{localStorage[k]=JSON.stringify(JSON.parse(localStorage[k]||'[]').filter(x=>x.id!=id))}catch(e){}});
+ try{const M=JSON.parse(localStorage.mes||'{}');delete M[id];localStorage.mes=JSON.stringify(M)}catch(e){}}
+function famGone(id){if(window._fg)return;window._fg=1;famForget(id);
+ if(FAM==id){['me','fam','famn','nt'].forEach(k=>localStorage.removeItem(k));sessionStorage.removeItem('vs')}
+ toast('الأسرة دي اتمسحت');setTimeout(()=>location.reload(),1200)}
 const ago=t=>{if(!t)return'—';const m=Math.round((Date.now()-t)/6e4);return m<1?'now':m<60?m+' min':m<1440?Math.round(m/60)+' h':Math.round(m/1440)+' d'};
 function admList(){db.doc('root/settings').get().then(d=>{S.set=d.data()||{}}).catch(()=>{});db.collection('fam').get().then(async q=>{const L=[];for(const f of q.docs){const dt=f.data(),r=await Promise.all(['servants','kids'].map(c=>db.collection('fam/'+f.id+'/'+c).get()));L.push({id:f.id,...dt,name:dt.name||f.id,sv:r[0].docs.length,kd:r[1].docs.length,last:Math.max(0,...r[0].docs.map(x=>x.data().seen||0))})}A.fams=L;draw(true)}).catch(e=>toast('Error: '+e.message))}
 function admFam(id){A.id=id;Promise.all(ADC.map(c=>db.collection('fam/'+id+'/'+c).get())).then(r=>{A.d={};ADC.forEach((c,i)=>A.d[c]=r[i].docs.map(x=>({id:x.id,...x.data()})));A.fn=(A.fams.find(f=>f.id==id)||{}).name||id;draw(true)}).catch(e=>toast('Error: '+e.message))}
-async function admWipe(id){for(const c of ADC.concat(['members'])){const q=await db.collection('fam/'+id+'/'+c).get();let b=db.batch(),n=0;for(const x of q.docs){b.delete(x.ref);if(++n%400==0){await b.commit();b=db.batch()}}await b.commit()}try{const pq=await db.collection('famsec/'+id+'/pins').get();for(const x of pq.docs)await x.ref.delete();await db.doc('famsec/'+id).delete()}catch(e){}await db.doc('fam/'+id).delete();A.d=null;admList()}
+async function admWipe(id){let bad=0;
+ for(const c of ADC.concat(['members'])){try{const q=await db.collection('fam/'+id+'/'+c).get();let b=db.batch(),n=0;for(const x of q.docs){b.delete(x.ref);if(++n%400==0){await b.commit();b=db.batch()}}await b.commit()}catch(e){bad++;console.warn('wipe',c,e)}}
+ try{const pq=await db.collection('famsec/'+id+'/pins').get();for(const x of pq.docs)await x.ref.delete();await db.doc('famsec/'+id).delete()}catch(e){}
+ try{await db.doc('fam/'+id).delete();famForget(id);window._fll=0;toast(bad?'Deleted, but some data could not be removed':'Deleted ✅')}catch(e){toast('Error: '+(e&&e.code||e&&e.message||e))}
+ A.d=null;admList()}
 async function admOpen(){if(isAdm()&&sessionStorage.admok)return admEnter();
  modal('Admin sign in','<input id=ae type=email placeholder="Admin email"><input id=ap type=password placeholder="Password">','Sign in',()=>{const e=$('#ae').value.trim(),p=$('#ap').value;if(!e||!p){toast('Enter email and password');return false}toast('Signing in…');
   firebase.auth().signInWithEmailAndPassword(e,p).then(u=>{AUTHU=u.user;return withTO(db.doc('root/ping').set({t:Date.now()}))}).then(()=>{sessionStorage.admok='1';admEnter()}).catch(x=>{const c=x&&x.code;toast(c&&String(c).startsWith('auth/')?'Admin sign-in failed: '+c:c=='permission-denied'?'Signed in, but this account is not the admin in the rules (check the UID)':errMsg(x));if(c=='permission-denied')setTimeout(()=>firebase.auth().signOut().then(()=>location.reload()),3500)})})}
@@ -506,8 +516,8 @@ function remPopup(){const L=remDue();if(!L.length||!ME||V.t!='home'||$('#m').cla
 const waNum=p=>{let n=String(p||'').replace(/\D/g,'');if(n.startsWith('00'))n=n.slice(2);else if(n[0]=='0')n='20'+n.slice(1);return n};
 const S0='2026-10-02',TOT=12;
 function attOf(me){const t=ymd(new Date()),L=[],p=S0.split('-').map(Number);for(let i=0;i<TOT;i++){const x=ymd(new Date(p[0],p[1]-1,p[2]+7*i));if(x>t)break;L.push(x)}const n=L.filter((w,i)=>i==0||(S.svw[w]||{})[me.id+'_come']).length;return{n,t:L.length,p:L.length?Math.round(n*100/L.length):null}}
-const famList=()=>{let L=[],C=[];try{L=JSON.parse(localStorage.fams||'[]')}catch(e){}try{C=JSON.parse(localStorage.fl||'[]')}catch(e){}(window._fl||[]).concat(C).forEach(f=>{if(!L.some(x=>x.id==f.id))L.push(f)});return L};
-function loadFams(){if(window._fll||!db)return;window._fll=1;db.collection('fam').get().then(q=>{window._fl=q.docs.map(x=>({id:x.id,name:x.data().name||decodeURIComponent(x.id),photo:x.data().photo||''})).filter(f=>f.name);window._fe='';try{localStorage.fl=JSON.stringify(window._fl.map(f=>({id:f.id,name:f.name})))}catch(e){}if(!FAM)draw(true)}).catch(e=>{window._fe=(e&&(e.code||e.message))||'error';if(!AUTHU&&AUTHERR)window._fe='sign-in: '+AUTHERR;window._fl=window._fl||[];if(!FAM)draw(true)})}
+const famList=()=>{let L=[],C=[];if(window._fl&&!window._fe)return window._fl.slice().sort((a,b)=>a.name.localeCompare(b.name,'ar'));try{L=JSON.parse(localStorage.fams||'[]')}catch(e){}try{C=JSON.parse(localStorage.fl||'[]')}catch(e){}C.forEach(f=>{if(!L.some(x=>x.id==f.id))L.push(f)});return L};
+function loadFams(){if(!db||(window._fll&&Date.now()-(window._flt||0)<30000))return;window._fll=1;window._flt=Date.now();db.collection('fam').get().then(q=>{window._fl=q.docs.map(x=>({id:x.id,name:x.data().name||decodeURIComponent(x.id),photo:x.data().photo||''})).filter(f=>f.name);window._fe='';try{localStorage.fl=JSON.stringify(window._fl)}catch(e){}try{const ids=new Set(window._fl.map(f=>f.id));let L=JSON.parse(localStorage.fams||'[]').filter(x=>ids.has(x.id)||x.id==FAM).map(x=>{const f=window._fl.find(z=>z.id==x.id);return f?{...x,name:f.name,photo:f.photo}:x});localStorage.fams=JSON.stringify(L)}catch(e){}if(!FAM)draw()}).catch(e=>{window._fe=(e&&(e.code||e.message))||'error';if(!AUTHU&&AUTHERR)window._fe='sign-in: '+AUTHERR;window._fl=window._fl||[];if(!FAM)draw(true)})}
 const famErr=()=>(window._fe?`<div class=mut style="text-align:center;color:#b45309;padding:6px 0">تعذّر تحميل كل الأسر (${esc(window._fe)})</div>`:'')+`<button class="btn alt sm" data-a=famrf style="margin:6px auto;display:block">🔄 تحديث الأسر</button>`;
 async function admEach(sc,fn){try{const ids=sc=='*'?A.fams.map(f=>f.id):[sc];for(const id of ids)await fn(id);toast('Done ✅')}catch(e){toast('Error: '+e.message)}}
 function bdSection(){const t=new Date();t.setHours(0,0,0,0);const o=[];
@@ -688,8 +698,8 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-a]');
  if(d.a=='switch'){if(ADMS){sessionStorage.removeItem('adm');sessionStorage.removeItem('admok');return location.reload()}sessionStorage.removeItem('vs');try{const M=JSON.parse(localStorage.mes||'{}');delete M[FAM];localStorage.mes=JSON.stringify(M)}catch(e){}localStorage.removeItem('me');localStorage.removeItem('fam');return location.reload()}
  if(d.a=='fam'){const n=$('#fm').value.trim().replace(/\s+/g,' ');if(!n)return toast('اكتب اسم الأسرة');return enterFam(encodeURIComponent(norm(n)),n,$('#fp').value)}
  if(d.a=='fpick'){const f=famList().find(x=>x.id==d.i);if(!f)return;return modal('🔒 '+f.name,'<input id=fpw type=password placeholder="Family password">','Open',()=>{enterFam(f.id,f.name,$('#fpw').value)})}
- if(d.a=='kphoto'){const id=d.k;return pickImg(u=>put('kids/'+id,{photo:u}))}
- if(d.a=='fphoto')return pickImg(u=>db.doc('fam/'+FAM).set({photo:u},{merge:true}));
+ if(d.a=='kphoto'){const id=d.k;return pickImg(u=>put('kids/'+id,{photo:u}).catch(e=>toast(errMsg(e))))}
+ if(d.a=='fphoto')return pickImg(u=>{toast('Saving…');db.doc('fam/'+FAM).set({photo:u},{merge:true}).then(()=>{window._fll=0;toast('Saved ✅')}).catch(e=>toast(errMsg(e)))});
  if(d.a=='bdx'){localStorage.bdx=ymd(new Date());return draw(true)}
  if(d.a=='wa'){const m=((S.set||{}).bdmsg||'كل سنة وانت طيب يا {name} 🎂🎉').replace(/\{name\}/g,d.n);const me=S.sv.find(x=>x.id==ME.id)||{};if(me.photo)return shareRem(me.photo,m);return window.open('https://wa.me/?text='+encodeURIComponent(m),'_blank')}
  if(d.a=='admmsg')return db.doc('root/settings').set({bdmsg:$('#bdm').value,remmsg:$('#rmm').value,kidmsg:$('#kdm').value},{merge:true}).then(()=>toast('Saved'));
@@ -758,7 +768,7 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-a]');
  if(d.a=='bn'){V.st=[];V.q='';V.menu=0;V.t=d.t;return draw(true)}
  if(d.a=='dark'){if(localStorage.dark)localStorage.removeItem('dark');else localStorage.dark='1';dk();V.menu=0;return draw(true)}
  if(d.a=='obphoto')return pickImg(u=>{V.obp=u;const e=$('#obpp');if(e){e.src=u;e.style.display='block'}});
- if(d.a=='sphoto')return pickImg(u=>put('servants/'+ME.id,{photo:u}));
+ if(d.a=='sphoto')return pickImg(u=>put('servants/'+ME.id,{photo:u}).catch(e=>toast(errMsg(e))));
  if(d.a=='remind'){const me=S.sv.find(x=>x.id==ME.id)||{};if(!me.photo)return toast('ضيف صورتك الأول 📷 (من Your account)');return shareRem(me.photo,((S.set||{}).remmsg||'تذكير 🔔').replace(/\{name\}/g,ME.name))}
  if(d.a=='leave')return modal('Leave family?','<p>'+esc(FN())+'</p>','Leave',()=>{let L=[];try{L=JSON.parse(localStorage.fams||'[]')}catch(e){}localStorage.fams=JSON.stringify(L.filter(x=>x.id!=FAM));try{const M=JSON.parse(localStorage.mes||'{}');delete M[FAM];localStorage.mes=JSON.stringify(M)}catch(e){}['me','fam','famn','nt'].forEach(k=>localStorage.removeItem(k));sessionStorage.removeItem('vs');location.reload()});
  if(d.a=='adm')return admOpen();
